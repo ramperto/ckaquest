@@ -1,0 +1,8 @@
+The pod is Pending — the scheduler can't find a suitable node.
+
+Check what the scheduler is saying:
+  kubectl describe pod compute -n ckaquest
+
+Scroll to the "Events" section at the bottom.
+Also check available node capacity:
+  kubectl describe nodes | grep -A5 "Allocated resources"

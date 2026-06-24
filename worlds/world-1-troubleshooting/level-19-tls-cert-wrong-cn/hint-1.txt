@@ -1,0 +1,5 @@
+Check the current certificate's Common Name:
+
+  kubectl get secret app-tls -n ckaquest -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -subject
+
+You'll see it says CN=wrong.example.com — it should be app.example.com.

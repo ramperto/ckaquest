@@ -1,0 +1,10 @@
+The app pod can't reach the database. Check if it's a network policy issue:
+
+  kubectl get networkpolicies -n ckaquest
+  kubectl describe networkpolicy app-egress-deny-all -n ckaquest
+
+Test directly from the app pod:
+  kubectl exec app -n ckaquest -- nc -z -w 3 db-svc 5432; echo $?
+  kubectl exec app -n ckaquest -- nslookup db-svc
+
+What's blocked? Port 5432? DNS (port 53)? Both?

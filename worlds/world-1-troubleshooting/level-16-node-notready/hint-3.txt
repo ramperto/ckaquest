@@ -1,0 +1,6 @@
+Full command using dynamic node name lookup:
+
+  kubectl taint nodes $(kubectl get nodes -o jsonpath='{.items[0].metadata.name}') node.kubernetes.io/not-ready:NoSchedule-
+
+After removing the taint, the scheduler will automatically place the pending pod.
+Wait a few seconds and check: kubectl get pods -n ckaquest -l app=critical-service

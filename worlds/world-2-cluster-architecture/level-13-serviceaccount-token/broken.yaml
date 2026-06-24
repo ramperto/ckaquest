@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-client
+  namespace: ckaquest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-test
+  namespace: ckaquest
+  labels:
+    app: api-test
+spec:
+  serviceAccountName: api-client
+  automountServiceAccountToken: false    # <-- This prevents the token from being mounted
+  containers:
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sleep", "3600"]

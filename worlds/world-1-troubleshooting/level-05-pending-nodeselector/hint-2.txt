@@ -1,0 +1,11 @@
+The pod has a nodeSelector requiring "disktype: ssd" but no node has that label.
+
+You have two options:
+1. Remove the nodeSelector from the pod (simpler — if any node is fine)
+2. Add the label to your node (if the pod genuinely needs SSD storage)
+
+Check node name:
+  kubectl get nodes
+
+Option 2 - add label:
+  kubectl label node <node-name> disktype=ssd

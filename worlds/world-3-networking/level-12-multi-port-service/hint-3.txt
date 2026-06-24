@@ -1,0 +1,17 @@
+Edit the Service to fix both issues:
+
+  kubectl edit svc multi-svc -n ckaquest
+
+Change the ports section to:
+
+  ports:
+    - name: http        # add name
+      port: 80
+      targetPort: 80
+    - name: https       # add name
+      port: 443
+      targetPort: 443   # fix from 8443 to 443
+
+Save and verify:
+  kubectl get svc multi-svc -n ckaquest -o yaml
+  kubectl get endpoints multi-svc -n ckaquest

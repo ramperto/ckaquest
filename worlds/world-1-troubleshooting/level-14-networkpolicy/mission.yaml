@@ -1,0 +1,15 @@
+name: "NetworkPolicy — All Traffic Blocked"
+description: >
+  After a security hardening exercise, a NetworkPolicy was applied that
+  blocks ALL ingress traffic to the backend pods. Now the frontend can't
+  reach the backend. Fix the NetworkPolicy to allow traffic from the frontend.
+objective: "Allow the 'frontend' pod to reach the 'backend' service on port 80."
+xp: 250
+difficulty: advanced
+expected_time: "25m"
+concepts:
+  - NetworkPolicy
+  - Ingress rules
+  - Pod selectors in NetworkPolicy
+  - Network segmentation
+  - kubectl exec curl

@@ -1,0 +1,8 @@
+The pod keeps restarting. The application isn't crashing — something else
+is killing the container.
+
+Check the pod details:
+  kubectl describe pod web -n ckaquest
+
+Look for "Liveness" in the output and check the "Events" section.
+What is Kubernetes reporting about the health checks?

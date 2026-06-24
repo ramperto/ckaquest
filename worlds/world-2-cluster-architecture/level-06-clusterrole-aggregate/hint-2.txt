@@ -1,0 +1,11 @@
+platform-viewer aggregates ClusterRoles that have:
+  label: rbac.ckaquest.io/aggregate-to-platform-viewer=true
+
+events-reader has this label → its rules are in platform-viewer ✓
+logs-reader is MISSING this label → its rules are NOT included ✗
+
+To fix, add the label to logs-reader:
+  kubectl label clusterrole logs-reader \
+    rbac.ckaquest.io/aggregate-to-platform-viewer=true
+
+Kubernetes will automatically update platform-viewer's rules.

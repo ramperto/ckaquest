@@ -1,0 +1,6 @@
+# Broken static pod manifest is deployed by setup.sh to:
+# /etc/kubernetes/manifests/infra-monitor.yaml
+#
+# Two bugs:
+# 1. restartPolicy: Never  (must be Always for static pods)
+# 2. command: ["shh", ...] (typo — should be "sh")

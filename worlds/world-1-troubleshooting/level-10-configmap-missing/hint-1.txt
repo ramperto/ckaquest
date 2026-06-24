@@ -1,0 +1,9 @@
+The pod is in CreateContainerConfigError or waiting. This usually means
+a referenced ConfigMap or Secret doesn't exist.
+
+Check the pod status:
+  kubectl describe pod app -n ckaquest
+
+Look at the Events section. What resource is missing?
+Also check what ConfigMaps exist:
+  kubectl get configmaps -n ckaquest

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-monitor
+  namespace: ckaquest
+spec:
+  selector:
+    matchLabels:
+      app: node-monitor
+  template:
+    metadata:
+      labels:
+        app: node-monitor
+    spec:
+      tolerations:
+        - operator: Exists    # tolerate all taints — not the problem here
+      nodeSelector:
+        disktype: ssd         # BUG: no node has this label → 0 pods scheduled
+      containers:
+        - name: monitor
+          image: busybox:1.36
+          command: ["sh", "-c", "while true; do echo monitoring; sleep 30; done"]

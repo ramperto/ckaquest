@@ -1,0 +1,27 @@
+title: "Secret Volume — Wrong Key in items"
+world: 5
+level: 7
+xp: 200
+difficulty: intermediate
+domain: Storage
+
+story: |
+  The `tls-proxy` pod mounts a TLS Secret as a volume to access the
+  certificate file. The pod starts — but the expected file
+  `/etc/ssl/tls.crt` is empty. The Secret has the cert under
+  key `tls.crt`, but the volume items map is looking for `cert` instead.
+
+  Fix the items mapping so the correct key is projected to the file.
+
+objective: |
+  1. Inspect the Secret `tls-secret` — check its keys
+  2. Inspect the pod volume spec — find the wrong key in items
+  3. Fix the items entry: change key from "cert" to "tls.crt"
+  4. Confirm the pod can read a non-empty /etc/ssl/tls.crt
+
+success_criteria:
+  - Pod tls-proxy is Running
+  - File /etc/ssl/tls.crt inside the pod is non-empty
+  - Volume items use the correct key tls.crt
+
+hints_available: 3

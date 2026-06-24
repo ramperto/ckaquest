@@ -1,0 +1,32 @@
+title: "ImagePullPolicy: Never — ErrImageNeverPull"
+world: 1
+level: 18
+xp: 200
+difficulty: intermediate
+domain: Troubleshooting
+
+story: |
+  A developer was testing with local images on their minikube setup and
+  set `imagePullPolicy: Never` to avoid pulling from a registry. They
+  then copy-pasted the same manifest to the shared cluster, pointing at
+  a private image that doesn't exist locally. The pod is stuck with
+  ErrImageNeverPull — Kubernetes won't even try to pull the image.
+
+  Fix the pod so it actually runs. You'll need to change both the image
+  and the pull policy.
+
+objective: |
+  1. Identify why the pod `local-app` is failing (ErrImageNeverPull)
+  2. Fix the imagePullPolicy and use a valid public image (nginx:1.25)
+  3. Delete and recreate the pod so it reaches Running state
+
+success_criteria:
+  - Pod local-app exists in namespace
+  - Pod local-app is Running
+  - imagePullPolicy is NOT "Never"
+
+hints_available: 3
+
+note: |
+  Pods are immutable for most fields. You must delete and recreate to
+  change the image or imagePullPolicy.

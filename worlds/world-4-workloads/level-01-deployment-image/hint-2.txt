@@ -1,0 +1,11 @@
+Update the image using kubectl set image:
+
+  kubectl set image deployment/web web=nginx:1.25 -n ckaquest
+
+The syntax is:
+  kubectl set image deployment/<name> <container-name>=<image>:<tag>
+
+The container name is "web" (check with: kubectl describe deployment web -n ckaquest)
+
+Then watch the rollout:
+  kubectl rollout status deployment/web -n ckaquest

@@ -1,0 +1,24 @@
+Full fix:
+
+  kubectl delete pvc app-storage -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: app-storage
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: standard
+    resources:
+      requests:
+        storage: 3Gi
+  EOF
+
+  kubectl get pvc app-storage -n ckaquest
+  kubectl get pv app-pv
+  # Both: Bound
+
+Then: validate

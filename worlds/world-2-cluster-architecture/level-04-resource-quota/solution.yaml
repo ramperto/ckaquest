@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: tight-quota
+  namespace: ckaquest
+spec:
+  hard:
+    pods: "5"                    # Increased to allow 3 webapp + system pods
+    requests.cpu: "500m"
+    requests.memory: "512Mi"
+    limits.cpu: "1"
+    limits.memory: "1Gi"

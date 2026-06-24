@@ -1,0 +1,10 @@
+First, see what revisions exist:
+
+  kubectl rollout history deployment/api -n ckaquest
+
+You should see two revisions. Revision 1 used nginx:1.25.
+Revision 2 (current) uses nginx:BROKEN.
+
+Check the current broken state:
+  kubectl get pods -n ckaquest -l app=api
+  kubectl get deployment api -n ckaquest -o jsonpath='{.spec.template.spec.containers[0].image}'

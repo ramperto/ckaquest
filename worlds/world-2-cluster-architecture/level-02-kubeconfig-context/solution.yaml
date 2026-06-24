@@ -1,0 +1,9 @@
+# List all contexts to find the working one:
+#   kubectl config get-contexts
+#
+# Switch to the working context:
+#   kubectl config use-context default
+#
+# Optional: delete the broken context to clean up:
+#   kubectl config delete-context broken-context
+#   kubectl config delete-user broken-user

@@ -1,0 +1,26 @@
+title: "PVC — Wrong StorageClass Name"
+world: 5
+level: 3
+xp: 150
+difficulty: beginner
+domain: Storage
+
+story: |
+  The PVC `app-storage` references StorageClass `fast-ssd`.
+  That class doesn't exist in this cluster — there is only a
+  static PV with storageClassName `standard`.
+
+  Fix the PVC to use the correct StorageClass.
+
+objective: |
+  1. Check PVC `app-storage` — confirm it references `fast-ssd`
+  2. Check the available PV `app-pv` — note its storageClassName
+  3. Delete the PVC and recreate it with storageClassName: standard
+  4. Confirm the PVC binds
+
+success_criteria:
+  - PVC app-storage is Bound
+  - PV app-pv is Bound
+  - PVC storageClassName is standard
+
+hints_available: 3

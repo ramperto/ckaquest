@@ -1,0 +1,31 @@
+title: "PriorityClass — Schedule the Critical Pod"
+world: 4
+level: 10
+xp: 250
+difficulty: intermediate
+domain: Workloads & Scheduling
+
+story: |
+  The SRE team deployed a `critical-app` pod that references a
+  PriorityClass named `high-priority`. But the PriorityClass
+  doesn't exist — the pod is stuck Pending with the error:
+  "No PriorityClass with name high-priority was found."
+
+  Create the missing PriorityClass and confirm the pod can schedule.
+
+objective: |
+  1. Check pod `critical-app` — confirm it's Pending due to missing PriorityClass
+  2. Create a PriorityClass named `high-priority` with value 1000000
+  3. The pod will automatically reschedule once the PriorityClass exists
+  4. Confirm the pod reaches Running state
+
+success_criteria:
+  - PriorityClass high-priority exists with value 1000000
+  - Pod critical-app is Running
+
+hints_available: 3
+
+note: |
+  PriorityClasses are cluster-scoped resources (not namespace-scoped).
+  Higher value = higher priority. The built-in system-cluster-critical
+  has value 2000000000. Values >= 1000000000 are reserved for system use.

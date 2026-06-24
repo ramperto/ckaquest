@@ -1,0 +1,21 @@
+Hint 3: Expand the PVC
+
+After patching the StorageClass, expand the PVC:
+
+  kubectl edit pvc app-data -n ckaquest
+
+Change the storage request from 500Mi to 2Gi:
+
+  spec:
+    resources:
+      requests:
+        storage: 2Gi
+
+Or use patch:
+
+  kubectl patch pvc app-data -n ckaquest -p '{"spec":{"resources":{"requests":{"storage":"2Gi"}}}}'
+
+Then confirm everything is healthy:
+
+  kubectl get pvc app-data -n ckaquest
+  kubectl get deployment data-app -n ckaquest

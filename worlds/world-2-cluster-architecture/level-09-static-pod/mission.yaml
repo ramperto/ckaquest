@@ -1,0 +1,16 @@
+name: "Static Pod — Broken Manifest"
+description: >
+  A static pod manifest was placed in /etc/kubernetes/manifests/ but the
+  pod never appeared in 'kubectl get pods'. Someone added a broken spec.
+  Static pods are managed directly by kubelet — not via the API server.
+  Find the issue and fix it.
+objective: "Get the static pod 'infra-monitor' Running on the node."
+xp: 250
+difficulty: advanced
+expected_time: "20m"
+concepts:
+  - Static pods
+  - /etc/kubernetes/manifests
+  - kubelet management
+  - Pod naming convention (pod-nodename)
+  - kubectl get pods --all-namespaces

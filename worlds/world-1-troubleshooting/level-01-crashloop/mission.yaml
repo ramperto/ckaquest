@@ -1,0 +1,14 @@
+name: "CrashLoopBackOff — The Typo That Won't Quit"
+description: >
+  A pod named 'web' was deployed but it keeps crashing. The on-call team
+  reports it's been in CrashLoopBackOff for 20 minutes. Investigate and fix it.
+objective: "Get the 'web' pod Running and Ready in the ckaquest namespace."
+xp: 100
+difficulty: beginner
+expected_time: "10m"
+concepts:
+  - Pod lifecycle
+  - CrashLoopBackOff
+  - kubectl describe
+  - kubectl logs
+  - kubectl delete / kubectl run

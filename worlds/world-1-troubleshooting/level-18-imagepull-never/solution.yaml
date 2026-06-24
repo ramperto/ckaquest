@@ -1,0 +1,22 @@
+# Level 18 Solution: ImagePullPolicy Never
+#
+# Step 1: Delete the broken pod
+# kubectl delete pod local-app -n ckaquest
+#
+# Step 2: Apply the fixed manifest below
+# kubectl apply -f solution.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: local-app
+  namespace: ckaquest
+  labels:
+    app: local-app
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 80

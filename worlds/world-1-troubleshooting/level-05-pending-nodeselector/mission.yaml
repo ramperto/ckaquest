@@ -1,0 +1,15 @@
+name: "Pending Pod — NodeSelector Mismatch"
+description: >
+  A pod named 'cache' has been Pending since deployment. Resources are fine
+  on the node, but the pod still won't schedule. The developer insists the
+  node should have the right label. Investigate.
+objective: "Get the 'cache' pod Running in the ckaquest namespace."
+xp: 150
+difficulty: beginner
+expected_time: "12m"
+concepts:
+  - nodeSelector
+  - Node labels
+  - kubectl label
+  - Pod scheduling
+  - Pending pods

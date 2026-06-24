@@ -1,0 +1,14 @@
+name: "Readiness Probe — Pod Not Ready"
+description: >
+  The pod is Running but shows 0/1 READY. The service has no endpoints,
+  so no traffic is reaching the app. The readiness probe is misconfigured.
+objective: "Fix the readiness probe so the pod becomes Ready (1/1)."
+xp: 150
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - Readiness probes
+  - Pod Ready condition
+  - Service endpoints
+  - Port configuration
+  - kubectl describe

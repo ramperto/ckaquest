@@ -1,0 +1,11 @@
+# VolumeSnapshot referencing a VolumeSnapshotClass that doesn't exist.
+# The snapshot cannot proceed without a valid VolumeSnapshotClass.
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: data-snapshot
+  namespace: ckaquest
+spec:
+  volumeSnapshotClassName: csi-snap-class
+  source:
+    persistentVolumeClaimName: source-data

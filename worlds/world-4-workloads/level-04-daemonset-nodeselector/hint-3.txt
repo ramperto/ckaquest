@@ -1,0 +1,31 @@
+Easiest fix — delete and recreate without the nodeSelector:
+
+  kubectl delete daemonset node-monitor -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    name: node-monitor
+    namespace: ckaquest
+  spec:
+    selector:
+      matchLabels:
+        app: node-monitor
+    template:
+      metadata:
+        labels:
+          app: node-monitor
+      spec:
+        tolerations:
+          - operator: Exists
+        containers:
+          - name: monitor
+            image: busybox:1.36
+            command: ["sh", "-c", "while true; do echo monitoring; sleep 30; done"]
+  EOF
+
+Wait for the pod to start:
+  kubectl get pods -n ckaquest -l app=node-monitor
+
+Then: validate

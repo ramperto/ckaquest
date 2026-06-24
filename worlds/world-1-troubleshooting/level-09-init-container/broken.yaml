@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  namespace: ckaquest
+  labels:
+    app: myapp
+spec:
+  initContainers:
+    - name: wait-for-db
+      image: busybox:1.36
+      command:
+        - sh
+        - -c
+        - |
+          echo "Waiting for db service..."
+          until nc -z db-service 5432; do
+            echo "db-service not ready, retrying in 3s..."
+            sleep 3
+          done
+          echo "db-service is up!"
+  containers:
+    - name: app
+      image: nginx:1.25
+      ports:
+        - containerPort: 80

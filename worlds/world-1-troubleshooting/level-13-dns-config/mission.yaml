@@ -1,0 +1,15 @@
+name: "DNS Broken — Custom DNS Policy Misconfigured"
+description: >
+  A pod was deployed with a custom DNS configuration that overrides the
+  cluster's default DNS. Now the pod can't resolve any hostnames — not
+  even other services in the cluster. Fix the DNS configuration.
+objective: "Fix the pod so it can resolve 'kubernetes.default.svc.cluster.local'."
+xp: 250
+difficulty: advanced
+expected_time: "20m"
+concepts:
+  - DNS in Kubernetes
+  - dnsPolicy
+  - dnsConfig
+  - CoreDNS
+  - nslookup / dig

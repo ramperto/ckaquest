@@ -1,0 +1,14 @@
+Full solution:
+
+  kubectl delete pod api-test -n ckaquest
+
+Then recreate without the automountServiceAccountToken: false line
+(or change it to true):
+
+  kubectl run api-test -n ckaquest --image=curlimages/curl:latest \
+    --overrides='{"spec":{"serviceAccountName":"api-client","containers":[{"name":"curl","image":"curlimages/curl:latest","command":["sleep","3600"]}]}}' \
+    --command -- sleep 3600
+
+Or edit /tmp/api-test-fix.yaml and kubectl apply -f it.
+
+Verify: kubectl exec api-test -n ckaquest -- ls /var/run/secrets/kubernetes.io/serviceaccount/

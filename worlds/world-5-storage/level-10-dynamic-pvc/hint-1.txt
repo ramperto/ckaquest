@@ -1,0 +1,14 @@
+Check why the pod is Pending:
+
+  kubectl describe pod -n ckaquest -l app=stateful-app | grep -A5 "Events:"
+  # Warning  FailedScheduling
+  # "persistentvolumeclaim \"app-db\" not found"
+
+The Deployment references a PVC that was never created.
+Check what PVCs exist:
+  kubectl get pvc -n ckaquest
+  # (none related to app-db)
+
+You need to create PVC app-db.
+Check the default StorageClass first:
+  kubectl get storageclass

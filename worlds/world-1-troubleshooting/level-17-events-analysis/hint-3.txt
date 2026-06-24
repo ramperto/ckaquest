@@ -1,0 +1,13 @@
+Fix 1 — Create the ServiceAccount:
+  kubectl create serviceaccount app-runner -n ckaquest
+
+Fix 2 — Edit the Service targetPort:
+  kubectl edit svc event-svc -n ckaquest
+  (change targetPort from 8080 to 80)
+
+After both fixes, you may need to restart the deployment:
+  kubectl rollout restart deployment event-app -n ckaquest
+
+Then verify:
+  kubectl get pods -n ckaquest -l app=event-app
+  kubectl get endpoints event-svc -n ckaquest

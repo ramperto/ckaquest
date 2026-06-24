@@ -1,0 +1,8 @@
+Traffic from frontend to backend is blocked. Test it yourself:
+
+  BACKEND_IP=$(kubectl get svc backend-svc -n ckaquest -o jsonpath='{.spec.clusterIP}')
+  kubectl exec frontend -n ckaquest -- wget -qO- --timeout=3 http://$BACKEND_IP
+
+Also check what NetworkPolicies are in effect:
+  kubectl get networkpolicies -n ckaquest
+  kubectl describe networkpolicy -n ckaquest

@@ -1,0 +1,12 @@
+Check why no pods are scheduled:
+
+  kubectl get daemonset node-monitor -n ckaquest
+  # desiredNumberScheduled: 0
+
+  kubectl describe daemonset node-monitor -n ckaquest | grep -A5 "Node-Selector"
+  # You'll see: disktype=ssd
+
+Check if any node has this label:
+  kubectl get nodes --show-labels | grep disktype
+
+No match — the nodeSelector is filtering out all nodes.

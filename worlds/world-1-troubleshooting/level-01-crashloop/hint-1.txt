@@ -1,0 +1,9 @@
+The pod is crashing immediately after start. This means the container
+process exits right away.
+
+Start by checking what's happening:
+
+  kubectl describe pod web -n ckaquest
+  kubectl logs web -n ckaquest
+
+Look at the "Events" section in describe output. What does it say?

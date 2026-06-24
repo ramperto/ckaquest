@@ -1,0 +1,7 @@
+Delete the pod and recreate with a valid image tag:
+
+  kubectl delete pod web -n ckaquest
+  kubectl run web --image=nginx:1.25 -n ckaquest
+
+Verify it pulls and starts:
+  kubectl get pod web -n ckaquest -w

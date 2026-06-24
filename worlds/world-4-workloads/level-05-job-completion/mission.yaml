@@ -1,0 +1,30 @@
+title: "Job — Fix the Failing Backup"
+world: 4
+level: 5
+xp: 150
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  The nightly database backup Job keeps failing. It shows status
+  `Failed` immediately — backoffLimit exhausted before any success.
+
+  The backup command has a typo. Fix it so the Job completes
+  successfully (exit code 0).
+
+objective: |
+  1. Inspect Job `db-backup` — find the command error
+  2. Delete the failed Job (Job pod templates are immutable)
+  3. Recreate it with a corrected command: sh -c "echo 'backup OK' && sleep 2"
+  4. Confirm the Job completes with status: Complete
+
+success_criteria:
+  - Job db-backup exists
+  - Job has succeeded (status.succeeded >= 1)
+
+hints_available: 3
+
+note: |
+  Kubernetes Jobs retry on failure up to `backoffLimit` times.
+  Once exhausted the Job is marked Failed — no more retries.
+  You cannot edit a running Job's pod template — delete and recreate.

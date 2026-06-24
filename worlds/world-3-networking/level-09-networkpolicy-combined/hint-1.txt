@@ -1,0 +1,37 @@
+You need THREE separate NetworkPolicies — one per tier.
+
+Each policy should:
+  - Use podSelector with matchLabels to target its tier
+  - List BOTH "Ingress" and "Egress" in policyTypes
+    (omitting a type means "allow all" for that direction)
+
+Start with the frontend policy:
+
+  kubectl apply -f - <<EOF
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: frontend-policy
+    namespace: ckaquest
+  spec:
+    podSelector:
+      matchLabels:
+        tier: frontend
+    policyTypes:
+      - Ingress
+      - Egress
+    ingress: []          # nobody calls the frontend
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                tier: backend
+        ports:
+          - protocol: TCP
+            port: 80
+      - ports:           # DNS — don't forget this!
+          - protocol: UDP
+            port: 53
+  EOF
+
+The pod labels are: tier=frontend, tier=backend, tier=database

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-creds
+  namespace: ckaquest
+type: Opaque
+stringData:
+  password: "s3cr3t123"      # key is "password" (lowercase)
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  namespace: ckaquest
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: PASSWORD     # BUG: wrong key — actual key is "password"

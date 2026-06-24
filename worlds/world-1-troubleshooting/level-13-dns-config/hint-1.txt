@@ -1,0 +1,8 @@
+The pod is Running but DNS doesn't work inside it. Test DNS yourself:
+
+  kubectl exec debug-pod -n ckaquest -- nslookup kubernetes.default
+  kubectl exec debug-pod -n ckaquest -- nslookup google.com
+
+Also check how DNS is configured on the pod:
+  kubectl get pod debug-pod -n ckaquest -o jsonpath='{.spec.dnsPolicy}'
+  kubectl get pod debug-pod -n ckaquest -o jsonpath='{.spec.dnsConfig}'

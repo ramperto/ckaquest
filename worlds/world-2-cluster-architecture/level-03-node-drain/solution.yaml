@@ -1,0 +1,15 @@
+# Drain command that handles DaemonSets and standalone pods:
+#
+#   NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+#   kubectl drain $NODE \
+#     --ignore-daemonsets \
+#     --delete-emptydir-data \
+#     --force
+#
+# After simulated maintenance, uncordon:
+#   kubectl uncordon $NODE
+#
+# Flags explained:
+#   --ignore-daemonsets     : skip DaemonSet-managed pods (they'll come back)
+#   --delete-emptydir-data  : delete pods using emptyDir volumes
+#   --force                 : evict pods not managed by a controller

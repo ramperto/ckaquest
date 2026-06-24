@@ -1,0 +1,12 @@
+# Solution: remove claimRef from the PV to reset it to Available
+#
+# Imperative (recommended):
+#   kubectl patch pv data-pv --type=json \
+#     -p='[{"op":"remove","path":"/spec/claimRef"}]'
+#
+# After that the PV status changes:
+#   Released → Available → Bound (when new-data PVC binds)
+#
+# Verify:
+#   kubectl get pv data-pv
+#   kubectl get pvc new-data -n ckaquest

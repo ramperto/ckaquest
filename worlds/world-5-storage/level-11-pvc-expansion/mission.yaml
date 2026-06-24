@@ -1,0 +1,33 @@
+title: "PVC Expansion — StorageClass Blocks Volume Growth"
+world: 5
+level: 11
+xp: 250
+difficulty: intermediate
+domain: Storage
+
+story: |
+  The `data-app` Deployment writes growing logs and datasets to a 500Mi
+  PVC called `app-data`. The team tried to expand it to 2Gi, but the
+  request was rejected. Something in the StorageClass is preventing
+  volume expansion.
+
+  Your mission: unblock volume expansion and grow the PVC to 2Gi so
+  the application has room to breathe.
+
+objective: |
+  1. Identify that StorageClass `no-expand-sc` has allowVolumeExpansion set to false
+  2. Patch the StorageClass to allow volume expansion
+  3. Expand PVC `app-data` from 500Mi to 2Gi
+  4. Confirm the Deployment `data-app` remains healthy with 1 ready replica
+
+success_criteria:
+  - StorageClass no-expand-sc has allowVolumeExpansion set to true
+  - PVC app-data storage request is at least 1Gi
+  - Deployment data-app has 1 ready replica
+  - PVC app-data is in Bound state
+
+hints_available: 3
+
+note: |
+  PVC expansion is a two-step process: first enable it on the
+  StorageClass, then edit the PVC. You cannot shrink a PVC — only grow it.

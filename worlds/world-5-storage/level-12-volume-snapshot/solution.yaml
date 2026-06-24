@@ -1,0 +1,22 @@
+# Solution: Level 12 — Volume Snapshot
+#
+# Step 1: Create the missing VolumeSnapshotClass
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: csi-snap-class
+driver: rancher.io/local-path
+deletionPolicy: Delete
+---
+# Step 2: Apply the VolumeSnapshot (same as broken.yaml — it was correct,
+# it just needed the VolumeSnapshotClass to exist)
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: data-snapshot
+  namespace: ckaquest
+spec:
+  volumeSnapshotClassName: csi-snap-class
+  source:
+    persistentVolumeClaimName: source-data

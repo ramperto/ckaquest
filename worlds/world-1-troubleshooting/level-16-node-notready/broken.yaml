@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: critical-service
+  namespace: ckaquest
+  labels:
+    app: critical-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: critical-service
+  template:
+    metadata:
+      labels:
+        app: critical-service
+    spec:
+      # BUG: No tolerations defined, but the node has a
+      # node.kubernetes.io/not-ready=true:NoSchedule taint.
+      # The pod will remain Pending because it cannot tolerate the taint.
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80

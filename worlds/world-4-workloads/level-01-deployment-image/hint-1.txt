@@ -1,0 +1,9 @@
+Check what's wrong with the pods first:
+
+  kubectl get pods -n ckaquest
+  kubectl describe pod -n ckaquest -l app=web | grep -A5 "Events:"
+
+You'll see "Failed to pull image" — the image tag is wrong.
+
+Check the current deployment image:
+  kubectl get deployment web -n ckaquest -o jsonpath='{.spec.template.spec.containers[0].image}'

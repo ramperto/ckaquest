@@ -1,0 +1,9 @@
+Delete the broken pod and recreate with enough memory:
+
+  kubectl delete pod web -n ckaquest
+
+  kubectl run web --image=nginx:1.25 -n ckaquest \
+    --limits=memory=128Mi --requests=memory=64Mi
+
+Verify it stays Running:
+  kubectl get pod web -n ckaquest -w

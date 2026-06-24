@@ -1,0 +1,10 @@
+The Secret has key "password" (lowercase).
+The pod spec references key "PASSWORD" (uppercase).
+
+Secret key lookups are case-sensitive. "PASSWORD" ≠ "password".
+
+Check the pod's env var spec:
+  kubectl get pod app -n ckaquest -o jsonpath='{.spec.containers[0].env}'
+
+You need to fix the key from "PASSWORD" to "password".
+Since you can't edit a running pod's env, you'll need to delete and recreate it.

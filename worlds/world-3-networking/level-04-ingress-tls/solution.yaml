@@ -1,0 +1,16 @@
+# Step 1: Generate a self-signed certificate for webapp.local
+#
+#   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+#     -keyout /tmp/webapp.key \
+#     -out /tmp/webapp.crt \
+#     -subj "/CN=webapp.local/O=CKAQuest"
+#
+# Step 2: Create the TLS secret
+#
+#   kubectl create secret tls webapp-tls \
+#     --cert=/tmp/webapp.crt \
+#     --key=/tmp/webapp.key \
+#     -n ckaquest
+#
+# The secret type must be kubernetes.io/tls
+# with keys: tls.crt and tls.key (created automatically by kubectl create secret tls)

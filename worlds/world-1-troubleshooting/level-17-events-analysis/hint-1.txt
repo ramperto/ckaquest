@@ -1,0 +1,5 @@
+Check events: `kubectl get events -n ckaquest --sort-by='.lastTimestamp'`
+
+You'll see warnings about the ServiceAccount and scheduling failures.
+Events tell the story of what Kubernetes tried to do and where it failed.
+Start there and work your way through each warning.

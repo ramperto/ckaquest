@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zone-aware-app
+  namespace: ckaquest
+  labels:
+    app: zone-aware-app
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: zone
+                operator: In
+                values:
+                  - us-east   # BUG: node has zone=us-west, not us-east
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'Running in correct zone'; sleep 3600"]

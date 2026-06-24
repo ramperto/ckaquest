@@ -1,0 +1,9 @@
+Delete the broken pod and recreate with sensible resource requests:
+
+  kubectl delete pod compute -n ckaquest
+
+  kubectl run compute --image=nginx:1.25 -n ckaquest \
+    --requests=cpu=100m,memory=128Mi \
+    --limits=cpu=500m,memory=256Mi
+
+Note: "100m" = 100 millicores = 0.1 CPU. Much more reasonable than "100" = 100 CPUs.

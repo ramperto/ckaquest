@@ -1,0 +1,20 @@
+# Option A: Remove the nodeSelector (if all nodes are acceptable)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cache
+  namespace: ckaquest
+  labels:
+    app: cache
+spec:
+  containers:
+    - name: cache
+      image: redis:7
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "64Mi"
+
+---
+# Option B: Label the node to match (if SSD storage is genuinely required)
+# kubectl label node <node-name> disktype=ssd

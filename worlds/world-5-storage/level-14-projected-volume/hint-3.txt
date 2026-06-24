@@ -1,0 +1,26 @@
+Hint 3: Full Fix
+
+Delete the broken pod and recreate with corrected YAML:
+
+  kubectl delete pod projected-app -n ckaquest
+
+Then apply the corrected projected volume sources:
+
+  volumes:
+    - name: all-in-one
+      projected:
+        sources:
+          - secret:
+              name: app-secret
+          - configMap:                    # <-- capital M
+              name: app-settings
+          - downwardAPI:
+              items:
+                - path: "labels"
+                  fieldRef:
+                    fieldPath: metadata.labels   # <-- plural
+
+Verify:
+
+  kubectl exec projected-app -n ckaquest -- ls /etc/projected/
+  # Should show: api-key  config.yaml  labels

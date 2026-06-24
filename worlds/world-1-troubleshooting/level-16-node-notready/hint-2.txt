@@ -1,0 +1,6 @@
+The node has a taint `node.kubernetes.io/not-ready=true:NoSchedule`.
+
+Remove it with:
+  kubectl taint nodes <node-name> node.kubernetes.io/not-ready:NoSchedule-
+
+Note the trailing `-` which tells kubectl to remove the taint rather than add it.

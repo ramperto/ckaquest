@@ -1,0 +1,11 @@
+Hint 2: Fix the StorageClass First
+
+Patch the StorageClass to allow volume expansion:
+
+  kubectl patch storageclass no-expand-sc -p '{"allowVolumeExpansion": true}'
+
+Verify the change:
+
+  kubectl get storageclass no-expand-sc -o jsonpath='{.allowVolumeExpansion}'
+
+It should now say "true".

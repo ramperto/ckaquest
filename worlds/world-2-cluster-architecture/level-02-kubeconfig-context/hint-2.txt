@@ -1,0 +1,8 @@
+The current-context is "broken-context" which uses a non-existent user
+credential. The working context is named "default".
+
+Switch to it:
+  kubectl config use-context default
+
+Then verify:
+  kubectl get nodes

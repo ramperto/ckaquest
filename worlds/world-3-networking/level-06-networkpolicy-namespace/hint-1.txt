@@ -1,0 +1,9 @@
+prometheus in the 'monitoring' namespace needs to reach app-svc:8080
+in 'ckaquest', but a NetworkPolicy blocks all ingress.
+
+Check the current state:
+  kubectl get networkpolicies -n ckaquest
+  kubectl get namespace monitoring --show-labels
+
+For NetworkPolicy to allow traffic from another namespace, that namespace
+needs a label so the namespaceSelector can match it.

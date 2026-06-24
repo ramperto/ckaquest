@@ -1,0 +1,54 @@
+# Solution: Level 11 — PVC Expansion
+#
+# Step 1: Patch the StorageClass to allow volume expansion
+# kubectl patch storageclass no-expand-sc -p '{"allowVolumeExpansion": true}'
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: no-expand-sc
+provisioner: rancher.io/local-path
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+---
+# Step 2: Expand the PVC from 500Mi to 2Gi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-data
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: no-expand-sc
+  resources:
+    requests:
+      storage: 2Gi
+---
+# Step 3: Ensure the Deployment is running
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-app
+  namespace: ckaquest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-app
+  template:
+    metadata:
+      labels:
+        app: data-app
+    spec:
+      containers:
+        - name: data-app
+          image: busybox:1.36
+          command: ["sh", "-c", "sleep 3600"]
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: app-data

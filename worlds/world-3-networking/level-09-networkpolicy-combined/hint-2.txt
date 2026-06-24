@@ -1,0 +1,46 @@
+Now write the backend-policy.
+
+Backend must:
+  - Accept ingress from tier=frontend on port 80
+  - Allow egress to tier=database on port 5432
+  - Allow egress DNS (port 53)
+
+  kubectl apply -f - <<EOF
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: backend-policy
+    namespace: ckaquest
+  spec:
+    podSelector:
+      matchLabels:
+        tier: backend
+    policyTypes:
+      - Ingress
+      - Egress
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                tier: frontend
+        ports:
+          - protocol: TCP
+            port: 80
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                tier: database
+        ports:
+          - protocol: TCP
+            port: 5432
+      - ports:
+          - protocol: UDP
+            port: 53
+          - protocol: TCP
+            port: 53
+  EOF
+
+Key insight: `to:` + `ports:` in the SAME rule element means
+"allow egress TO those pods ON those ports" (AND logic).
+A separate rule with only `ports:` allows to ANY destination.

@@ -1,0 +1,27 @@
+title: "Volume — Wrong Mount Path"
+world: 5
+level: 5
+xp: 150
+difficulty: beginner
+domain: Storage
+
+story: |
+  The `webapp` pod has a PVC mounted, but the application writes
+  files to `/app/data` while the volume is mounted at `/app/storage`.
+  The pod runs but all writes are lost — they go to the container's
+  ephemeral filesystem, not the persistent volume.
+
+  Fix the volumeMount path so data actually lands on the PVC.
+
+objective: |
+  1. Check Deployment `webapp` — find the wrong mountPath
+  2. The application expects its data directory at: /app/data
+  3. Fix the mountPath to /app/data
+  4. Confirm the Deployment is healthy and a test write persists
+
+success_criteria:
+  - Deployment webapp is healthy (3/3 ready)
+  - Container mounts the 'data-vol' volume at /app/data
+  - A file written to /app/data survives a pod restart
+
+hints_available: 3

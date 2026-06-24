@@ -1,0 +1,15 @@
+name: "ClusterIP — Wrong targetPort"
+description: >
+  The backend service is Running and the Service exists with endpoints,
+  but curl from another pod gets 'connection refused'. The selector is fine
+  this time — look deeper at the port mapping.
+objective: "Fix the Service so traffic actually reaches the nginx container on port 80."
+xp: 100
+difficulty: beginner
+expected_time: "12m"
+concepts:
+  - Service port vs targetPort
+  - Container port mapping
+  - kubectl get endpoints
+  - Port forwarding vs targetPort
+  - Service troubleshooting

@@ -1,0 +1,24 @@
+title: "Deployment — Rollback a Bad Release"
+world: 4
+level: 2
+xp: 150
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  Someone pushed a release at 3am. The image `nginx:BROKEN` does not
+  exist — every pod is crashing and the site is down.
+
+  The good news: Kubernetes keeps rollout history. The previous revision
+  worked fine. Roll back to it without touching the YAML files.
+
+objective: |
+  1. Inspect Deployment `api` — note it has 2 revisions in history
+  2. Roll back to the previous (working) revision
+  3. Confirm all 3 replicas are Running with the good image (nginx:1.25)
+
+success_criteria:
+  - Deployment api has image nginx:1.25
+  - All 3 replicas are Ready
+
+hints_available: 3

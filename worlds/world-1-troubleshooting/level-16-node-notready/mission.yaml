@@ -1,0 +1,32 @@
+title: "Node Tainted NotReady — Pod Stuck Pending"
+world: 1
+level: 16
+xp: 250
+difficulty: advanced
+domain: Troubleshooting
+
+story: |
+  The monitoring dashboard is blaring red. A critical service that should
+  be running 24/7 is stuck in Pending state. The ops team suspects a node
+  issue — someone mentioned seeing "NotReady" earlier — but the node seems
+  fine now. Whatever happened left behind a taint that is blocking all
+  new scheduling. The deployment has no tolerations, so it just sits there
+  waiting for a clean node that will never come.
+
+  Track down the rogue taint and remove it so the critical service can
+  finally schedule and run.
+
+objective: |
+  1. Inspect the node to find the `node.kubernetes.io/not-ready` taint
+  2. Remove the taint from the node
+  3. Confirm the `critical-service` pod schedules and reaches Running state
+
+success_criteria:
+  - Node has NO node.kubernetes.io/not-ready taint
+  - Pod from Deployment critical-service is Running
+
+hints_available: 3
+
+note: |
+  The trailing `-` in `kubectl taint` removes a taint. This is a common
+  CKA exam pattern — memorize the syntax.

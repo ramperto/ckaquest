@@ -1,0 +1,12 @@
+Two issues block the drain:
+1. A DaemonSet pod (log-agent) — add --ignore-daemonsets
+2. A standalone pod with no ReplicaSet/Deployment — add --force
+   If it uses emptyDir volumes — also add --delete-emptydir-data
+
+Full command:
+  kubectl drain $NODE \
+    --ignore-daemonsets \
+    --delete-emptydir-data \
+    --force
+
+After "maintenance", you must uncordon the node to restore scheduling.

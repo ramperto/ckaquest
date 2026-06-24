@@ -1,0 +1,33 @@
+Complete fix:
+
+  # 1. Label the namespace
+  kubectl label namespace monitoring purpose=monitoring
+
+  # 2. Apply the allow policy
+  cat <<EOF | kubectl apply -f -
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: allow-monitoring-scrape
+    namespace: ckaquest
+  spec:
+    podSelector:
+      matchLabels:
+        app: metrics-app
+    policyTypes:
+      - Ingress
+    ingress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                purpose: monitoring
+            podSelector:
+              matchLabels:
+                app: prometheus
+        ports:
+          - port: 8080
+  EOF
+
+  # 3. Test
+  kubectl exec prometheus -n monitoring -- \
+    nc -z -w3 app-svc.ckaquest.svc.cluster.local 8080 && echo "OK"

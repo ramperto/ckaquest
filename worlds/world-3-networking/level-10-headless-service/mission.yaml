@@ -1,0 +1,41 @@
+title: "Headless Service — Direct Pod Discovery"
+world: 3
+level: 10
+xp: 200
+difficulty: intermediate
+domain: Services & Networking
+
+story: |
+  The StatefulSet team deployed a 3-replica database cluster.
+  Each replica needs a **stable, individual DNS name** so peers
+  can address one another directly (e.g. db-0.db-svc, db-1.db-svc).
+
+  A regular ClusterIP Service hides all pods behind one virtual IP —
+  that's wrong for stateful clustering. You need a **headless Service**
+  (clusterIP: None) so DNS returns individual pod A records instead.
+
+  The Service exists but was created with a ClusterIP assigned.
+  Fix it so each pod gets its own DNS entry.
+
+objective: |
+  1. Delete the existing `db-headless` Service (it has a ClusterIP assigned)
+  2. Recreate it as a **headless Service** (clusterIP: None)
+  3. Confirm the StatefulSet pods are still Running
+  4. Verify DNS: from the `client` pod, run:
+       nslookup db-headless.ckaquest.svc.cluster.local
+     It should return THREE A records (one per pod), not a single ClusterIP.
+
+success_criteria:
+  - Service db-headless exists with clusterIP=None
+  - Service selector matches app=db-cluster
+  - Service port 5432 is exposed
+  - StatefulSet db-cluster has 3 ready replicas
+  - client pod is Running
+
+hints_available: 3
+
+note: |
+  A headless Service (clusterIP: None) makes DNS return individual pod
+  IPs. For StatefulSets each pod also gets a predictable subdomain:
+    <pod-name>.<service-name>.<namespace>.svc.cluster.local
+  This is how Cassandra, etcd, and PostgreSQL streaming replication work.

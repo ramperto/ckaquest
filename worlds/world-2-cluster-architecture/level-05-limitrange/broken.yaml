@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limits
+  namespace: ckaquest
+spec:
+  limits:
+    - type: Container
+      max:
+        cpu: "200m"           # max 200m CPU per container
+        memory: "256Mi"
+      min:
+        cpu: "10m"
+        memory: "16Mi"
+      default:
+        cpu: "100m"
+        memory: "128Mi"
+      defaultRequest:
+        cpu: "50m"
+        memory: "64Mi"
+# Pod intentionally NOT pre-deployed — the player must attempt to create it
+# and discover the LimitRange rejection themselves.
+# See hint-1.txt for the broken pod spec to attempt.

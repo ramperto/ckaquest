@@ -1,0 +1,19 @@
+Full fix:
+
+  # 1. Unsuspend
+  kubectl patch cronjob report-generator -n ckaquest \
+    -p '{"spec":{"suspend":false}}'
+
+  # 2. Trigger a manual run
+  kubectl create job report-now --from=cronjob/report-generator -n ckaquest
+
+  # 3. Watch it complete
+  kubectl get pods -n ckaquest -l job-name=report-now -w
+
+  # 4. Check the output
+  kubectl logs -n ckaquest -l job-name=report-now
+
+  # 5. Verify Job status
+  kubectl get jobs -n ckaquest
+
+Then: validate

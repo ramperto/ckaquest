@@ -1,0 +1,13 @@
+Full fix:
+
+  kubectl patch deployment webapp -n ckaquest --type=json \
+    -p='[{"op":"replace","path":"/spec/template/spec/containers/0/volumeMounts/0/mountPath","value":"/app/data"}]'
+
+  kubectl rollout status deployment/webapp -n ckaquest
+
+Verify the write lands on the volume:
+  POD=$(kubectl get pods -n ckaquest -l app=webapp -o jsonpath='{.items[0].metadata.name}')
+  kubectl exec $POD -n ckaquest -- cat /app/data/out.txt
+  # data
+
+Then: validate

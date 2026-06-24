@@ -1,0 +1,40 @@
+# ServiceAccount exists — but no Role or RoleBinding grants it any permissions
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: monitor-sa
+  namespace: ckaquest
+---
+# The Role exists but is NOT bound to the ServiceAccount (missing RoleBinding)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: ckaquest
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+# The pod uses monitor-sa — it will get 403 when calling the API
+apiVersion: v1
+kind: Pod
+metadata:
+  name: monitor
+  namespace: ckaquest
+  labels:
+    app: monitor
+spec:
+  serviceAccountName: monitor-sa
+  containers:
+    - name: monitor
+      image: bitnami/kubectl:latest
+      command:
+        - sh
+        - -c
+        - |
+          while true; do
+            echo "Checking pods..."
+            kubectl get pods -n ckaquest
+            sleep 10
+          done

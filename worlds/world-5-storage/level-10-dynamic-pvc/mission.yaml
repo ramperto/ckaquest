@@ -1,0 +1,31 @@
+title: "Dynamic PVC — Provision Storage for a StatefulApp"
+world: 5
+level: 10
+xp: 300
+difficulty: intermediate
+domain: Storage
+
+story: |
+  The `stateful-app` Deployment is stuck — it references PVC `app-db`
+  which doesn't exist. No one created it.
+
+  Your task: provision storage the right way using dynamic provisioning
+  with the cluster's default StorageClass. Create the PVC, confirm it
+  binds, and verify the Deployment can write and read persistent data.
+
+objective: |
+  1. Identify that Deployment `stateful-app` is pending because PVC `app-db` is missing
+  2. Create PVC `app-db` (1Gi, ReadWriteOnce, default StorageClass)
+  3. Confirm the PVC binds and the Deployment becomes healthy
+  4. Verify data written to /data survives a pod restart
+
+success_criteria:
+  - PVC app-db exists and is Bound
+  - Deployment stateful-app has at least 1 ready replica
+  - Pod can write to /data/test.txt and file persists on pod restart
+
+hints_available: 3
+
+note: |
+  This is a pure creation task — no broken YAML to fix. Just create
+  the missing PVC and watch everything come together.

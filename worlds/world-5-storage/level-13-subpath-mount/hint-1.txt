@@ -1,0 +1,9 @@
+Hint 1: Identify the Problem
+
+Check what files exist in the pod's /etc/app/ directory:
+
+  kubectl exec config-app -n ckaquest -- ls /etc/app/
+
+You will see both `app.conf` and `logging.conf`. The app only needs
+`app.conf` at that path. The entire ConfigMap is being mounted as a
+directory, which puts ALL keys as files.

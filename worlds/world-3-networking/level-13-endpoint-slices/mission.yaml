@@ -1,0 +1,35 @@
+title: "Endpoint Slices — Service Selector Typo"
+world: 3
+level: 13
+xp: 200
+difficulty: intermediate
+domain: Services & Networking
+
+story: |
+  The backend team deployed a 2-replica `backend` Deployment and a
+  `backend-svc` Service. But every request to the Service returns
+  "connection refused" — no traffic reaches the pods.
+
+  Running `kubectl get endpoints backend-svc` shows an empty endpoint
+  list. The Service exists, the pods are Running, yet they're not
+  connected.
+
+  A subtle typo in the Service selector is to blame. Find it and fix it.
+
+objective: |
+  1. Compare the Service selector with the actual pod labels
+  2. Fix the selector typo so endpoints are populated
+  3. Verify: `kubectl get endpoints backend-svc -n ckaquest` shows 2 IPs
+
+success_criteria:
+  - Deployment backend has 2 ready replicas
+  - Service backend-svc exists
+  - Endpoints for backend-svc have at least 2 addresses
+  - Service selector matches pod labels
+
+hints_available: 3
+
+note: |
+  A Service only routes to pods whose labels match its selector.
+  If no pods match, the endpoint list is empty and all traffic fails.
+  This is the #1 cause of "Service not working" issues in Kubernetes.

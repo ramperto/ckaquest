@@ -1,0 +1,10 @@
+The sidecar is crashing because its tail command references a path
+"/WRONG_PATH/error.log" that doesn't exist.
+
+Look at the pod spec:
+  kubectl get pod web-with-sidecar -n ckaquest -o yaml
+
+You need to:
+1. Delete the pod (can't change container commands in place)
+2. Fix the sidecar command to only tail files in /var/log/nginx/
+3. Handle the case where the log file might not exist yet on startup

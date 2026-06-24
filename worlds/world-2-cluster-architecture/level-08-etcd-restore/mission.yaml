@@ -1,0 +1,18 @@
+name: "etcd Restore — Recover Lost Data"
+description: >
+  Disaster struck — a critical ConfigMap 'app-secrets-backup' was accidentally
+  deleted from the cluster. Fortunately, a snapshot was taken 5 minutes before
+  the deletion. Restore the cluster from the snapshot to recover it.
+
+  NOTE: etcd restore requires stopping k3s briefly. The cluster will be
+  unavailable for ~30 seconds. This is normal.
+objective: "Restore the cluster from /opt/etcd-backup.db and verify 'app-secrets-backup' exists."
+xp: 300
+difficulty: advanced
+expected_time: "25m"
+concepts:
+  - etcd restore
+  - k3s etcd restore
+  - Cluster recovery
+  - etcdctl snapshot restore
+  - Backup verification

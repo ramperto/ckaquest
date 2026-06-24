@@ -1,0 +1,11 @@
+Check the CronJob status:
+
+  kubectl get cronjob -n ckaquest
+  # SUSPEND column shows: True
+
+  kubectl get cronjob report-generator -n ckaquest \
+    -o jsonpath='{.spec.suspend}'
+  # true
+
+When suspend=true, the CronJob controller skips ALL scheduled runs.
+No Jobs are created, no pods start.

@@ -1,0 +1,15 @@
+name: "OOMKilled — Memory Limit Too Low"
+description: >
+  A pod running a web server keeps restarting. The platform team suspects
+  a resource configuration issue. The pod was deployed with very tight memory
+  limits and keeps getting killed by the kernel.
+objective: "Fix the pod so it stays Running without OOMKilled restarts."
+xp: 100
+difficulty: beginner
+expected_time: "10m"
+concepts:
+  - Resource limits
+  - OOMKilled
+  - Memory management
+  - kubectl top
+  - Container resources

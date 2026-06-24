@@ -1,0 +1,12 @@
+The init container runs an infinite loop (`while true; do ... done`).
+Without `restartPolicy: Always`, Kubernetes treats it as a regular init
+container that must complete (exit) before main containers start.
+
+Since the loop never exits, the main container never starts.
+
+The fix: add `restartPolicy: Always` to the init container spec.
+This makes it a "native sidecar" (Kubernetes 1.28+) — it starts before
+the main container, runs alongside it, and stops after it.
+
+This is NOT the same as the pod-level restartPolicy. This is a
+container-level field specific to init containers.

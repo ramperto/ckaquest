@@ -1,0 +1,17 @@
+Check the HPA status:
+
+  kubectl get hpa web-api-hpa -n ckaquest
+  # TARGETS         MINPODS   MAXPODS
+  # <unknown>/50%   1         5
+
+"<unknown>" means the HPA can't read CPU utilization.
+
+Why? HPA calculates CPU% as:
+  (current_cpu_usage) / (cpu_request) * 100
+
+If there's no cpu_request, there's no denominator — result is unknown.
+
+Check the deployment:
+  kubectl get deployment web-api -n ckaquest \
+    -o jsonpath='{.spec.template.spec.containers[0].resources}'
+  # {} — empty, no requests!

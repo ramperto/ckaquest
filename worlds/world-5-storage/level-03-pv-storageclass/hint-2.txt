@@ -1,0 +1,18 @@
+Delete the PVC and recreate with the correct storageClassName:
+
+  kubectl delete pvc app-storage -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: app-storage
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: standard   # matches the PV
+    resources:
+      requests:
+        storage: 3Gi
+  EOF

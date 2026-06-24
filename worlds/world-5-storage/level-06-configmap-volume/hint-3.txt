@@ -1,0 +1,22 @@
+Full fix:
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: app-config
+    namespace: ckaquest
+  data:
+    app.properties: |
+      log_level=INFO
+      max_connections=100
+  EOF
+
+  # The pod auto-retries mounting once ConfigMap exists
+  kubectl get pod config-app -n ckaquest -w
+  # ContainerCreating → Running
+
+  # Verify the file is visible inside the pod
+  kubectl exec config-app -n ckaquest -- cat /etc/app/app.properties
+
+Then: validate

@@ -1,0 +1,13 @@
+The pod starts but the cert file is empty. Check what keys the Secret has:
+
+  kubectl get secret tls-secret -n ckaquest \
+    -o jsonpath='{.data}' | python3 -m json.tool
+  # Keys: "tls.crt" and "tls.key"
+
+Check what the pod volume items reference:
+  kubectl get pod tls-proxy -n ckaquest \
+    -o jsonpath='{.spec.volumes[0].secret.items}'
+  # [{"key":"cert","path":"tls.crt"}]
+
+The items entry maps key "cert" → but the Secret has "tls.crt", not "cert".
+When a key doesn't exist in the Secret, the projected file is empty.

@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: ckaquest
+  labels:
+    app: db
+    tier: database
+spec:
+  containers:
+    - name: db
+      image: postgres:15-alpine
+      env:
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+      ports:
+        - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  namespace: ckaquest
+  labels:
+    app: myapp
+    tier: app
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+---
+# This policy BLOCKS all egress from app pod
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-egress-deny-all
+  namespace: ckaquest
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  policyTypes:
+    - Egress
+  egress: []        # Empty = deny all outbound traffic

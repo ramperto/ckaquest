@@ -1,0 +1,34 @@
+# Pod unchanged — both container ports are correct
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-app
+  namespace: ckaquest
+  labels:
+    app: multi-app
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25
+      ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+---
+# Fixed: named ports + correct targetPort for HTTPS
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: multi-app
+  ports:
+    - name: http          # required for multi-port Services
+      port: 80
+      targetPort: 80
+    - name: https         # required for multi-port Services
+      port: 443
+      targetPort: 443     # fixed from 8443 to 443

@@ -1,0 +1,7 @@
+The pod is requesting 100 CPUs and 200Gi of memory. This is way more than
+your node has. The scheduler event says "Insufficient cpu" or "Insufficient memory".
+
+Check the pod's resource requests:
+  kubectl get pod compute -n ckaquest -o jsonpath='{.spec.containers[0].resources}'
+
+Your node probably has 4 CPUs and 4Gi RAM. The request needs to fit within that.

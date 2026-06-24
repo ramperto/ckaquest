@@ -1,0 +1,31 @@
+title: "PV — Recycle a Released Volume"
+world: 5
+level: 4
+xp: 200
+difficulty: intermediate
+domain: Storage
+
+story: |
+  The previous tenant's PVC was deleted but the PV `data-pv` is stuck
+  in `Released` state. Its reclaim policy is `Retain`, so Kubernetes
+  won't automatically make it available again.
+
+  A new PVC `new-data` wants to bind to it but can't — a Released
+  PV is not Available for new claims.
+
+  Manually recycle the PV so new-data can bind.
+
+objective: |
+  1. Check PV `data-pv` — confirm STATUS is Released (not Available)
+  2. Remove the claimRef from the PV spec to reset it to Available
+  3. Confirm PVC `new-data` binds to the recycled PV
+
+success_criteria:
+  - PV data-pv is Bound
+  - PVC new-data is Bound
+
+hints_available: 3
+
+note: |
+  With Retain policy, YOU are responsible for cleaning and recycling
+  the PV. The claimRef must be removed before any new PVC can bind.

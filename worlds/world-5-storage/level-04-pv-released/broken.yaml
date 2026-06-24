@@ -1,0 +1,16 @@
+# StorageClass created by setup.sh — this just deploys the waiting PVC.
+# The PV 'data-pv' is in Released state (setup.sh bound then deleted temp-claim).
+# New PVC wants to bind but can't because PV's claimRef still points to temp-claim.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: new-data
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 4Gi
+  # This PVC stays Pending because data-pv has a stale claimRef from temp-claim

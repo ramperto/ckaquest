@@ -1,0 +1,10 @@
+Check the mismatch:
+
+  kubectl get pv pipeline-pv -o jsonpath='{.spec.accessModes}'
+  # ["ReadWriteOnce"]
+
+  kubectl get pvc pipeline-data -n ckaquest -o jsonpath='{.spec.accessModes}'
+  # ["ReadWriteMany"]
+
+For a PVC to bind, its accessModes must be a SUBSET of the PV's accessModes.
+ReadWriteMany (RWX) is NOT a subset of ReadWriteOnce (RWO) → Pending.

@@ -1,0 +1,11 @@
+The pod has 2 containers. One is fine, one keeps crashing.
+
+Check individual container status:
+  kubectl get pod web-with-sidecar -n ckaquest
+
+The READY column shows X/2. If it's 1/2, one container is failing.
+
+Check each container separately:
+  kubectl logs web-with-sidecar -c web -n ckaquest
+  kubectl logs web-with-sidecar -c log-collector -n ckaquest
+  kubectl logs web-with-sidecar -c log-collector -n ckaquest --previous

@@ -1,0 +1,15 @@
+# Step 1: Create the missing PriorityClass (cluster-scoped)
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: "High priority class for critical workloads"
+---
+# Step 2: The pod references it — no change needed to the pod spec
+# After creating the PriorityClass, delete and recreate the pod
+# (Kubernetes doesn't retroactively re-admit pending pods in all versions):
+#
+#   kubectl delete pod critical-app -n ckaquest
+#   kubectl apply -f broken.yaml   OR apply this solution.yaml minus the comment

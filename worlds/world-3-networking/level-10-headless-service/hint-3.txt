@@ -1,0 +1,18 @@
+StatefulSet pods also get individual stable DNS names via the headless Service:
+
+  <pod-name>.<service-name>.<namespace>.svc.cluster.local
+
+For this exercise:
+  db-cluster-0.db-headless.ckaquest.svc.cluster.local
+  db-cluster-1.db-headless.ckaquest.svc.cluster.local
+  db-cluster-2.db-headless.ckaquest.svc.cluster.local
+
+Test individual pod resolution:
+  kubectl exec client -n ckaquest -- nslookup db-cluster-0.db-headless.ckaquest.svc.cluster.local
+  kubectl exec client -n ckaquest -- nslookup db-cluster-1.db-headless.ckaquest.svc.cluster.local
+
+If the StatefulSet pods are slow to start (postgres pulls image):
+  kubectl get pods -n ckaquest -l app=db-cluster
+
+Wait until all show Running 1/1, then run:
+  validate

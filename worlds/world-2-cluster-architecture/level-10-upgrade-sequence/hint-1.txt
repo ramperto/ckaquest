@@ -1,0 +1,11 @@
+The kubeadm upgrade has a strict order. On the CKA exam, getting the
+sequence wrong means the upgrade fails or the node gets stuck.
+
+The upgrade always has two phases:
+1. Control plane (kubeadm upgrade apply)
+2. Node components (kubelet + kubectl)
+
+You can't upgrade kubelet before kubeadm has updated the control plane.
+
+Write your answer to /tmp/upgrade-plan.sh
+The key tools are: apt-mark, apt-get, kubeadm, kubectl drain/uncordon

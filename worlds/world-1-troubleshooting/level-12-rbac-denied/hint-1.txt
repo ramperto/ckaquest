@@ -1,0 +1,12 @@
+The monitor pod is getting 403 Forbidden when calling the Kubernetes API.
+This is an RBAC issue.
+
+Check the existing RBAC resources:
+  kubectl get serviceaccounts -n ckaquest
+  kubectl get roles -n ckaquest
+  kubectl get rolebindings -n ckaquest
+
+Also test permissions directly:
+  kubectl auth can-i list pods \
+    --as=system:serviceaccount:ckaquest:monitor-sa \
+    -n ckaquest

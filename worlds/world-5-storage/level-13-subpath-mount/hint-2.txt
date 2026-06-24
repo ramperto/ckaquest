@@ -1,0 +1,14 @@
+Hint 2: Use subPath
+
+The `subPath` field in a volumeMount lets you mount a single file from
+a volume without replacing the entire directory.
+
+Change the volumeMount to include subPath:
+
+  volumeMounts:
+    - name: config-vol
+      mountPath: /etc/app/app.conf
+      subPath: app.conf
+
+Note: mountPath changes from `/etc/app` (directory) to `/etc/app/app.conf`
+(specific file), and subPath specifies which key from the ConfigMap to mount.

@@ -1,0 +1,16 @@
+# Create the missing PVC using the default StorageClass (dynamic provisioning)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-db
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  # storageClassName omitted → uses cluster default (local-path on k3s)
+---
+# The Deployment is already deployed via broken.yaml — no changes needed
+# Once the PVC binds, the pending pod will start automatically

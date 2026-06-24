@@ -1,0 +1,16 @@
+Two steps:
+
+1. Label the monitoring namespace:
+   kubectl label namespace monitoring purpose=monitoring
+
+2. Create a NetworkPolicy that allows ingress from that namespace:
+   Use 'namespaceSelector' in the 'from' field, matching the label
+   you just added.
+
+Note the difference between:
+  from:
+    - namespaceSelector: ...   # OR podSelector: ...  (two separate items = OR)
+vs:
+  from:
+    - namespaceSelector: ...   # AND podSelector: ... (same item = AND)
+      podSelector: ...

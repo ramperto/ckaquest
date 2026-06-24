@@ -1,0 +1,33 @@
+# Solution for Level 13: ServiceAccount Token
+#
+# The fix: remove automountServiceAccountToken: false (or set it to true)
+# Since pods are immutable, you must delete and recreate.
+#
+# Quick approach:
+#   kubectl get pod api-test -n ckaquest -o yaml > /tmp/api-test.yaml
+#   # Edit /tmp/api-test.yaml: remove the automountServiceAccountToken: false line
+#   kubectl delete pod api-test -n ckaquest
+#   kubectl apply -f /tmp/api-test.yaml
+#
+# Or use the corrected manifest below:
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-client
+  namespace: ckaquest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-test
+  namespace: ckaquest
+  labels:
+    app: api-test
+spec:
+  serviceAccountName: api-client
+  automountServiceAccountToken: true
+  containers:
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sleep", "3600"]

@@ -1,0 +1,53 @@
+# db-headless is a regular ClusterIP Service — needs to be headless (clusterIP: None)
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-headless
+  namespace: ckaquest
+spec:
+  selector:
+    app: db-cluster
+  ports:
+    - port: 5432
+      targetPort: 5432
+  # BUG: clusterIP not set to None — this is a regular ClusterIP Service
+  # A regular ClusterIP hides individual pod IPs behind one virtual IP.
+  # StatefulSet peers cannot address each other by pod name via DNS.
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-cluster
+  namespace: ckaquest
+spec:
+  serviceName: db-headless     # must match the headless Service name
+  replicas: 3
+  selector:
+    matchLabels:
+      app: db-cluster
+  template:
+    metadata:
+      labels:
+        app: db-cluster
+    spec:
+      containers:
+        - name: db
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "secret"
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: ckaquest
+  labels:
+    app: client
+spec:
+  containers:
+    - name: client
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]

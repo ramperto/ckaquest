@@ -1,0 +1,21 @@
+Job pod templates are immutable — you cannot edit a failed Job in place.
+You must delete and recreate it:
+
+  kubectl delete job db-backup -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: db-backup
+    namespace: ckaquest
+  spec:
+    backoffLimit: 2
+    template:
+      spec:
+        restartPolicy: Never
+        containers:
+          - name: backup
+            image: busybox:1.36
+            command: ["sh", "-c", "echo 'backup OK' && sleep 2"]
+  EOF

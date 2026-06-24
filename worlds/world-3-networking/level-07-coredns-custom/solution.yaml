@@ -1,0 +1,21 @@
+# Edit CoreDNS configmap to add a stub zone:
+#   kubectl edit configmap coredns -n kube-system
+#
+# Add this block BEFORE the main .:53 block:
+#
+# internal.corp:53 {
+#     errors
+#     cache 30
+#     forward . 10.0.0.53
+# }
+#
+# .:53 {
+#     ... (existing config)
+# }
+#
+# After editing, restart CoreDNS to reload:
+#   kubectl rollout restart deployment coredns -n kube-system
+#
+# Verify the stub zone is active:
+#   kubectl run test --rm -it --image=busybox:1.36 -- \
+#     nslookup mydb.internal.corp

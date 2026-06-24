@@ -1,0 +1,24 @@
+# Option A — fix the pod to stay within LimitRange bounds:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: highcpu
+  namespace: ckaquest
+  labels:
+    app: highcpu
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      resources:
+        requests:
+          cpu: "100m"       # Within LimitRange max of 200m
+          memory: "64Mi"
+        limits:
+          cpu: "200m"       # At the LimitRange maximum
+          memory: "128Mi"
+
+---
+# Option B — update the LimitRange to allow higher CPU:
+# kubectl edit limitrange cpu-limits -n ckaquest
+# Change max.cpu from "200m" to "1" (or "2000m")

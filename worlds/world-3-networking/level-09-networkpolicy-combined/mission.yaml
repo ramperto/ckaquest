@@ -1,0 +1,16 @@
+name: "NetworkPolicy — Full Micro-Segmentation"
+description: >
+  Implement a complete zero-trust network policy for a 3-tier application:
+  frontend → backend → database. Each tier should ONLY accept traffic
+  from the previous tier, and only on specific ports.
+  All other ingress and egress must be denied by default.
+objective: "Apply NetworkPolicies so: frontend can reach backend:80, backend can reach db:5432, nothing else."
+xp: 250
+difficulty: advanced
+expected_time: "25m"
+concepts:
+  - Zero-trust networking
+  - Default deny all
+  - Layered NetworkPolicies
+  - Tier-based segmentation
+  - Policy planning

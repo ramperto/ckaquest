@@ -1,0 +1,55 @@
+# Aggregating ClusterRole — collects rules from ClusterRoles that have the label
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-viewer
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        rbac.ckaquest.io/aggregate-to-platform-viewer: "true"
+rules: []    # Populated automatically from matching ClusterRoles
+---
+# This ClusterRole should be aggregated into platform-viewer
+# but it's MISSING the aggregation label
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: logs-reader
+  # BUG: missing label:
+  # rbac.ckaquest.io/aggregate-to-platform-viewer: "true"
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list"]
+---
+# Another ClusterRole — this one HAS the label (working correctly)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: events-reader
+  labels:
+    rbac.ckaquest.io/aggregate-to-platform-viewer: "true"
+rules:
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+---
+# ServiceAccount to test with
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: platform-sa
+  namespace: ckaquest
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: platform-sa-binding
+subjects:
+  - kind: ServiceAccount
+    name: platform-sa
+    namespace: ckaquest
+roleRef:
+  kind: ClusterRole
+  name: platform-viewer
+  apiGroup: rbac.authorization.k8s.io

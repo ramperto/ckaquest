@@ -1,0 +1,11 @@
+The server is set to port 9999 — k3s API server listens on port 6443.
+
+You can see the correct server URL from k3s's own config:
+  sudo cat /etc/rancher/k3s/k3s.yaml | grep server
+
+Fix options:
+  1. Re-copy from k3s source:
+     sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+
+  2. Or restore the backup:
+     cp ~/.kube/config.ckaquest-backup ~/.kube/config

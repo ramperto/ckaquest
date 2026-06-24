@@ -1,0 +1,35 @@
+title: "RBAC From Scratch — Role, RoleBinding, and ServiceAccount"
+world: 2
+level: 11
+xp: 250
+difficulty: intermediate
+domain: Cluster Architecture
+
+story: |
+  A new microservice called app-deployer needs fine-grained access to the
+  Kubernetes API. The ServiceAccount exists and a test pod is running with
+  it, but the platform team forgot to create any RBAC rules. Right now the
+  pod has zero permissions — it cannot even list pods in its own namespace.
+
+  Your mission: wire up the RBAC so app-deployer can do its job. Create the
+  Role and RoleBinding from scratch, then prove the permissions work.
+
+objective: |
+  1. Create a Role `app-deployer-role` in ckaquest namespace granting:
+     - get, list, watch on pods
+     - create, get, list on deployments
+  2. Create a RoleBinding `app-deployer-binding` that binds the Role to ServiceAccount `app-deployer`
+  3. Verify by running: kubectl auth can-i list pods --as=system:serviceaccount:ckaquest:app-deployer -n ckaquest
+
+success_criteria:
+  - Role app-deployer-role exists in ckaquest namespace
+  - Role grants get,list,watch on pods and create,get,list on deployments
+  - RoleBinding app-deployer-binding exists in ckaquest namespace
+  - RoleBinding binds Role to ServiceAccount app-deployer
+  - kubectl auth can-i list pods returns yes for app-deployer SA
+
+hints_available: 3
+
+note: |
+  Imperative RBAC commands (kubectl create role / rolebinding) are a huge
+  time-saver on the CKA exam. Memorize the flags.

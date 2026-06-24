@@ -1,0 +1,25 @@
+Hint 3: Update the Deployment
+
+Three steps in order:
+
+1. Create StorageClass `retain-sc` with reclaimPolicy: Retain
+2. Create PVC `safe-data` (1Gi, ReadWriteOnce, retain-sc)
+3. Edit Deployment to use the new PVC:
+
+  kubectl edit deployment db-app -n ckaquest
+
+Change the volume's claimName from `important-data` to `safe-data`:
+
+  volumes:
+    - name: data-vol
+      persistentVolumeClaim:
+        claimName: safe-data      # was: important-data
+
+Or use patch:
+
+  kubectl patch deployment db-app -n ckaquest -p \
+    '{"spec":{"template":{"spec":{"volumes":[{"name":"data-vol","persistentVolumeClaim":{"claimName":"safe-data"}}]}}}}'
+
+Wait for the rollout to complete:
+
+  kubectl rollout status deployment db-app -n ckaquest

@@ -1,0 +1,22 @@
+A LimitRange is active in the namespace. Try applying this pod spec and observe what happens:
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: highcpu
+    namespace: ckaquest
+  spec:
+    containers:
+      - name: app
+        image: nginx:1.25
+        resources:
+          requests:
+            cpu: "500m"
+          limits:
+            cpu: "1"
+  EOF
+
+The API server will reject it immediately. Read the error carefully.
+Then inspect the LimitRange:
+  kubectl describe limitrange -n ckaquest

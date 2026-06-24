@@ -1,0 +1,8 @@
+Generate a new self-signed certificate with the correct CN:
+
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /tmp/tls.key \
+    -out /tmp/tls.crt \
+    -subj '/CN=app.example.com'
+
+This creates a new key pair and self-signed certificate with the right CN.

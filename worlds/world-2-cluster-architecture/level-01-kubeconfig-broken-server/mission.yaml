@@ -1,0 +1,15 @@
+name: "kubeconfig — Wrong Server Address"
+description: >
+  An engineer updated the kubeconfig file and accidentally changed the
+  server URL. Now kubectl fails with 'connection refused'. The cluster
+  itself is running fine — the kubeconfig just points to the wrong address.
+objective: "Fix ~/.kube/config so kubectl can connect to the cluster again."
+xp: 100
+difficulty: beginner
+expected_time: "10m"
+concepts:
+  - kubeconfig structure
+  - cluster.server field
+  - kubectl config view
+  - kubectl config set-cluster
+  - contexts and clusters

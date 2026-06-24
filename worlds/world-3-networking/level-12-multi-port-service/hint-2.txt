@@ -1,0 +1,13 @@
+Two issues with the multi-svc Service:
+
+1. Multi-port Services REQUIRE named ports. Without names, Kubernetes
+   cannot distinguish between them in Ingress rules, NetworkPolicies,
+   or endpoint slices.
+
+2. The HTTPS targetPort is 8443, but the container listens on 443.
+   Traffic to port 443 on the Service gets forwarded to 8443 on the
+   pod — where nothing is listening.
+
+Compare container ports vs service targetPorts:
+  kubectl get pod multi-app -n ckaquest -o jsonpath='{.spec.containers[0].ports}'
+  kubectl get svc multi-svc -n ckaquest -o jsonpath='{.spec.ports}'

@@ -1,0 +1,8 @@
+The Deployment has 3 replicas but only 2 (or fewer) are Running.
+Check what's blocking the pods from being created:
+
+  kubectl describe replicaset -n ckaquest
+  kubectl get events -n ckaquest --sort-by='.lastTimestamp'
+
+Look for quota-related messages. Also check the current quota usage:
+  kubectl describe resourcequota -n ckaquest

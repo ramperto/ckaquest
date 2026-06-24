@@ -1,0 +1,8 @@
+The service selector is "app: api" but the pods have label "app: backend".
+They don't match, so no endpoints are registered.
+
+Check:
+  kubectl get svc backend-svc -n ckaquest -o yaml | grep -A3 selector
+  kubectl get pods -n ckaquest --show-labels
+
+You need to fix the service selector to match the pod label.

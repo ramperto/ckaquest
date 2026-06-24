@@ -1,0 +1,27 @@
+Apply a NetworkPolicy that allows ingress from frontend pods:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: backend-allow-frontend
+    namespace: ckaquest
+  spec:
+    podSelector:
+      matchLabels:
+        app: backend
+    policyTypes:
+      - Ingress
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: frontend
+        ports:
+          - protocol: TCP
+            port: 80
+  EOF
+
+Then test:
+  BACKEND_IP=$(kubectl get svc backend-svc -n ckaquest -o jsonpath='{.spec.clusterIP}')
+  kubectl exec frontend -n ckaquest -- wget -qO- http://$BACKEND_IP

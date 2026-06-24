@@ -1,0 +1,31 @@
+title: "Certificate Signing Request — Approve and Extract"
+world: 2
+level: 12
+xp: 300
+difficulty: advanced
+domain: Cluster Architecture
+
+story: |
+  A new developer named dev-user needs access to the cluster. The security
+  team generated a private key and submitted a CertificateSigningRequest to
+  Kubernetes, but nobody approved it. The CSR is sitting in Pending state
+  and the developer is locked out.
+
+  Your job: approve the CSR so the cluster CA issues a certificate, then
+  verify it was issued successfully.
+
+objective: |
+  1. Find the pending CSR `dev-user-csr`
+  2. Approve the CSR
+  3. Verify the certificate was issued (status.certificate is populated)
+
+success_criteria:
+  - CSR dev-user-csr exists
+  - CSR status shows Approved
+  - CSR has an issued certificate (status.certificate is non-empty)
+
+hints_available: 3
+
+note: |
+  The CKA exam commonly tests CSR approval. The command is simple but
+  you must remember the exact syntax: kubectl certificate approve <name>.

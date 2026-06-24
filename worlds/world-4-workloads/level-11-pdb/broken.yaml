@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdb-app
+  namespace: ckaquest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pdb-app
+  template:
+    metadata:
+      labels:
+        app: pdb-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+# BUG: minAvailable: 3 with 3 replicas = zero disruptions allowed
+# kubectl drain will hang because no pod can be evicted
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-app-pdb
+  namespace: ckaquest
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: pdb-app

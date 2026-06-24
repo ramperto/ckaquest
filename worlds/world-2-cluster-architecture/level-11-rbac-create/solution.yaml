@@ -1,0 +1,41 @@
+# Solution for Level 11: RBAC Create
+#
+# Imperative approach (fastest for the CKA exam):
+#   kubectl create role app-deployer-role \
+#     --verb=get,list,watch --resource=pods \
+#     --verb=create,get,list --resource=deployments \
+#     -n ckaquest
+#
+#   kubectl create rolebinding app-deployer-binding \
+#     --role=app-deployer-role \
+#     --serviceaccount=ckaquest:app-deployer \
+#     -n ckaquest
+#
+# Declarative approach (below):
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-deployer-role
+  namespace: ckaquest
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["create", "get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-deployer-binding
+  namespace: ckaquest
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: app-deployer-role
+subjects:
+  - kind: ServiceAccount
+    name: app-deployer
+    namespace: ckaquest

@@ -1,0 +1,7 @@
+The readiness probe is checking port 8080, but nginx listens on port 80.
+The probe gets "connection refused" every time, keeping the pod Not Ready.
+
+View the probe config:
+  kubectl get pod web -n ckaquest -o jsonpath='{.spec.containers[0].readinessProbe}'
+
+The port must match where the app is actually listening.

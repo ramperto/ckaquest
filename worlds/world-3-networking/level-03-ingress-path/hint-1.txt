@@ -1,0 +1,11 @@
+The Service and pods are healthy but Ingress returns 404.
+When an Ingress controller can't match a rule, it returns 404.
+
+Inspect the Ingress rule:
+  kubectl describe ingress webapp-ingress -n ckaquest
+
+Look at the "Rules" section. What path is configured?
+Try the configured path vs /app:
+  NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}')
+  curl http://$NODE_IP/app
+  curl http://$NODE_IP/application

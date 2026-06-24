@@ -1,0 +1,25 @@
+Full fix:
+
+  kubectl delete pvc db-data -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: db-data
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: manual
+    resources:
+      requests:
+        storage: 5Gi
+  EOF
+
+Verify binding:
+  kubectl get pvc db-data -n ckaquest
+  kubectl get pv db-pv
+  # Both should show STATUS: Bound, CLAIM: ckaquest/db-data
+
+Then: validate

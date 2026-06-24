@@ -1,0 +1,32 @@
+title: "API Server Curl — Wrong Service Discovery Override"
+world: 2
+level: 14
+xp: 200
+difficulty: intermediate
+domain: Cluster Architecture
+
+story: |
+  The debug team deployed a pod to troubleshoot API server connectivity.
+  They hard-coded the KUBERNETES_SERVICE_HOST environment variable to what
+  they thought was the API server IP -- but it is wrong. The pod cannot
+  reach the API server at all because it is trying to connect to a
+  non-existent address instead of using Kubernetes' built-in service
+  discovery.
+
+  Remove the incorrect overrides and let Kubernetes handle it.
+
+objective: |
+  1. Identify that pod `debug-pod` has KUBERNETES_SERVICE_HOST overridden to a wrong IP
+  2. Delete and recreate the pod WITHOUT the env var overrides
+  3. Verify the pod can reach the API server via kubernetes.default.svc
+
+success_criteria:
+  - Pod debug-pod is Running in ckaquest namespace
+  - Pod does NOT have KUBERNETES_SERVICE_HOST set to 10.99.99.99
+  - Pod can reach the real API server
+
+hints_available: 3
+
+note: |
+  Kubernetes automatically injects service env vars into pods. Overriding
+  KUBERNETES_SERVICE_HOST breaks the built-in discovery mechanism.

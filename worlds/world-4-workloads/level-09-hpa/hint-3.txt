@@ -1,0 +1,25 @@
+Full fix using set resources:
+
+  kubectl set resources deployment web-api -n ckaquest \
+    --requests=cpu=100m --limits=cpu=200m
+
+  kubectl rollout status deployment/web-api -n ckaquest
+
+Alternative — edit the deployment:
+  kubectl edit deployment web-api -n ckaquest
+  # Add under containers[0]:
+  #   resources:
+  #     requests:
+  #       cpu: "100m"
+  #     limits:
+  #       cpu: "200m"
+
+Verify:
+  kubectl get deployment web-api -n ckaquest \
+    -o jsonpath='{.spec.template.spec.containers[0].resources}'
+  # {"limits":{"cpu":"200m"},"requests":{"cpu":"100m"}}
+
+  kubectl get hpa web-api-hpa -n ckaquest
+  # TARGETS: 0%/50% (or similar real value)
+
+Then: validate

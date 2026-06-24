@@ -1,0 +1,39 @@
+Delete and recreate the pod with the restartPolicy: Always field:
+
+  kubectl delete pod app-with-sidecar -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: app-with-sidecar
+    namespace: ckaquest
+  spec:
+    initContainers:
+      - name: log-agent
+        image: busybox:1.36
+        restartPolicy: Always
+        command:
+          - sh
+          - -c
+          - |
+            while true; do
+              echo "\$(date) collecting logs..." >> /var/log/app/agent.log
+              sleep 5
+            done
+        volumeMounts:
+          - name: logs
+            mountPath: /var/log/app
+    containers:
+      - name: main-app
+        image: nginx:1.25
+        volumeMounts:
+          - name: logs
+            mountPath: /var/log/app
+    volumes:
+      - name: logs
+        emptyDir: {}
+  EOF
+
+Verify: kubectl get pod app-with-sidecar -n ckaquest
+Status should show Running with READY 2/2.

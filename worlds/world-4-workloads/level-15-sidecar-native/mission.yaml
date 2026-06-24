@@ -1,0 +1,35 @@
+title: "Sidecar Standoff — Init Container Blocks Main App"
+world: 4
+level: 15
+xp: 300
+difficulty: advanced
+domain: Workloads & Scheduling
+
+story: |
+  A pod `app-with-sidecar` has a log-collection agent defined as an init
+  container. The intent was for it to run as a **native sidecar** — running
+  alongside the main container for the pod's entire lifetime.
+
+  But the init container runs an infinite loop and never exits. Without the
+  `restartPolicy: Always` field, Kubernetes treats it as a regular init
+  container that must complete before the main container starts. The main
+  container is stuck waiting forever.
+
+objective: |
+  1. Check the pod status — notice the main container never starts (Init:0/1)
+  2. Understand native sidecar containers (Kubernetes 1.28+)
+  3. Add `restartPolicy: Always` to the init container to make it a native sidecar
+  4. Verify both containers are running
+
+success_criteria:
+  - Pod app-with-sidecar exists and is Running
+  - Init container log-agent has restartPolicy Always
+  - Main container main-app is Ready
+  - Both containers are running
+
+hints_available: 3
+
+note: |
+  Native sidecar containers (KEP-753) became GA in Kubernetes 1.29.
+  They are init containers with `restartPolicy: Always` — they start before
+  the main containers and continue running alongside them.

@@ -1,0 +1,9 @@
+# No YAML to apply — the fix is an imperative rollback command:
+#
+#   kubectl rollout undo deployment/api -n ckaquest
+#
+# This rolls back to revision 1 (nginx:1.25).
+#
+# To verify:
+#   kubectl rollout history deployment/api -n ckaquest
+#   kubectl get deployment api -n ckaquest -o jsonpath='{.spec.template.spec.containers[0].image}'

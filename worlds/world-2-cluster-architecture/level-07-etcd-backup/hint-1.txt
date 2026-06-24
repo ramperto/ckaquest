@@ -1,0 +1,7 @@
+You need to create an etcd snapshot at /opt/etcd-backup.db
+
+On k3s, the simplest approach is using k3s's built-in snapshot tool:
+  sudo k3s etcd-snapshot save --name my-backup
+
+Where does k3s save snapshots by default?
+  ls /var/lib/rancher/k3s/server/db/snapshots/

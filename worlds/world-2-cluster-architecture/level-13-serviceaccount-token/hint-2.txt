@@ -1,0 +1,10 @@
+The pod has `automountServiceAccountToken: false` which prevents the
+projected token volume from being mounted. You need to either:
+
+  - Remove the field entirely (defaults to true)
+  - Set it to true
+
+Since pod specs are immutable, you must delete and recreate the pod.
+Export it first:
+
+  kubectl get pod api-test -n ckaquest -o yaml > /tmp/api-test-fix.yaml

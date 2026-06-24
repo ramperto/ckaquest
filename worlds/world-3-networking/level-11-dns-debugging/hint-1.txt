@@ -1,0 +1,13 @@
+Try resolving a service name from the dns-client pod:
+
+  kubectl exec dns-client -n ckaquest -- nslookup web-svc.ckaquest.svc.cluster.local
+
+It will time out because the pod's nameserver is wrong.
+
+Check the pod's DNS configuration:
+
+  kubectl get pod dns-client -n ckaquest -o yaml | grep -A 10 dnsConfig
+  kubectl get pod dns-client -n ckaquest -o yaml | grep dnsPolicy
+
+The pod has dnsPolicy: None and a dnsConfig pointing to nameserver
+10.0.0.1 — which is NOT a valid DNS server in this cluster.

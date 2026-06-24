@@ -1,0 +1,13 @@
+# Level 12: CSR Approval
+#
+# The "broken" state for this level is NOT a YAML manifest with a bug.
+# Instead, setup.sh creates a CertificateSigningRequest (dev-user-csr)
+# that is left in Pending state — awaiting admin approval.
+#
+# The CSR was generated with:
+#   CN=dev-user, O=developers
+#   signerName: kubernetes.io/kube-apiserver-client
+#   usages: [client auth]
+#
+# Run setup.sh first to create the pending CSR.
+# Your task: approve the CSR so the certificate is issued.

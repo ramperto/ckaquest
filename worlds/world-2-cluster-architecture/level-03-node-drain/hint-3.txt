@@ -1,0 +1,17 @@
+Complete sequence:
+
+  NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+
+  # 1. Drain (evict workloads, mark unschedulable)
+  kubectl drain $NODE \
+    --ignore-daemonsets \
+    --delete-emptydir-data \
+    --force
+
+  # 2. (Simulate maintenance here)
+
+  # 3. Uncordon (re-enable scheduling)
+  kubectl uncordon $NODE
+
+  # 4. Verify
+  kubectl get nodes

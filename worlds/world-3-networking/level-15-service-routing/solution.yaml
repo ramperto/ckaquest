@@ -1,0 +1,43 @@
+# Fixed: readinessProbe path changed from /healthz to /
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: ckaquest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        version: v1
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /              # fixed from /healthz to /
+              port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 5
+---
+# Fixed: selector corrected from "frontned" to "frontend"
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: ckaquest
+spec:
+  type: NodePort
+  selector:
+    app: frontend              # fixed typo
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080

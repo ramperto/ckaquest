@@ -1,0 +1,7 @@
+CoreDNS is configured via a ConfigMap in kube-system.
+Inspect the current Corefile:
+  kubectl get configmap coredns -n kube-system -o yaml
+
+A "stub zone" in CoreDNS is a separate server block that handles a
+specific domain. To forward *.internal.corp to 10.0.0.53, you add
+a new block BEFORE the main .:53 block.

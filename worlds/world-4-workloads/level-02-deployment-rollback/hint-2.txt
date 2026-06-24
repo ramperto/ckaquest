@@ -1,0 +1,11 @@
+Roll back to the previous revision with a single command:
+
+  kubectl rollout undo deployment/api -n ckaquest
+
+This rolls back to the immediately previous revision (revision 1 in this case).
+
+Watch the rollback complete:
+  kubectl rollout status deployment/api -n ckaquest
+
+To roll back to a specific revision number:
+  kubectl rollout undo deployment/api -n ckaquest --to-revision=1

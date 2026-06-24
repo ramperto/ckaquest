@@ -1,0 +1,40 @@
+title: "Service Routing — Selector Typo + Failing Readiness Probe"
+world: 3
+level: 15
+xp: 250
+difficulty: advanced
+domain: Services & Networking
+
+story: |
+  The frontend team deployed a 2-replica `frontend` Deployment behind a
+  NodePort Service on port 30080. But `curl localhost:30080` returns
+  nothing — the Service is not routing traffic.
+
+  There are **two** bugs hiding in this setup. The Service selector has
+  a typo, AND the Deployment's readiness probe is checking a path that
+  nginx doesn't serve. Even if you fix the selector, pods that fail
+  readiness probes are excluded from endpoints.
+
+  Find both bugs. Fix both bugs. Get traffic flowing.
+
+objective: |
+  1. Fix the Service selector typo (`frontned` -> `frontend`)
+  2. Fix the readiness probe path from `/healthz` to `/`
+     (nginx serves the default page at `/`, not `/healthz`)
+  3. Wait for pods to become Ready
+  4. Verify: `curl -s localhost:30080` returns the nginx welcome page
+
+success_criteria:
+  - Deployment frontend has 2 ready replicas
+  - Service frontend-svc exists
+  - Endpoints for frontend-svc have at least 2 addresses
+  - All frontend pods are Ready
+  - NodePort 30080 responds with HTTP content
+
+hints_available: 3
+
+note: |
+  Service routing issues are almost always one of two things:
+  (1) selector mismatch — endpoints are empty, or
+  (2) readiness probe failure — pods exist but are not Ready,
+  so they're excluded from endpoints. Always check both.

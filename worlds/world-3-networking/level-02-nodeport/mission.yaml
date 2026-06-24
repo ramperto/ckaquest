@@ -1,0 +1,15 @@
+name: "NodePort — Expose to the Outside World"
+description: >
+  A web application is running but only accessible inside the cluster.
+  You need to expose it externally using a NodePort service on port 30080,
+  then verify it's reachable from outside the cluster via the node IP.
+objective: "Create a NodePort Service that exposes 'webapp' on nodePort 30080."
+xp: 150
+difficulty: beginner
+expected_time: "15m"
+concepts:
+  - NodePort service type
+  - nodePort range (30000-32767)
+  - External access via node IP
+  - kubectl expose
+  - Service types comparison

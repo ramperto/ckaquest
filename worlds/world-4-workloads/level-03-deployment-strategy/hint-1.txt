@@ -1,0 +1,9 @@
+Check the current strategy:
+
+  kubectl get deployment webapp -n ckaquest -o jsonpath='{.spec.strategy.type}'
+  # Output: Recreate
+
+With Recreate, during a rollout ALL old pods are deleted first,
+then new pods are created — this causes a complete outage gap.
+
+RollingUpdate keeps some old pods alive while new pods start.

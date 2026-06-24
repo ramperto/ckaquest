@@ -1,0 +1,10 @@
+The LimitRange 'cpu-limits' sets max CPU per container to 200m.
+The pod requests 500m and limits to 1 CPU — both exceed the maximum.
+
+You have two choices:
+1. Edit the pod to use CPU within limits (≤200m request AND limit)
+2. Edit the LimitRange to allow higher CPU
+
+Since pod is rejected (not even created), you can simply:
+  kubectl delete pod highcpu -n ckaquest (if partially created)
+  Then recreate with compliant resources.

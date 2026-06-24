@@ -1,0 +1,41 @@
+# The TLS secret "app-tls" was created by setup.sh with CN=wrong.example.com
+# It should have CN=app.example.com instead.
+#
+# The Deployment and Service below are correct — the only fix needed is
+# regenerating the certificate and updating the secret.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls-app
+  namespace: ckaquest
+  labels:
+    app: tls-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tls-app
+  template:
+    metadata:
+      labels:
+        app: tls-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tls-app-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: tls-app
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 80

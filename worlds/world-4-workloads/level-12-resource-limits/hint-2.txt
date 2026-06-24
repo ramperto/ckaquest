@@ -1,0 +1,9 @@
+The pod has limits.memory (32Mi) LOWER than requests.memory (128Mi).
+Similarly, limits.cpu (50m) is LOWER than requests.cpu (100m).
+
+This is invalid — Kubernetes requires limits >= requests for all resources.
+
+Fix by either:
+  - Increasing limits to be >= requests
+  - Decreasing requests to be <= limits
+  - Or adjust both to sensible values (e.g., requests: 64Mi/50m, limits: 128Mi/100m)

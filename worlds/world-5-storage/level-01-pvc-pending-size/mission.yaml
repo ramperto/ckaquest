@@ -1,0 +1,30 @@
+title: "PVC — Size Mismatch with Static PV"
+world: 5
+level: 1
+xp: 150
+difficulty: beginner
+domain: Storage
+
+story: |
+  The database team created a PersistentVolume with 5Gi of capacity
+  and a PersistentVolumeClaim requesting 10Gi. The PVC is stuck
+  Pending — Kubernetes can't find a PV that satisfies the request.
+
+  Fix the PVC so it requests a size the available PV can satisfy.
+
+objective: |
+  1. Inspect PVC `db-data` — confirm it is Pending
+  2. Check the available PV `db-pv` — note its capacity (5Gi)
+  3. Delete the stuck PVC and recreate it requesting 5Gi
+  4. Confirm the PVC binds to the PV (STATUS: Bound)
+
+success_criteria:
+  - PV db-pv is Bound
+  - PVC db-data is Bound
+  - PVC requests <= 5Gi
+
+hints_available: 3
+
+note: |
+  PVC size can only INCREASE after binding (volume expansion).
+  A PVC that requests more than any available PV will stay Pending forever.

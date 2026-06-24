@@ -1,0 +1,32 @@
+title: "Pod Requesting Excessive Ephemeral Storage"
+world: 1
+level: 20
+xp: 250
+difficulty: advanced
+domain: Troubleshooting
+
+story: |
+  Someone on the data team deployed a batch processing pod and accidentally
+  requested 500Gi of ephemeral storage instead of 500Mi. A classic unit
+  typo. The pod sits in Pending because no node in the cluster has half
+  a terabyte of free disk space for ephemeral use.
+
+  The scheduler keeps trying and failing, the events show "Insufficient
+  ephemeral-storage", and the rest of the team is wondering why their
+  workload won't start. Fix the resource request so the pod can schedule.
+
+objective: |
+  1. Identify why pod `storage-hog` is Pending (Insufficient ephemeral-storage)
+  2. Fix the ephemeral storage request to a reasonable value (e.g., 500Mi)
+  3. Delete and recreate the pod so it reaches Running state
+
+success_criteria:
+  - Pod storage-hog exists in namespace
+  - Pod storage-hog is Running
+  - Ephemeral storage request is 10Gi or less
+
+hints_available: 3
+
+note: |
+  Ephemeral storage is often overlooked in resource planning. The CKA exam
+  may test your understanding of requests, limits, and eviction behavior.

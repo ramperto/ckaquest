@@ -1,0 +1,16 @@
+name: "Multi-Container Pod — Sidecar CrashLoopBackOff"
+description: >
+  A pod with two containers is deployed: a main nginx web server and a
+  log-collector sidecar. The main container is fine, but the sidecar keeps
+  crashing, causing operational alerts. The sidecar has a misconfigured command.
+  Fix it without touching the main container.
+objective: "Fix the sidecar container so both containers in the pod are Running and Ready."
+xp: 250
+difficulty: advanced
+expected_time: "20m"
+concepts:
+  - Multi-container pods
+  - Sidecar pattern
+  - Container-specific kubectl commands
+  - kubectl logs -c
+  - Shared volumes between containers

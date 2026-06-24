@@ -1,0 +1,14 @@
+  cat <<EOF | kubectl apply -f -
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: database
+    namespace: ckaquest
+  spec:
+    type: ExternalName
+    externalName: legacy-db.corp.internal
+  EOF
+
+  # Test from app pod
+  kubectl exec app -n ckaquest -- nslookup database
+  # Should return: database.ckaquest.svc.cluster.local → legacy-db.corp.internal

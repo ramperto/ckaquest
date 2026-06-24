@@ -1,0 +1,10 @@
+The Ingress has path: /application but you need to match /app.
+With pathType: Prefix, /application matches /application/... not /app.
+
+Edit the Ingress to fix the path:
+  kubectl edit ingress webapp-ingress -n ckaquest
+
+Change:  path: /application
+To:      path: /app
+
+Or use a catch-all path: /

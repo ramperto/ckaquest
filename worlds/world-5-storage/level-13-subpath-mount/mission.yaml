@@ -1,0 +1,34 @@
+title: "subPath Mount — ConfigMap Overwrites Directory"
+world: 5
+level: 13
+xp: 200
+difficulty: intermediate
+domain: Storage
+
+story: |
+  Pod `config-app` mounts ConfigMap `app-config` at `/etc/app/`. The
+  ConfigMap has two keys: `app.conf` and `logging.conf`. But the
+  application only needs `app.conf` at `/etc/app/app.conf` — the
+  `logging.conf` file should not be present.
+
+  Mounting the entire ConfigMap at a directory replaces everything in
+  that directory. Use `subPath` to mount only the single file the app
+  needs.
+
+objective: |
+  1. Identify that the full ConfigMap mount puts both files in /etc/app/
+  2. Use subPath to mount only app.conf at /etc/app/app.conf
+  3. Verify that /etc/app/logging.conf does NOT exist in the pod
+  4. Confirm the pod is Running
+
+success_criteria:
+  - Pod config-app is Running
+  - File /etc/app/app.conf exists with correct content
+  - File /etc/app/logging.conf does NOT exist
+
+hints_available: 3
+
+note: |
+  subPath mounts a single file or directory from a volume without
+  replacing the target directory. Trade-off: subPath-mounted files
+  are NOT updated when the source ConfigMap changes.

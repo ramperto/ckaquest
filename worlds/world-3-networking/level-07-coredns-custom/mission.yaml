@@ -1,0 +1,16 @@
+name: "CoreDNS — Custom Stub Zone for External Service"
+description: >
+  Your company's internal DNS server (10.0.0.53) resolves 'internal.corp'
+  hostnames. The CoreDNS ConfigMap needs a stub zone so that pods querying
+  'mydb.internal.corp' get forwarded to the internal server instead of
+  going to the public internet.
+objective: "Add a CoreDNS stub zone for 'internal.corp' pointing to 10.0.0.53."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - CoreDNS ConfigMap
+  - Stub zones / forward plugin
+  - CoreDNS Corefile syntax
+  - kubectl rollout restart
+  - Custom DNS resolution

@@ -1,0 +1,7 @@
+The container is being OOMKilled — the kernel is killing it because it
+exceeded its memory limit of 2Mi. nginx needs much more than that to start.
+
+You cannot change resource limits on a running pod. You must delete it
+and recreate with sensible limits.
+
+A typical nginx pod needs at least 64Mi to run comfortably.

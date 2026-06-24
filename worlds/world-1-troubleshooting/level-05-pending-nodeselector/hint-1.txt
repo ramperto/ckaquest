@@ -1,0 +1,7 @@
+The pod has enough CPU/memory but still won't schedule.
+
+Check the scheduler events:
+  kubectl describe pod cache -n ckaquest
+
+Also check what labels your node has:
+  kubectl get nodes --show-labels

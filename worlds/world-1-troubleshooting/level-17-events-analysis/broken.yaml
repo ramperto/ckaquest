@@ -1,0 +1,42 @@
+# BUG 1: The ServiceAccount "app-runner" is referenced but NOT created.
+#         The pod will fail to schedule / start because the SA doesn't exist.
+#
+# BUG 2: The Service targets port 8080 but nginx listens on port 80.
+#         Even if the pod runs, the Service won't route traffic correctly.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-app
+  namespace: ckaquest
+  labels:
+    app: event-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-app
+  template:
+    metadata:
+      labels:
+        app: event-app
+    spec:
+      serviceAccountName: app-runner
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: event-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

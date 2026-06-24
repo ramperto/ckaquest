@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-pod
+  namespace: ckaquest
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25
+      ports:
+        - containerPort: 80
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 100m
+        limits:
+          # BUG: limits are LOWER than requests — this fails admission
+          memory: 32Mi     # must be >= 128Mi (the request)
+          cpu: 50m         # must be >= 100m (the request)

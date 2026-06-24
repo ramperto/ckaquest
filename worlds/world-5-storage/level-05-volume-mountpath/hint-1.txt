@@ -1,0 +1,7 @@
+The pod runs but writes go to the wrong place. Check the volume mounts:
+
+  kubectl describe deployment webapp -n ckaquest | grep -A10 "Mounts:"
+  # /app/storage from data-vol (rw)  ← wrong path
+
+The app command writes to /app/data but the volume is at /app/storage.
+The volume mount path and the application's expected path don't match.

@@ -1,0 +1,17 @@
+Use kubectl patch to update the strategy in one command:
+
+  kubectl patch deployment webapp -n ckaquest -p '{
+    "spec": {
+      "strategy": {
+        "type": "RollingUpdate",
+        "rollingUpdate": {
+          "maxUnavailable": 1,
+          "maxSurge": 1
+        }
+      }
+    }
+  }'
+
+Or use kubectl edit:
+  kubectl edit deployment webapp -n ckaquest
+  # Find "strategy:" and change it

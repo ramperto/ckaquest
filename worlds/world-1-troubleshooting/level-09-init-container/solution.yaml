@@ -1,0 +1,33 @@
+# Fix: Create the db-service that the init container is waiting for.
+# The service doesn't need real backing pods for this level —
+# just its existence on port 5432 satisfies the nc check.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  namespace: ckaquest
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: db
+---
+# Optional: a simple pod to back the service
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: ckaquest
+  labels:
+    app: db
+spec:
+  containers:
+    - name: db
+      image: postgres:15
+      env:
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+      ports:
+        - containerPort: 5432

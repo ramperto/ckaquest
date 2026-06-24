@@ -1,0 +1,27 @@
+Full fix and verify:
+
+  kubectl delete pvc cache-data -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: cache-data
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  EOF
+
+  # Watch binding (may take a few seconds)
+  kubectl get pvc cache-data -n ckaquest -w
+  # Pending → Bound
+
+  # A PV was dynamically created
+  kubectl get pv
+  # You'll see a pvc-<uuid> PV with storageclass: local-path
+
+Then: validate

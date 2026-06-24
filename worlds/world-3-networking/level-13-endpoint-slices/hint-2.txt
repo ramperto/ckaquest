@@ -1,0 +1,7 @@
+The Service selector is app: backendd (with double "d") — but the pods
+have the label app: backend (single "d").
+
+This typo means no pods match the selector, so the endpoint list is
+empty and all traffic to the Service fails with "connection refused".
+
+Fix the selector to match the actual pod label.

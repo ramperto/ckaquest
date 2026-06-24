@@ -1,0 +1,25 @@
+title: "CronJob — Unsuspend the Report Generator"
+world: 4
+level: 6
+xp: 100
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  Someone paused the nightly report CronJob during maintenance and
+  forgot to re-enable it. Reports haven't been generated in days.
+
+  The CronJob `report-generator` is suspended. Unsuspend it so it
+  can fire on schedule, then manually trigger one run to verify it works.
+
+objective: |
+  1. Find CronJob `report-generator` — confirm it is suspended
+  2. Unsuspend it (set spec.suspend to false)
+  3. Manually trigger a Job from the CronJob to verify it works
+  4. Confirm the triggered Job completes successfully
+
+success_criteria:
+  - "CronJob report-generator has suspend: false"
+  - At least one Job created from the CronJob has succeeded
+
+hints_available: 3

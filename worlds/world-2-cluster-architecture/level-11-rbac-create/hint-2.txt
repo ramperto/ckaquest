@@ -1,0 +1,9 @@
+Create a Role with the required permissions:
+
+  kubectl create role app-deployer-role \
+    --verb=get,list,watch --resource=pods \
+    --verb=create,get,list --resource=deployments \
+    -n ckaquest
+
+Note: you can specify --verb and --resource multiple times to create
+multiple rules in a single command.

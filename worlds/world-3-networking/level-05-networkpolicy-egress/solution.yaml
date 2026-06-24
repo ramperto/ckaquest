@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-egress-allow-db
+  namespace: ckaquest
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  policyTypes:
+    - Egress
+  egress:
+    # Allow DNS resolution (required for service name lookup)
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    # Allow connection to database pods
+    - to:
+        - podSelector:
+            matchLabels:
+              app: db
+      ports:
+        - protocol: TCP
+          port: 5432

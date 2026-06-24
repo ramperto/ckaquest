@@ -1,0 +1,16 @@
+name: "Ingress TLS — Missing Certificate Secret"
+description: >
+  HTTPS is configured on the Ingress but every HTTPS request fails.
+  The Ingress references a TLS Secret that doesn't exist yet.
+  Create the TLS secret with the provided certificate and key so
+  the Ingress can terminate TLS.
+objective: "Create the 'webapp-tls' Secret so the Ingress serves HTTPS correctly."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - Ingress TLS termination
+  - kubernetes.io/tls Secret type
+  - tls.crt and tls.key
+  - openssl self-signed cert
+  - kubectl create secret tls

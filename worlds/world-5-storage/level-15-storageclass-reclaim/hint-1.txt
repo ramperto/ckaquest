@@ -1,0 +1,10 @@
+Hint 1: Understand the Risk
+
+Check the current StorageClass reclaim policy:
+
+  kubectl get storageclass delete-sc -o jsonpath='{.reclaimPolicy}'
+
+It says "Delete". This means when PVC `important-data` is deleted, the
+PV backing it will also be deleted — all data is lost forever.
+
+You need to create a safer StorageClass with `reclaimPolicy: Retain`.

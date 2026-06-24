@@ -1,0 +1,11 @@
+Try applying the broken spec and read the error message:
+
+  kubectl apply -f broken.yaml
+
+You'll see an admission error like:
+  "Invalid value: limits.memory 64Mi is less than requests.memory 512Mi"
+
+Or check events if the pod was partially created:
+
+  kubectl describe pod resource-pod -n ckaquest
+  kubectl get events -n ckaquest --sort-by='.lastTimestamp'

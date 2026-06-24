@@ -1,0 +1,9 @@
+The pod has dnsPolicy: None with a custom nameserver of 1.2.3.4.
+That IP doesn't respond, so all DNS queries time out.
+
+dnsPolicy: None means "ignore cluster DNS, use only what's in dnsConfig".
+
+The fix is to change the pod to use dnsPolicy: ClusterFirst (the default),
+which routes DNS through CoreDNS in the cluster.
+
+You must delete and recreate the pod (can't change dnsPolicy in-place).

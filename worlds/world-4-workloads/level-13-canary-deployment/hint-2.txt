@@ -1,0 +1,9 @@
+The v2 deployment's pod template is MISSING the `app: myapp` label.
+The Service selects pods with `app: myapp`, so v2 pods get no traffic.
+
+Note: the deployment metadata has `app: myapp`, but what matters for
+Service routing is the POD TEMPLATE labels (spec.template.metadata.labels).
+
+You need to add `app: myapp` to the v2 deployment's pod template labels.
+But remember: changing pod template labels also requires updating the
+deployment's selector (spec.selector.matchLabels).
