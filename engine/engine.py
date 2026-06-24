@@ -6,6 +6,7 @@ Main game engine.
 
 import json
 import os
+import random
 import subprocess
 import sys
 import termios
@@ -29,10 +30,17 @@ try:
         show_failure,
         show_command_menu,
         show_world_complete,
+        DIFFICULTY_COLORS,
     )
     RETRO_UI = True
 except ImportError:
     RETRO_UI = False
+    DIFFICULTY_COLORS = {
+        "beginner": "green",
+        "intermediate": "yellow",
+        "advanced": "red",
+        "expert": "bold red",
+    }
 
 console = Console()
 
@@ -74,12 +82,6 @@ CKA_DOMAINS = {
     },
 }
 
-DIFFICULTY_COLORS = {
-    "beginner": "green",
-    "intermediate": "yellow",
-    "advanced": "red",
-    "expert": "bold red",
-}
 
 
 def count_all_levels() -> int:
@@ -162,14 +164,6 @@ def restore_kubeconfig():
         kube_cfg.chmod(0o600)
 
 
-def broken_yaml_has_objects(broken_yaml: Path) -> bool:
-    """Return True if broken.yaml contains actual YAML objects (not just comments/blanks)."""
-    for line in broken_yaml.read_text().splitlines():
-        stripped = line.strip()
-        if stripped and not stripped.startswith("#"):
-            return True
-    return False
-
 
 def deploy_mission(level_path: Path) -> bool:
     """Tear down and redeploy the broken mission state."""
@@ -189,7 +183,7 @@ def deploy_mission(level_path: Path) -> bool:
             console.print(f"[yellow]setup.sh warning: {result.stderr.strip()}[/yellow]")
 
     broken_yaml = level_path / "broken.yaml"
-    if broken_yaml.exists() and broken_yaml_has_objects(broken_yaml):
+    if broken_yaml.exists() and any(l.strip() and not l.strip().startswith("#") for l in broken_yaml.read_text().splitlines()):
         result = kubectl("apply", "-f", str(broken_yaml), "-n", NAMESPACE)
         if result.returncode != 0:
             console.print(f"[red]Failed to deploy broken state:[/red]\n{result.stderr.strip()}")
@@ -681,6 +675,36 @@ def select_world(progress: dict):
     play_world(world_path, progress)
 
 
+# ── Player Setup ─────────────────────────────────────────────────────────────
+
+_ADJECTIVES = ["Swift", "Clever", "Ninja", "Quantum", "Async", "Binary", "Kernel",
+               "Kubectl", "Atomic", "Resilient", "Scalable", "Reliable", "Certified"]
+_NOUNS = ["Admin", "Operator", "Engineer", "Deployer", "Debugger", "Architect",
+          "SRE", "DevOps", "Cluster", "Scheduler", "Controller"]
+
+
+def get_player_name() -> str:
+    console.print(Panel(
+        "[bold cyan]Welcome to CKAQuest![/bold cyan]\n\nWhat should we call you?",
+        title="[bold]Player Setup[/bold]",
+        border_style="cyan",
+    ))
+    console.print("  [1] Enter your name")
+    console.print("  [2] Generate a random name")
+    console.print("  [3] Use default: CKA Candidate\n")
+
+    choice = Prompt.ask("Choose", choices=["1", "2", "3"], default="3")
+    if choice == "1":
+        name = Prompt.ask("Your name").strip()
+        return name or "CKA Candidate"
+    if choice == "2":
+        suffix = random.choice(["", str(random.randint(1, 99)), "42", "CKA"])
+        name = f"{random.choice(_ADJECTIVES)}{random.choice(_NOUNS)}{suffix}"
+        console.print(f"\n  Generated: [bold yellow]{name}[/bold yellow]")
+        return name
+    return "CKA Candidate"
+
+
 # ── Entry Point ───────────────────────────────────────────────────────────────
 
 def main():
@@ -688,11 +712,7 @@ def main():
 
     # First run: get player name
     if progress.get("player_name") is None:
-        try:
-            from player_name import get_player_name
-            progress["player_name"] = get_player_name()
-        except ImportError:
-            progress["player_name"] = "CKA Candidate"
+        progress["player_name"] = get_player_name()
         save_progress(progress)
 
     while True:
