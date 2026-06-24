@@ -1,0 +1,10 @@
+Check the service definition:
+
+  kubectl describe svc multi-svc -n ckaquest
+  kubectl get svc multi-svc -n ckaquest -o yaml
+
+You'll notice the service has two ports but neither has a name.
+Kubernetes requires that multi-port Services have named ports.
+
+Also check the targetPort values carefully — is each one matching
+the actual container port?

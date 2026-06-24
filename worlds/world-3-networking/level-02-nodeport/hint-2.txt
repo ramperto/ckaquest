@@ -1,0 +1,13 @@
+Use kubectl expose to quickly create the service:
+
+  kubectl expose deployment webapp \
+    --type=NodePort \
+    --port=80 \
+    --target-port=80 \
+    --name=webapp-svc \
+    -n ckaquest
+
+Then set the specific nodePort to 30080:
+  kubectl patch svc webapp-svc -n ckaquest \
+    --type=json \
+    -p='[{"op":"replace","path":"/spec/ports/0/nodePort","value":30080}]'

@@ -1,0 +1,12 @@
+Check the PDB status to see how many disruptions are currently allowed:
+
+  kubectl get pdb pdb-app-pdb -n ckaquest
+
+Look at the ALLOWED column — it shows 0. This means no pods can be
+evicted, which blocks `kubectl drain` completely.
+
+Also check the deployment replicas:
+
+  kubectl get deploy pdb-app -n ckaquest
+
+You'll see 3/3 replicas ready. The PDB requires ALL 3 to be available.

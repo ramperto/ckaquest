@@ -1,0 +1,12 @@
+Hint 1: Identify the Problem
+
+Check the VolumeSnapshot status:
+
+  kubectl describe volumesnapshot data-snapshot -n ckaquest
+
+Look at the events — you should see an error about the VolumeSnapshotClass
+`csi-snap-class` not being found.
+
+Verify it does not exist:
+
+  kubectl get volumesnapshotclass

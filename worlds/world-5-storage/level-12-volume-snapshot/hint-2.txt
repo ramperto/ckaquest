@@ -1,0 +1,10 @@
+Hint 2: Create the VolumeSnapshotClass
+
+You need to create a VolumeSnapshotClass with:
+- apiVersion: snapshot.storage.k8s.io/v1
+- kind: VolumeSnapshotClass
+- name: csi-snap-class
+- driver: rancher.io/local-path (matches the cluster's CSI driver)
+- deletionPolicy: Delete
+
+Use `kubectl apply -f -` and paste the YAML.

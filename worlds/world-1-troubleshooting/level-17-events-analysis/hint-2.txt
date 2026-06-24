@@ -1,0 +1,7 @@
+Two bugs to fix:
+
+1. ServiceAccount `app-runner` doesn't exist — the Deployment references it
+   but it was never created. Create it.
+
+2. Service `event-svc` targets port 8080 but nginx listens on port 80.
+   Change the targetPort to 80.

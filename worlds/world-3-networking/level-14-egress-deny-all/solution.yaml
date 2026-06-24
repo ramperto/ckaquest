@@ -1,0 +1,85 @@
+# Web Deployment — unchanged
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: ckaquest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+# API Deployment — unchanged
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: ckaquest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+# API Service — unchanged
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: api
+  ports:
+    - port: 80
+      targetPort: 80
+---
+# Fixed: egress rules allow api traffic (port 80) and DNS (port 53)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: web-egress
+  namespace: ckaquest
+spec:
+  podSelector:
+    matchLabels:
+      app: web
+  policyTypes:
+    - Egress
+  egress:
+    # Rule 1: allow traffic to api pods on port 80
+    - to:
+        - podSelector:
+            matchLabels:
+              app: api
+      ports:
+        - port: 80
+          protocol: TCP
+    # Rule 2: allow DNS (required for name resolution)
+    - to: []
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP

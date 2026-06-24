@@ -1,0 +1,37 @@
+Final policy: db-policy (the database only accepts inbound, never dials out).
+
+  kubectl apply -f - <<EOF
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: db-policy
+    namespace: ckaquest
+  spec:
+    podSelector:
+      matchLabels:
+        tier: database
+    policyTypes:
+      - Ingress
+      - Egress
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                tier: backend
+        ports:
+          - protocol: TCP
+            port: 5432
+    egress: []    # database initiates no connections
+  EOF
+
+Verify all three exist:
+  kubectl get networkpolicy -n ckaquest
+
+Quick sanity-check (structural only — NetworkPolicy on k3s/Flannel
+is not enforced, but the CKA exam cluster uses Calico which does):
+  kubectl describe networkpolicy frontend-policy -n ckaquest
+  kubectl describe networkpolicy backend-policy  -n ckaquest
+  kubectl describe networkpolicy db-policy       -n ckaquest
+
+Then run the validator:
+  validate

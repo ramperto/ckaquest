@@ -1,0 +1,13 @@
+There are TWO issues:
+
+1. Service selector has a typo: `app: frontned` should be `app: frontend`
+   This alone causes empty endpoints.
+
+2. Readiness probe checks path `/healthz` which nginx doesn't serve
+   (returns 404). Pods are never marked Ready. Even with a correct
+   selector, unready pods are excluded from endpoints.
+
+You need to fix BOTH issues for traffic to flow.
+
+Check readiness probe failures:
+  kubectl describe pod -n ckaquest -l app=frontend | grep -A5 "Readiness"

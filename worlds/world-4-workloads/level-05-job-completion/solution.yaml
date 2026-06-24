@@ -1,0 +1,21 @@
+# Delete the failed Job and recreate with correct command:
+#
+#   kubectl delete job db-backup -n ckaquest
+#
+#   kubectl apply -f - <<EOF
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-backup
+  namespace: ckaquest
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: backup
+          image: busybox:1.36
+          command: ["sh", "-c", "echo 'backup OK' && sleep 2"]
+          # fixed: "sh" instead of "shh"
+#   EOF

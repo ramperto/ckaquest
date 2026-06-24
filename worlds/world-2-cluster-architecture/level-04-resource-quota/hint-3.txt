@@ -1,0 +1,20 @@
+Apply an updated quota with higher limits:
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: ResourceQuota
+  metadata:
+    name: tight-quota
+    namespace: ckaquest
+  spec:
+    hard:
+      pods: "5"
+      requests.cpu: "500m"
+      requests.memory: "512Mi"
+      limits.cpu: "1"
+      limits.memory: "1Gi"
+  EOF
+
+The ReplicaSet controller will automatically create the 3rd pod once
+the quota allows it. Watch it appear:
+  kubectl get pods -n ckaquest -w

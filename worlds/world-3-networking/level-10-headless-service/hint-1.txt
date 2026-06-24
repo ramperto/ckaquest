@@ -1,0 +1,16 @@
+A regular Service assigns a virtual IP (ClusterIP). DNS for it returns
+that single IP regardless of how many pods are behind it.
+
+A HEADLESS Service has clusterIP: None. DNS for it returns the
+individual pod IPs directly — one A record per pod.
+
+Check the current Service:
+  kubectl get service db-headless -n ckaquest
+  kubectl get service db-headless -n ckaquest -o yaml | grep clusterIP
+
+You'll see it has a real IP assigned. You cannot patch clusterIP after
+creation — you must delete and recreate:
+
+  kubectl delete service db-headless -n ckaquest
+
+Then recreate with clusterIP: None — see hint 2 for the full YAML.

@@ -1,0 +1,11 @@
+Unsuspend with patch:
+
+  kubectl patch cronjob report-generator -n ckaquest \
+    -p '{"spec":{"suspend":false}}'
+
+Verify:
+  kubectl get cronjob report-generator -n ckaquest
+  # SUSPEND column: False
+
+Now trigger a manual run (don't wait 5 minutes for the schedule):
+  kubectl create job report-now --from=cronjob/report-generator -n ckaquest

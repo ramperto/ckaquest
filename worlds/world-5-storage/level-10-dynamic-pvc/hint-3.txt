@@ -1,0 +1,29 @@
+Full solution:
+
+  # Create the PVC (dynamic provisioning via default StorageClass)
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: app-db
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  EOF
+
+  # Confirm PVC is Bound and PV was auto-created
+  kubectl get pvc app-db -n ckaquest
+  kubectl get pv | grep app-db
+
+  # Wait for pod to start
+  kubectl rollout status deployment/stateful-app -n ckaquest
+
+  # Verify file write to persistent volume
+  POD=$(kubectl get pods -n ckaquest -l app=stateful-app -o jsonpath='{.items[0].metadata.name}')
+  kubectl exec $POD -n ckaquest -- cat /data/test.txt
+
+Then: validate

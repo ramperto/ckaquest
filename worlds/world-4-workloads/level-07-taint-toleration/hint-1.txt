@@ -1,0 +1,12 @@
+Check why the pod is Pending:
+
+  kubectl describe pod gpu-worker -n ckaquest | grep -A5 "Events:"
+  # "0/1 nodes are available: 1 node(s) had untolerated taint {gpu: present}"
+
+Check the node taint:
+  kubectl describe node $(kubectl get nodes -o jsonpath='{.items[0].name}') \
+    | grep Taints
+  # Taints: gpu=present:NoSchedule
+
+A NoSchedule taint means: "do NOT schedule pods here unless they
+explicitly tolerate this taint."

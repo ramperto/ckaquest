@@ -1,0 +1,24 @@
+# Solution for Level 15: Multi-Context Kubeconfig
+#
+# Step 1: List all contexts
+#   kubectl config get-contexts
+#
+#   Output will show:
+#     CURRENT   NAME         CLUSTER      AUTHINFO      NAMESPACE
+#     *         production   production   admin
+#               staging      staging      admin
+#               local-k3s    local-k3s    local-admin
+#
+# Step 2: Try the current context (it will time out)
+#   kubectl get nodes --request-timeout=3s
+#   # Error: connection refused or timeout
+#
+# Step 3: Switch to the working context
+#   kubectl config use-context local-k3s
+#
+# Step 4: Verify
+#   kubectl get nodes
+#   # Should show the k3s node
+#
+# To restore the original kubeconfig after the exercise:
+#   cp ~/.kube/config.ckaquest-backup ~/.kube/config

@@ -1,0 +1,17 @@
+# Task-based level — no broken Kubernetes resources.
+# Your task: write the correct kubeadm upgrade sequence for
+# upgrading from Kubernetes 1.28.0 to 1.29.0
+# to the file /tmp/upgrade-plan.sh
+#
+# The file must contain these commands (in order):
+# 1. Unhold kubeadm
+# 2. Install new kubeadm version
+# 3. Mark kubeadm on hold
+# 4. kubeadm upgrade plan (dry-run check)
+# 5. kubeadm upgrade apply v1.29.0
+# 6. Drain the node
+# 7. Unhold kubectl and kubelet
+# 8. Install new kubectl and kubelet
+# 9. Hold kubectl and kubelet
+# 10. Daemon reload + restart kubelet
+# 11. Uncordon the node

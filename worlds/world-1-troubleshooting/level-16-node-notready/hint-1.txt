@@ -1,0 +1,4 @@
+Check node status: `kubectl get nodes` and `kubectl describe node <name>` — look at the Taints section.
+
+The pod is Pending because it cannot be scheduled. Something on the node is
+preventing scheduling. Inspect the node's taints to find what's blocking it.

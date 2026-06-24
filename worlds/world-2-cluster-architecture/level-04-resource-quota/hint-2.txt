@@ -1,0 +1,11 @@
+The ResourceQuota 'tight-quota' limits the namespace to 2 pods total.
+The Deployment needs 3 pods, so the 3rd pod can never be created.
+
+You need to update the ResourceQuota to allow more pods (and matching
+CPU/memory totals for 3 pods).
+
+Edit the quota:
+  kubectl edit resourcequota tight-quota -n ckaquest
+
+Change pods: "2" to pods: "5" (or higher).
+Also update the CPU and memory totals to match (3 pods × per-pod request).

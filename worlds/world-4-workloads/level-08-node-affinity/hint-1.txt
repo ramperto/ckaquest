@@ -1,0 +1,11 @@
+Check why the pod is Pending:
+
+  kubectl describe pod zone-aware-app -n ckaquest | grep -A5 "Events:"
+  # "0/1 nodes are available: 1 node(s) didn't match Pod's node affinity"
+
+Check what zone label the actual node has:
+  kubectl get nodes --show-labels | grep zone
+  # You'll see: zone=us-west
+
+The pod requires zone=us-east but the node has zone=us-west.
+The affinity value needs to be corrected.

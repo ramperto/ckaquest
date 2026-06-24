@@ -1,0 +1,3 @@
+# This level breaks the kubeconfig via setup.sh, not via broken.yaml.
+# No Kubernetes resources need to be deployed.
+# The "broken state" is the corrupted ~/.kube/config.

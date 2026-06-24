@@ -1,0 +1,17 @@
+On k3s, etcd restore works like this:
+
+  # Stop k3s
+  sudo systemctl stop k3s
+
+  # Run k3s in reset mode to restore from snapshot
+  sudo k3s server \
+    --cluster-reset \
+    --cluster-reset-restore-path=/opt/etcd-backup.db
+
+  # Wait for it to print "etcd data directory has been reset"
+  # Then press Ctrl+C
+
+  # Start k3s normally again
+  sudo systemctl start k3s
+
+The cluster will take ~30 seconds to come back up.

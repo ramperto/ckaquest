@@ -1,0 +1,11 @@
+platform-sa can't list pods even though a 'logs-reader' ClusterRole exists
+with those permissions.
+
+Check what rules platform-viewer actually has after aggregation:
+  kubectl describe clusterrole platform-viewer
+
+Also check the aggregation rule — what label is it looking for?
+  kubectl get clusterrole platform-viewer -o yaml
+
+Then check whether logs-reader has that label:
+  kubectl get clusterrole logs-reader -o yaml | grep labels -A5

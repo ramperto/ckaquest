@@ -1,0 +1,34 @@
+# etcd restore on k3s:
+#
+# Step 1 — Stop k3s
+#   sudo systemctl stop k3s
+#
+# Step 2 — Restore using k3s
+#   sudo k3s server \
+#     --cluster-reset \
+#     --cluster-reset-restore-path=/opt/etcd-backup.db &
+#   # Wait until it logs "etcd data directory ... has been reset"
+#   # then Ctrl+C
+#
+# Step 3 — Start k3s normally
+#   sudo systemctl start k3s
+#
+# Step 4 — Wait for cluster to recover (~30s)
+#   kubectl get nodes -w
+#
+# Step 5 — Verify
+#   kubectl get configmap app-secrets-backup -n ckaquest
+
+# --- CKA Exam reference (kubeadm clusters) ---
+# Stop services:
+#   sudo systemctl stop kube-apiserver kube-controller-manager kube-scheduler etcd
+#
+# Restore:
+#   ETCDCTL_API=3 etcdctl snapshot restore /opt/etcd-backup.db \
+#     --data-dir=/var/lib/etcd-restored \
+#     --name=<node-name> \
+#     --initial-cluster=<node>=https://127.0.0.1:2380 \
+#     --initial-advertise-peer-urls=https://127.0.0.1:2380
+#
+# Update etcd manifest to point to /var/lib/etcd-restored
+# Start services

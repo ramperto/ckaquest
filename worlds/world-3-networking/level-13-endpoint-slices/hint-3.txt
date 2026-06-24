@@ -1,0 +1,16 @@
+Edit the Service to fix the selector:
+
+  kubectl edit svc backend-svc -n ckaquest
+
+Change:
+  selector:
+    app: backendd
+
+To:
+  selector:
+    app: backend
+
+Save and verify:
+  kubectl get endpoints backend-svc -n ckaquest
+
+You should now see 2 IP addresses (one per replica).

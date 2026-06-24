@@ -1,0 +1,35 @@
+title: "Events Analysis — Diagnose Cascading Failures"
+world: 1
+level: 17
+xp: 200
+difficulty: intermediate
+domain: Troubleshooting
+
+story: |
+  A developer deployed a new microservice stack but everything is broken.
+  The pod won't start, and even if it did, the Service wouldn't route
+  traffic correctly. There are multiple failures stacked on top of each
+  other, and the only way to untangle them is by reading the Kubernetes
+  events carefully.
+
+  This is exactly the kind of cascading failure you'll face in production
+  and on the CKA exam. Start with events, follow the breadcrumbs, fix
+  each issue one at a time.
+
+objective: |
+  1. Check events in the ckaquest namespace to identify all failures
+  2. Create the missing ServiceAccount `app-runner`
+  3. Fix the Service `event-svc` targetPort (should be 80, not 8080)
+  4. Confirm the pod is Running and the Service has endpoints
+
+success_criteria:
+  - ServiceAccount app-runner exists in namespace
+  - Deployment event-app has 1 ready replica
+  - Service event-svc targetPort is 80
+  - Endpoints for event-svc are not empty
+
+hints_available: 3
+
+note: |
+  Always check events first when troubleshooting. They tell the story
+  of what Kubernetes tried to do and where it failed.

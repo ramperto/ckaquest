@@ -1,0 +1,8 @@
+The Service has targetPort: 8080 but nginx listens on port 80.
+kube-proxy routes traffic to pod-ip:targetPort — so traffic goes to
+pod-ip:8080 which has nothing listening → connection refused.
+
+Patch the service:
+  kubectl patch svc backend-svc -n ckaquest \
+    --type='json' \
+    -p='[{"op":"replace","path":"/spec/ports/0/targetPort","value":80}]'

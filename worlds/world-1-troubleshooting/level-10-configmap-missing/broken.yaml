@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  namespace: ckaquest
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      envFrom:
+        - configMapRef:
+            name: app-config    # This ConfigMap doesn't exist

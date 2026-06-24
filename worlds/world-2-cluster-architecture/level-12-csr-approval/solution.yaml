@@ -1,0 +1,22 @@
+# Solution for Level 12: CSR Approval
+#
+# Step 1: View the pending CSR
+#   kubectl get csr
+#
+# Step 2: Approve the CSR
+#   kubectl certificate approve dev-user-csr
+#
+# Step 3: Verify the certificate was issued
+#   kubectl get csr dev-user-csr
+#   (Status should show Approved,Issued)
+#
+# Step 4 (optional): Extract the issued certificate
+#   kubectl get csr dev-user-csr -o jsonpath='{.status.certificate}' | base64 -d > /tmp/dev-user.crt
+#
+# Step 5 (optional): Set up kubeconfig for dev-user
+#   kubectl config set-credentials dev-user \
+#     --client-certificate=/tmp/dev-user.crt \
+#     --client-key=/tmp/dev-user.key
+#   kubectl config set-context dev-user \
+#     --cluster=local-k3s \
+#     --user=dev-user

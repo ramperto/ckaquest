@@ -1,0 +1,13 @@
+Full solution:
+
+  kubectl delete pod debug-pod -n ckaquest
+
+Then recreate without the env section. Edit /tmp/debug-pod.yaml and
+remove the entire `env:` block (both KUBERNETES_SERVICE_HOST and
+KUBERNETES_SERVICE_PORT entries), then:
+
+  kubectl apply -f /tmp/debug-pod.yaml
+
+The API server address is auto-injected by Kubernetes. Verify:
+
+  kubectl exec debug-pod -n ckaquest -- env | grep KUBERNETES

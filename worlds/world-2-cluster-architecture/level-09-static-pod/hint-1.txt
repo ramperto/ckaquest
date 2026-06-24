@@ -1,0 +1,11 @@
+Static pods are managed by kubelet directly, not via kubectl.
+Their manifests live at /etc/kubernetes/manifests/ on the node.
+
+Look at the manifest:
+  sudo cat /etc/kubernetes/manifests/infra-monitor.yaml
+
+And check if the pod appears (with a node-name suffix):
+  kubectl get pods -n kube-system | grep infra-monitor
+
+Check kubelet logs for errors about this pod:
+  sudo journalctl -u k3s -n 50 | grep infra-monitor

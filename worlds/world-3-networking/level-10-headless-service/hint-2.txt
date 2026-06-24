@@ -1,0 +1,26 @@
+Delete the existing Service and recreate it as headless:
+
+  kubectl delete service db-headless -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: db-headless
+    namespace: ckaquest
+  spec:
+    clusterIP: None        # ← the only change needed
+    selector:
+      app: db-cluster
+    ports:
+      - port: 5432
+        targetPort: 5432
+  EOF
+
+Wait for the StatefulSet pods to be ready:
+  kubectl get pods -n ckaquest -l app=db-cluster -w
+
+Once all 3 are Running, test DNS from the client pod:
+  kubectl exec client -n ckaquest -- nslookup db-headless.ckaquest.svc.cluster.local
+
+You should see THREE "Address:" lines (one per pod), not a single ClusterIP.

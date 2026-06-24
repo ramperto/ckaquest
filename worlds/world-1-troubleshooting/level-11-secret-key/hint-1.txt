@@ -1,0 +1,8 @@
+The pod fails with CreateContainerConfigError. A Secret exists but the
+pod can't read from it.
+
+Inspect the pod events:
+  kubectl describe pod app -n ckaquest
+
+Also check what keys are actually in the Secret:
+  kubectl get secret db-creds -n ckaquest -o jsonpath='{.data}' | python3 -m json.tool

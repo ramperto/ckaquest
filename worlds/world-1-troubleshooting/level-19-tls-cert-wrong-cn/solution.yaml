@@ -1,0 +1,56 @@
+# Level 19 Solution: TLS Certificate with Wrong CN
+#
+# Step 1: Inspect the current certificate
+# kubectl get secret app-tls -n ckaquest -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -subject
+# Output: subject=CN = wrong.example.com
+#
+# Step 2: Generate a new self-signed certificate with correct CN
+# openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+#   -keyout /tmp/tls.key \
+#   -out /tmp/tls.crt \
+#   -subj '/CN=app.example.com'
+#
+# Step 3: Delete the old secret and create a new one
+# kubectl delete secret app-tls -n ckaquest
+# kubectl create secret tls app-tls \
+#   --cert=/tmp/tls.crt \
+#   --key=/tmp/tls.key \
+#   -n ckaquest
+#
+# The Deployment and Service are correct and don't need changes:
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls-app
+  namespace: ckaquest
+  labels:
+    app: tls-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tls-app
+  template:
+    metadata:
+      labels:
+        app: tls-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tls-app-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: tls-app
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 80

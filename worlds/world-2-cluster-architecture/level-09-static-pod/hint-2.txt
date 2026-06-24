@@ -1,0 +1,12 @@
+Two bugs in /etc/kubernetes/manifests/infra-monitor.yaml:
+
+1. restartPolicy: Never — static pods MUST use restartPolicy: Always
+   (or omit it — Always is the default)
+
+2. command: ["shh", "-c", "sleep 3600"] — typo, should be "sh"
+
+Edit the manifest to fix both:
+  sudo vim /etc/kubernetes/manifests/infra-monitor.yaml
+
+kubelet will detect the file change and automatically restart the pod.
+You don't need to do anything else — no kubectl apply needed.

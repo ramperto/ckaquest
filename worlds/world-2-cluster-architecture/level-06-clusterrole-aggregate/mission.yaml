@@ -1,0 +1,16 @@
+name: "ClusterRole Aggregation — Missing Label"
+description: >
+  A team created a custom ClusterRole called 'platform-viewer' that is meant
+  to aggregate several smaller roles using label selectors. But the 'logs-reader'
+  ClusterRole is missing the aggregation label, so platform-viewer has no
+  permissions at all. Fix it.
+objective: "Add the correct aggregation label to 'logs-reader' so 'platform-viewer' gains its rules."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - ClusterRole aggregation
+  - aggregationRule
+  - RBAC label selectors
+  - ClusterRole composition
+  - kubectl auth can-i

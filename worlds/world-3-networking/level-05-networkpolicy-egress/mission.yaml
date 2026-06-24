@@ -1,0 +1,15 @@
+name: "NetworkPolicy Egress — App Can't Reach Database"
+description: >
+  An app pod can receive traffic fine but cannot connect to the external
+  database at port 5432. A strict egress NetworkPolicy was applied that
+  blocks all outbound traffic. Fix it to allow only the DB connection.
+objective: "Allow the 'app' pod to reach 'db-svc' on port 5432 via egress policy."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - NetworkPolicy egress rules
+  - Egress to/ports
+  - DNS egress (port 53)
+  - Principle of least privilege
+  - Combined ingress+egress

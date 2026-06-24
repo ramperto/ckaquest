@@ -1,0 +1,8 @@
+The pod has `imagePullPolicy: Never` but the image `mycompany/internal-app:v2.1`
+isn't available locally on the node.
+
+Two things to fix:
+1. Change the image to a public one that can be pulled (e.g., nginx:1.25)
+2. Change imagePullPolicy to `IfNotPresent` or `Always`
+
+Since pods are immutable, you'll need to delete and recreate.

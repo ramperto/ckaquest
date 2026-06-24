@@ -1,0 +1,33 @@
+title: "Canary Gone Dark — v2 Gets No Traffic"
+world: 4
+level: 13
+xp: 200
+difficulty: intermediate
+domain: Workloads & Scheduling
+
+story: |
+  The team is rolling out `app-v2` as a canary alongside the stable `app-v1`.
+  The plan: 3 replicas of v1 + 1 replica of v2, with a shared Service routing
+  traffic to both (75%/25% split by replica count).
+
+  But something is wrong — the canary v2 pod isn't receiving ANY traffic.
+  The Service endpoints only show the 3 v1 pod IPs. The v2 pod is running
+  but invisible to the Service.
+
+objective: |
+  1. Check the Service selector and compare it to pod labels on both deployments
+  2. Identify why v2 pods don't match the Service selector
+  3. Fix the v2 deployment's pod template labels so the Service routes to it
+  4. Verify all 4 pods (3 v1 + 1 v2) appear in the Service endpoints
+
+success_criteria:
+  - Both deployments have ready replicas
+  - Service myapp-svc exists
+  - Service endpoints contain at least 4 IPs
+  - v2 pods have label app=myapp
+
+hints_available: 3
+
+note: |
+  Canary deployments use shared labels between versions so a single Service
+  routes traffic to both. The traffic split is proportional to replica count.

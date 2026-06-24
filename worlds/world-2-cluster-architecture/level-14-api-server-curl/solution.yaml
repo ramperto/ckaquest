@@ -1,0 +1,27 @@
+# Solution for Level 14: API Server Curl
+#
+# The fix: remove the env section that overrides KUBERNETES_SERVICE_HOST
+# and KUBERNETES_SERVICE_PORT. Kubernetes injects these automatically.
+#
+# Steps:
+#   kubectl get pod debug-pod -n ckaquest -o yaml > /tmp/debug-pod.yaml
+#   # Edit: remove the entire env section
+#   kubectl delete pod debug-pod -n ckaquest
+#   kubectl apply -f /tmp/debug-pod.yaml
+#
+# Corrected manifest:
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+  namespace: ckaquest
+  labels:
+    app: debug-pod
+spec:
+  serviceAccountName: debug-sa
+  containers:
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sleep", "3600"]
+      # No env section — let Kubernetes inject service discovery vars

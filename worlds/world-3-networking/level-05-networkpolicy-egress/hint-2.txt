@@ -1,0 +1,9 @@
+The policy 'app-egress-deny-all' blocks ALL outbound traffic from app pods.
+You need to create a new NetworkPolicy that allows:
+1. DNS (UDP/TCP port 53) — for resolving 'db-svc' to an IP
+2. TCP port 5432 to pods with label app=db
+
+Without DNS egress, even if port 5432 is allowed, the name 'db-svc'
+won't resolve and the connection will fail.
+
+Create a permissive egress policy alongside the deny policy.

@@ -1,0 +1,15 @@
+name: "RBAC Denied — ServiceAccount Missing RoleBinding"
+description: >
+  A monitoring pod is trying to list pods in the ckaquest namespace using
+  the Kubernetes API, but it keeps getting 403 Forbidden errors. The ServiceAccount
+  exists but something is missing from its permissions setup.
+objective: "Grant the 'monitor-sa' ServiceAccount permission to list pods in ckaquest."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - RBAC
+  - ServiceAccounts
+  - Roles and RoleBindings
+  - kubectl auth can-i
+  - API server authorization

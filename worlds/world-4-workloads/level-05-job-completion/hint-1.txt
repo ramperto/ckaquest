@@ -1,0 +1,11 @@
+Check the Job status:
+
+  kubectl get job db-backup -n ckaquest
+  # STATUS: Failed
+
+See what went wrong:
+  kubectl describe job db-backup -n ckaquest
+  kubectl logs -n ckaquest -l job-name=db-backup --tail=20
+
+The container command has "shh" instead of "sh" — shell not found.
+The job hit its backoffLimit (2 retries) and gave up.

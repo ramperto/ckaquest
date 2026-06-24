@@ -1,0 +1,14 @@
+Two ways to fix this:
+
+Option A — Remove the nodeSelector (DaemonSet runs on all nodes):
+  kubectl patch daemonset node-monitor -n ckaquest \
+    --type=json \
+    -p='[{"op":"remove","path":"/spec/template/spec/nodeSelector"}]'
+
+Option B — Label the node to match:
+  NODE=$(kubectl get nodes -o jsonpath='{.items[0].name}')
+  kubectl label node $NODE disktype=ssd
+
+After either fix, check:
+  kubectl get daemonset node-monitor -n ckaquest
+  # desiredNumberScheduled should now be 1+

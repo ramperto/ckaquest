@@ -1,0 +1,12 @@
+The NetworkPolicy has `egress: []` which means DENY ALL egress. This
+blocks everything — including DNS (port 53) lookups to CoreDNS.
+
+You need to add two types of egress rules:
+
+1. Allow traffic to pods labeled app: api on port 80 (TCP)
+   — so web pods can reach the api service
+
+2. Allow DNS on port 53 (UDP and TCP)
+   — so web pods can resolve service names
+
+Without the DNS rule, the pod can't even look up "api-svc" to get an IP.

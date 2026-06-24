@@ -1,0 +1,15 @@
+name: "Secret Key Reference — Wrong Key Name"
+description: >
+  A pod fails to start with CreateContainerConfigError. It tries to read
+  a specific key from a Secret, but the key name in the pod spec doesn't
+  match what's actually stored in the Secret.
+objective: "Fix the key reference so the 'app' pod starts and the DB_PASSWORD env var is set."
+xp: 200
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - Secrets
+  - secretKeyRef
+  - Environment variables
+  - Case sensitivity
+  - kubectl get secret

@@ -1,0 +1,20 @@
+Delete the PVC and recreate without storageClassName:
+
+  kubectl delete pvc cache-data -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: cache-data
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    # NO storageClassName field → uses default StorageClass
+    resources:
+      requests:
+        storage: 1Gi
+  EOF
+
+The local-path provisioner will create a PV automatically.

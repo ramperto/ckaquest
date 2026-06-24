@@ -1,0 +1,14 @@
+Create a RoleBinding to connect the Role to the ServiceAccount:
+
+  kubectl create rolebinding app-deployer-binding \
+    --role=app-deployer-role \
+    --serviceaccount=ckaquest:app-deployer \
+    -n ckaquest
+
+Then verify the permissions work:
+
+  kubectl auth can-i list pods \
+    --as=system:serviceaccount:ckaquest:app-deployer \
+    -n ckaquest
+
+Should now say "yes".

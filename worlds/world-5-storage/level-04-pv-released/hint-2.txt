@@ -1,0 +1,17 @@
+Remove the claimRef from the PV to reset it to Available:
+
+  kubectl patch pv data-pv --type=json \
+    -p='[{"op":"remove","path":"/spec/claimRef"}]'
+
+This is a JSON Patch operation (RFC 6902):
+  op: "remove" — deletes the field at the given path
+  path: "/spec/claimRef" — the field to remove
+
+After the patch, the PV should transition:
+  Released → Available → Bound (once new-data PVC claims it)
+
+Check:
+  kubectl get pv data-pv
+  # STATUS: Available (briefly), then Bound
+  kubectl get pvc new-data -n ckaquest
+  # STATUS: Bound

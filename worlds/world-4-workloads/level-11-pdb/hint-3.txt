@@ -1,0 +1,19 @@
+PDBs cannot be edited in-place for spec changes. Delete and recreate:
+
+  kubectl delete pdb pdb-app-pdb -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: policy/v1
+  kind: PodDisruptionBudget
+  metadata:
+    name: pdb-app-pdb
+    namespace: ckaquest
+  spec:
+    maxUnavailable: 1
+    selector:
+      matchLabels:
+        app: pdb-app
+  EOF
+
+Verify: kubectl get pdb pdb-app-pdb -n ckaquest
+The ALLOWED column should now show 1.

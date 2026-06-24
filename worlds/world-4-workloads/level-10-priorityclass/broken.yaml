@@ -1,0 +1,2 @@
+# No resources pre-deployed — the "broken state" is the absence of PriorityClass 'high-priority'.
+# Your task: create the PriorityClass, then create the pod that references it.

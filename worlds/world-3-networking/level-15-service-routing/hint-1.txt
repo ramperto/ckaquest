@@ -1,0 +1,15 @@
+Check endpoints first — are they empty?
+
+  kubectl get endpoints frontend-svc -n ckaquest
+
+If empty, compare the service selector with pod labels:
+
+  kubectl get svc frontend-svc -n ckaquest -o jsonpath='{.spec.selector}'
+  kubectl get pods -n ckaquest -l app=frontend --show-labels
+
+Also check if the pods are Ready:
+
+  kubectl get pods -n ckaquest -l app=frontend
+
+If pods show 0/1 READY, the readiness probe is failing — and unready
+pods are excluded from Service endpoints.

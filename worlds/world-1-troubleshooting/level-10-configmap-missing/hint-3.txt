@@ -1,0 +1,12 @@
+Create the configmap, then the pod should start automatically:
+
+  kubectl create configmap app-config \
+    --from-literal=APP_ENV=production \
+    --from-literal=LOG_LEVEL=info \
+    -n ckaquest
+
+  # Watch the pod recover
+  kubectl get pod app -n ckaquest -w
+
+Note: Once you create the missing ConfigMap, Kubernetes will automatically
+retry starting the container (backoff resets). No need to delete the pod.

@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-backup
+  namespace: ckaquest
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: backup
+          image: busybox:1.36
+          command: ["shh", "-c", "echo 'backup OK' && sleep 2"]
+          # BUG: "shh" does not exist — should be "sh"
+          # The job will fail immediately, retry twice, then be marked Failed

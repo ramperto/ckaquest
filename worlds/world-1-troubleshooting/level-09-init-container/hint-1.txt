@@ -1,0 +1,7 @@
+The pod is stuck in "Init:0/1" — the init container is running but not completing.
+
+Check what the init container is doing:
+  kubectl logs app -c wait-for-db -n ckaquest
+
+The -c flag selects a specific container (init or regular).
+What is it waiting for?

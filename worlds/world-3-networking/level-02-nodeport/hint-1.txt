@@ -1,0 +1,8 @@
+The webapp Deployment exists but has no Service. You need to create
+a NodePort Service that exposes it on port 30080.
+
+Start by checking what's already there:
+  kubectl get all -n ckaquest
+
+NodePort services expose a port on every node (range: 30000-32767).
+You can reach them at <node-ip>:<nodePort> from outside the cluster.

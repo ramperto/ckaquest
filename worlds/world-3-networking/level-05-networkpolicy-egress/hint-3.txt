@@ -1,0 +1,30 @@
+Apply this egress policy:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: app-egress-allow-db
+    namespace: ckaquest
+  spec:
+    podSelector:
+      matchLabels:
+        app: myapp
+    policyTypes:
+      - Egress
+    egress:
+      - ports:             # Allow DNS
+          - protocol: UDP
+            port: 53
+          - protocol: TCP
+            port: 53
+      - to:                # Allow DB
+          - podSelector:
+              matchLabels:
+                app: db
+        ports:
+          - protocol: TCP
+            port: 5432
+  EOF
+
+Test: kubectl exec app -n ckaquest -- nc -z -w 3 db-svc 5432

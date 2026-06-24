@@ -1,0 +1,14 @@
+The pod uses dnsPolicy: None with a wrong nameserver IP (10.0.0.1).
+
+When dnsPolicy is None, Kubernetes does NOT inject any DNS settings
+automatically. The pod relies entirely on the dnsConfig block you provide.
+
+Find the actual CoreDNS ClusterIP:
+
+  kubectl get svc -n kube-system kube-dns -o jsonpath='{.spec.clusterIP}'
+
+On k3s this is usually 10.43.0.10. You can either:
+  (a) Fix the nameserver IP in dnsConfig to match the real CoreDNS IP
+  (b) Switch to dnsPolicy: ClusterFirst (the easier option)
+
+Since pods are immutable, you must delete and recreate the dns-client pod.

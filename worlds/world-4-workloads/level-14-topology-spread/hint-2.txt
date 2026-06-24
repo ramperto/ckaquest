@@ -1,0 +1,14 @@
+The topology key `topology.kubernetes.io/rack` doesn't exist on any node.
+Check what labels your nodes actually have:
+
+  kubectl get nodes --show-labels
+
+Common topology keys that exist:
+  - kubernetes.io/hostname       (always exists)
+  - topology.kubernetes.io/zone  (cloud providers)
+  - topology.kubernetes.io/region (cloud providers)
+
+Change the topologyKey to `kubernetes.io/hostname` which is always present.
+
+On a single-node cluster, also change `whenUnsatisfiable` from
+`DoNotSchedule` to `ScheduleAnyway` since all pods land on the same node.

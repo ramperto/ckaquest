@@ -1,0 +1,22 @@
+Delete and recreate the pod:
+
+  kubectl delete pod local-app -n ckaquest
+
+Then apply a fixed version with image `nginx:1.25` and `imagePullPolicy: IfNotPresent`:
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: local-app
+    namespace: ckaquest
+    labels:
+      app: local-app
+  spec:
+    containers:
+      - name: app
+        image: nginx:1.25
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+  EOF

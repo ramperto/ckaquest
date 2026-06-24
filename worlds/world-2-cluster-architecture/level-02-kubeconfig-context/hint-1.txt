@@ -1,0 +1,8 @@
+kubectl fails even though the cluster is running. The issue is the
+active context, not the cluster itself.
+
+Start here:
+  kubectl config get-contexts      # list all contexts, note which is active (*)
+  kubectl config current-context   # show active context name
+
+One of the contexts in the list is working. Which one looks right?

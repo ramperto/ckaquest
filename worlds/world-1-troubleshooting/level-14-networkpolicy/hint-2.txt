@@ -1,0 +1,11 @@
+There is a NetworkPolicy "backend-deny-all" that selects pods with
+label "app: backend" and has empty ingress rules — denying all ingress.
+
+You need to apply a NEW NetworkPolicy that allows ingress to backend
+pods FROM frontend pods on port 80.
+
+The frontend pod has label: app=frontend
+The backend pod has label: app=backend
+
+A NetworkPolicy can use podSelector in its "from" field to allow
+traffic from specific pods.

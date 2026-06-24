@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ckaquest-player
+  namespace: ckaquest
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ckaquest-player-role
+  namespace: ckaquest
+rules:
+  - apiGroups: ["", "apps", "batch", "networking.k8s.io", "policy", "snapshot.storage.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ckaquest-player-binding
+  namespace: ckaquest
+subjects:
+  - kind: ServiceAccount
+    name: ckaquest-player
+    namespace: ckaquest
+roleRef:
+  kind: Role
+  name: ckaquest-player-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# Read-only cluster-wide access (for node inspection etc.)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ckaquest-cluster-reader
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "namespaces", "persistentvolumes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["certificatesigningrequests", "certificatesigningrequests/approval"]
+    verbs: ["get", "list", "watch", "create", "update", "approve"]
+  - apiGroups: ["scheduling.k8s.io"]
+    resources: ["priorityclasses"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ckaquest-cluster-reader-binding
+subjects:
+  - kind: ServiceAccount
+    name: ckaquest-player
+    namespace: ckaquest
+roleRef:
+  kind: ClusterRole
+  name: ckaquest-cluster-reader
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,29 @@
+title: "Deployment — Rolling Update Strategy"
+world: 4
+level: 3
+xp: 150
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  The ops team discovered that the `webapp` Deployment uses the
+  `Recreate` strategy — it terminates ALL pods before starting
+  new ones. Every release causes a full outage window.
+
+  Your job: switch to a RollingUpdate strategy so future rollouts
+  maintain availability.
+
+objective: |
+  1. Inspect Deployment `webapp` — confirm its strategy is Recreate
+  2. Patch the strategy to RollingUpdate with:
+       maxUnavailable: 1
+       maxSurge: 1
+  3. Verify the change is applied and the Deployment is healthy
+
+success_criteria:
+  - Deployment webapp strategy type is RollingUpdate
+  - maxUnavailable is 1
+  - maxSurge is 1
+  - All 3 replicas are Ready
+
+hints_available: 3

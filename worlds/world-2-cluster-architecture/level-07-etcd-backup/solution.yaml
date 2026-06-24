@@ -1,0 +1,15 @@
+# Method 1 — k3s native (simplest on k3s):
+#   sudo k3s etcd-snapshot save --name etcd-backup
+#   # Snapshot goes to /var/lib/rancher/k3s/server/db/snapshots/
+#   # Copy to required path:
+#   sudo cp /var/lib/rancher/k3s/server/db/snapshots/etcd-backup* /opt/etcd-backup.db
+
+# Method 2 — etcdctl (what CKA exam uses with kubeadm clusters):
+#   ETCDCTL_API=3 etcdctl snapshot save /opt/etcd-backup.db \
+#     --endpoints=https://127.0.0.1:2379 \
+#     --cacert=/var/lib/rancher/k3s/server/tls/etcd/server-ca.crt \
+#     --cert=/var/lib/rancher/k3s/server/tls/etcd/server-client.crt \
+#     --key=/var/lib/rancher/k3s/server/tls/etcd/server-client.key
+
+# Verify the snapshot:
+#   ETCDCTL_API=3 etcdctl snapshot status /opt/etcd-backup.db --write-out=table

@@ -1,0 +1,15 @@
+name: "NetworkPolicy — Cross-Namespace Traffic Blocked"
+description: >
+  A monitoring pod in the 'monitoring' namespace needs to scrape metrics
+  from the app in 'ckaquest'. A NetworkPolicy blocks all ingress, but it
+  needs to allow traffic from the monitoring namespace only.
+objective: "Allow the 'prometheus' pod in 'monitoring' namespace to reach 'app-svc' on port 8080."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - namespaceSelector in NetworkPolicy
+  - Cross-namespace traffic
+  - Namespace labels
+  - kubectl label namespace
+  - Combined podSelector + namespaceSelector

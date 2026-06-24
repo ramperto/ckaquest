@@ -1,0 +1,33 @@
+title: "HPA — Fix Autoscaling with Resource Requests"
+world: 4
+level: 9
+xp: 250
+difficulty: intermediate
+domain: Workloads & Scheduling
+
+story: |
+  The `web-api` Deployment has a HorizontalPodAutoscaler targeting
+  50% CPU utilization. But the HPA shows `<unknown>/50%` and refuses
+  to scale — it can't calculate CPU usage because the pods have no
+  resource requests defined.
+
+  The HPA needs resource requests on the containers to work.
+  Add CPU requests to the Deployment so the HPA can function.
+
+objective: |
+  1. Check HPA `web-api-hpa` — observe the "<unknown>/50%" CPU metric
+  2. Identify the missing CPU requests in Deployment `web-api`
+  3. Add CPU request of 100m to the container
+  4. Confirm HPA shows a real CPU percentage (not <unknown>)
+
+success_criteria:
+  - Deployment web-api containers have CPU requests set
+  - HPA web-api-hpa exists with targetCPUUtilizationPercentage or averageUtilization
+  - "HPA minReplicas: 1 and maxReplicas: 5"
+
+hints_available: 3
+
+note: |
+  HPA uses the metrics-server to read CPU usage as a percentage of
+  the container's CPU request. Without a request, there's no baseline
+  to calculate percentage — hence <unknown>.

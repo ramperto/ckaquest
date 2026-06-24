@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webapp-ingress
+  namespace: ckaquest
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /app              # Fixed: matches the correct path prefix
+            pathType: Prefix
+            backend:
+              service:
+                name: webapp-svc
+                port:
+                  number: 80
+          - path: /                 # Catch-all also works
+            pathType: Prefix
+            backend:
+              service:
+                name: webapp-svc
+                port:
+                  number: 80

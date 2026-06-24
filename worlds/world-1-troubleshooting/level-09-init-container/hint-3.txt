@@ -1,0 +1,35 @@
+Create a postgres pod and service to satisfy the init container:
+
+  cat <<EOF | kubectl apply -f - -n ckaquest
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: db
+    namespace: ckaquest
+    labels:
+      app: db
+  spec:
+    containers:
+      - name: db
+        image: postgres:15
+        env:
+          - name: POSTGRES_PASSWORD
+            value: "secret"
+        ports:
+          - containerPort: 5432
+  ---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: db-service
+    namespace: ckaquest
+  spec:
+    selector:
+      app: db
+    ports:
+      - port: 5432
+        targetPort: 5432
+  EOF
+
+Once db is Running and db-service has endpoints, the init container will
+complete and the main app container will start.

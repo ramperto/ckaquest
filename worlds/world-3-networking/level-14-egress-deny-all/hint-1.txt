@@ -1,0 +1,11 @@
+Check if the web pod can reach the api service:
+
+  WEB_POD=$(kubectl get pods -n ckaquest -l app=web -o jsonpath='{.items[0].metadata.name}')
+  kubectl exec $WEB_POD -n ckaquest -- wget -qO- --timeout=3 api-svc
+
+It times out. Now check the NetworkPolicy:
+
+  kubectl describe networkpolicy web-egress -n ckaquest
+
+You'll see it applies to pods with app=web, has Egress in policyTypes,
+but the egress rules are empty — which means ALL egress is denied.

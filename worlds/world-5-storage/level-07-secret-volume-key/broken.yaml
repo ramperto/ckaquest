@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-secret
+  namespace: ckaquest
+type: Opaque
+stringData:
+  tls.crt: "-----BEGIN CERTIFICATE-----\nMIIFake...cert content...\n-----END CERTIFICATE-----"
+  tls.key: "-----BEGIN PRIVATE KEY-----\nMIIFake...key content...\n-----END PRIVATE KEY-----"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tls-proxy
+  namespace: ckaquest
+  labels:
+    app: tls-proxy
+spec:
+  volumes:
+    - name: tls-vol
+      secret:
+        secretName: tls-secret
+        items:
+          - key: cert       # BUG: Secret key is "tls.crt", not "cert"
+            path: tls.crt   # destination filename inside the container
+  containers:
+    - name: proxy
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'Cert:' $(cat /etc/ssl/tls.crt | head -1); sleep 3600"]
+      volumeMounts:
+        - name: tls-vol
+          mountPath: /etc/ssl

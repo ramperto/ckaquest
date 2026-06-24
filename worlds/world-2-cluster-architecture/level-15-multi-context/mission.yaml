@@ -1,0 +1,32 @@
+title: "Multi-Context Kubeconfig — Switch to the Right Cluster"
+world: 2
+level: 15
+xp: 200
+difficulty: intermediate
+domain: Cluster Architecture
+
+story: |
+  Someone merged multiple cluster configurations into a single kubeconfig.
+  The current context is set to `production` -- but that cluster is
+  unreachable (the server IP does not exist). Meanwhile, the real local k3s
+  cluster is configured under the `local-k3s` context and works fine.
+
+  Every kubectl command is timing out because it is trying to reach the
+  wrong cluster. Switch to the correct context before anything else breaks.
+
+objective: |
+  1. List all available contexts with `kubectl config get-contexts`
+  2. Identify that `production` is the current context but unreachable
+  3. Switch to `local-k3s` context
+  4. Verify the cluster is reachable with `kubectl get nodes`
+
+success_criteria:
+  - Current context is local-k3s
+  - kubectl get nodes succeeds (cluster is reachable)
+
+hints_available: 3
+
+note: |
+  The CKA exam presents multiple clusters. You MUST switch to the correct
+  context at the start of each question. Forgetting this means you modify
+  the wrong cluster.

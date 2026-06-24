@@ -1,0 +1,34 @@
+title: "TLS Certificate with Wrong Common Name"
+world: 1
+level: 19
+xp: 300
+difficulty: advanced
+domain: Troubleshooting
+
+story: |
+  The security team issued a TLS certificate for the new app, but someone
+  generated it with the wrong Common Name (CN). The certificate says
+  `wrong.example.com` but the application needs `app.example.com`. The
+  cert is stored in a Kubernetes TLS secret, and the Ingress controller
+  is serving the wrong certificate to clients.
+
+  You need to generate a new self-signed certificate with the correct CN
+  and replace the secret. This is a common operational task that combines
+  openssl and kubectl skills.
+
+objective: |
+  1. Inspect the current TLS secret to confirm the wrong CN
+  2. Generate a new self-signed certificate with CN=app.example.com
+  3. Delete the old secret and create a new one with the correct cert
+  4. Confirm the Deployment is still running
+
+success_criteria:
+  - Secret app-tls exists and is type kubernetes.io/tls
+  - Certificate CN or SAN contains app.example.com
+  - Deployment tls-app is Running
+
+hints_available: 3
+
+note: |
+  Know your openssl commands for the CKA exam. Certificate generation
+  and inspection are commonly tested skills.

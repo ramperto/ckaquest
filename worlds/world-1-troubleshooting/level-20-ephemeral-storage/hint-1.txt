@@ -1,0 +1,6 @@
+Check why the pod is Pending:
+
+  kubectl describe pod storage-hog -n ckaquest
+
+Look at the Events section — you'll see "Insufficient ephemeral-storage".
+The scheduler can't find a node with enough ephemeral disk space.

@@ -1,0 +1,13 @@
+Check the pod status:
+
+  kubectl get pod app-with-sidecar -n ckaquest
+
+You'll see: STATUS = Init:0/1 — the init container is running but
+never completing. The main container hasn't started yet.
+
+Describe the pod to see more detail:
+
+  kubectl describe pod app-with-sidecar -n ckaquest
+
+Look at the Init Containers section — log-agent is in "Running" state
+but the main container is "Waiting" (PodInitializing).

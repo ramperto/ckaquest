@@ -1,0 +1,12 @@
+# Level 15: Multi-Context Kubeconfig
+#
+# The "broken" state is NOT a Kubernetes manifest — it is the kubeconfig
+# file (~/.kube/config) created by setup.sh.
+#
+# The kubeconfig contains three contexts:
+#   - production  (server: 10.255.255.1:6443) — UNREACHABLE, set as current-context
+#   - staging     (server: 10.255.255.2:6443) — UNREACHABLE
+#   - local-k3s   (server: real k3s address)  — REACHABLE
+#
+# Run setup.sh first to create the broken kubeconfig.
+# Your task: switch to the local-k3s context so kubectl works again.

@@ -1,0 +1,13 @@
+The command is "/bin/shh" — should be "/bin/sh" (extra 'h').
+
+You CANNOT edit a running pod's command in-place. You must delete and recreate it.
+
+Fix steps:
+  1. Delete the broken pod:
+       kubectl delete pod web -n ckaquest
+
+  2. Create a working pod (no custom command needed for nginx):
+       kubectl run web --image=nginx:1.25 -n ckaquest
+
+  3. Verify it's running:
+       kubectl get pod web -n ckaquest

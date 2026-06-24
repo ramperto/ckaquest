@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  namespace: ckaquest
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: password     # Fixed: matches actual key in the Secret

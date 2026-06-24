@@ -1,0 +1,6 @@
+  kubectl config use-context default
+  kubectl get nodes   # should show your node as Ready
+
+Optionally clean up the broken context:
+  kubectl config delete-context broken-context
+  kubectl config delete-user broken-user

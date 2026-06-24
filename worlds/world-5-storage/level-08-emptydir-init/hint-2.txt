@@ -1,0 +1,14 @@
+The emptyDir volume is shared between init and main containers — BUT
+they see different directories because their mountPaths differ:
+  init-config mounts at: /work   → writes /work/config.json
+  main        mounts at: /data   → /data is empty!
+
+Both containers must use the same mountPath for the files to be visible.
+
+Delete the pod (immutable spec) and recreate with matching paths:
+  kubectl delete pod worker -n ckaquest
+
+  kubectl apply -f - <<EOF
+  # ... (see hint-3 for full YAML)
+  # Key fix: change main container mountPath from /data to /work
+  EOF

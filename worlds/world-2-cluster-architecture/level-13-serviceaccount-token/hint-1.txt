@@ -1,0 +1,6 @@
+Check the pod spec for the automount setting:
+
+  kubectl get pod api-test -n ckaquest -o yaml | grep automount
+
+You should see automountServiceAccountToken: false — this is why the
+token is not mounted.

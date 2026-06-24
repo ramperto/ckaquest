@@ -1,0 +1,30 @@
+title: "Deployment — Fix the Bad Image"
+world: 4
+level: 1
+xp: 100
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  The web team just deployed a new version of their nginx frontend.
+  Someone fat-fingered the image tag. Every pod is stuck in
+  ImagePullBackOff and traffic is completely down.
+
+  You need to correct the image tag so the Deployment rolls out
+  healthy pods without deleting and recreating the Deployment.
+
+objective: |
+  1. Identify the Deployment `web` in namespace `ckaquest`
+  2. Find the wrong image tag causing ImagePullBackOff
+  3. Update the image to: nginx:1.25
+  4. Confirm the rollout completes with all 3 replicas Running
+
+success_criteria:
+  - Deployment web has image nginx:1.25
+  - All 3 replicas are Ready
+
+hints_available: 3
+
+note: |
+  Use `kubectl set image` or `kubectl edit` — do NOT delete the Deployment.
+  Deployments survive pod churn; that's the whole point.

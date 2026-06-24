@@ -1,0 +1,6 @@
+The pod requests 500Gi of ephemeral storage — that's half a terabyte!
+No node has that much available disk space for ephemeral use.
+
+Reduce it to a reasonable value like 500Mi (note: Mi, not Gi).
+Since pods are immutable for resource fields, you'll need to delete
+and recreate the pod.

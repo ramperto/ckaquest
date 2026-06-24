@@ -1,0 +1,9 @@
+The error is "exec: /bin/shh: no such file or directory".
+
+The pod spec has a custom 'command' that overrides the container's default
+entrypoint. There's a typo in the command path.
+
+Look at the pod spec:
+  kubectl get pod web -n ckaquest -o yaml
+
+Can you spot the typo?

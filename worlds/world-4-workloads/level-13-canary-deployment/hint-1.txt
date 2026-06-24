@@ -1,0 +1,13 @@
+Check how many endpoints the Service has:
+
+  kubectl get endpoints myapp-svc -n ckaquest
+
+You'll see only 3 IPs — all from v1 pods. The v2 pod is missing.
+
+Now check the Service selector:
+
+  kubectl get svc myapp-svc -n ckaquest -o jsonpath='{.spec.selector}'
+
+It selects on: app=myapp. Check if v2 pods have that label:
+
+  kubectl get pods -n ckaquest -l version=v2 --show-labels

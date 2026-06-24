@@ -1,0 +1,34 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: manual
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pipeline-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce    # hostPath only supports RWO
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: /tmp/ckaquest-pipeline-pv
+---
+# BUG: PVC requests ReadWriteMany but PV only supports ReadWriteOnce
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pipeline-data
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteMany   # mismatch — PV only has ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 5Gi

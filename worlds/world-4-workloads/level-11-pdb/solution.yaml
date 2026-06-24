@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdb-app
+  namespace: ckaquest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pdb-app
+  template:
+    metadata:
+      labels:
+        app: pdb-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+# FIX: maxUnavailable: 1 allows 1 pod to be disrupted at a time
+# This lets kubectl drain proceed while keeping at least 2 pods available
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-app-pdb
+  namespace: ckaquest
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: pdb-app

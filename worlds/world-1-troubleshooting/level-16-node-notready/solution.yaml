@@ -1,0 +1,40 @@
+# Level 16 Solution: Node Tainted NotReady
+#
+# Step 1: Identify the taint on the node
+# kubectl get nodes
+# kubectl describe node <node-name>
+# Look under "Taints:" for node.kubernetes.io/not-ready=true:NoSchedule
+#
+# Step 2: Remove the taint (note the trailing dash `-`)
+# kubectl taint nodes <node-name> node.kubernetes.io/not-ready:NoSchedule-
+#
+# Or dynamically:
+# kubectl taint nodes $(kubectl get nodes -o jsonpath='{.items[0].metadata.name}') node.kubernetes.io/not-ready:NoSchedule-
+#
+# Step 3: The deployment does not need changes — once the taint is removed,
+# the scheduler will place the pod on the node.
+#
+# The deployment YAML is correct as-is:
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: critical-service
+  namespace: ckaquest
+  labels:
+    app: critical-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: critical-service
+  template:
+    metadata:
+      labels:
+        app: critical-service
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80

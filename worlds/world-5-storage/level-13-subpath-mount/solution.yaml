@@ -1,0 +1,36 @@
+# Solution: Level 13 — subPath Mount
+#
+# Fix: Use subPath to mount only app.conf at /etc/app/app.conf
+# instead of mounting the entire ConfigMap at /etc/app/
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: ckaquest
+data:
+  app.conf: |
+    port=8080
+    host=0.0.0.0
+  logging.conf: |
+    level=INFO
+    output=stdout
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-app
+  namespace: ckaquest
+spec:
+  containers:
+    - name: config-app
+      image: busybox:1.36
+      command: ["sh", "-c", "cat /etc/app/app.conf && sleep 3600"]
+      volumeMounts:
+        - name: config-vol
+          mountPath: /etc/app/app.conf
+          subPath: app.conf
+  volumes:
+    - name: config-vol
+      configMap:
+        name: app-config

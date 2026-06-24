@@ -1,0 +1,35 @@
+title: "Volume Snapshot — Missing VolumeSnapshotClass"
+world: 5
+level: 12
+xp: 300
+difficulty: advanced
+domain: Storage
+
+story: |
+  The backup team created a VolumeSnapshot called `data-snapshot` to
+  capture the state of PVC `source-data` before a risky migration. But
+  the snapshot is stuck — it references a VolumeSnapshotClass called
+  `csi-snap-class` that was never created.
+
+  Without the snapshot class, the CSI driver does not know how to take
+  the snapshot. Your mission: create the missing VolumeSnapshotClass
+  and get the snapshot resource into a valid state.
+
+objective: |
+  1. Identify that VolumeSnapshotClass `csi-snap-class` does not exist
+  2. Create the VolumeSnapshotClass with the correct CSI driver
+  3. Ensure VolumeSnapshot `data-snapshot` references the correct class and PVC
+  4. Confirm PVC `source-data` exists
+
+success_criteria:
+  - VolumeSnapshotClass csi-snap-class exists
+  - VolumeSnapshot data-snapshot exists and references csi-snap-class
+  - VolumeSnapshot data-snapshot references PVC source-data
+  - PVC source-data exists
+
+hints_available: 3
+
+note: |
+  k3s local-path provisioner does not support real snapshots. This level
+  validates that the snapshot resources exist with correct specs, not
+  that actual data was captured.

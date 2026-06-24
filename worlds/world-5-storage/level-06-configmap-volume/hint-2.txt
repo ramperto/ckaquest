@@ -1,0 +1,20 @@
+Create the missing ConfigMap:
+
+  kubectl create configmap app-config -n ckaquest \
+    --from-literal=app.properties=$'log_level=INFO\nmax_connections=100'
+
+OR using YAML:
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: app-config
+    namespace: ckaquest
+  data:
+    app.properties: |
+      log_level=INFO
+      max_connections=100
+  EOF
+
+Once the ConfigMap exists, the kubelet will automatically retry mounting it.
+Check the pod — it should transition from ContainerCreating → Running.

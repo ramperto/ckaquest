@@ -1,0 +1,20 @@
+Fix both issues:
+
+1. Fix the Service selector:
+   kubectl edit svc frontend-svc -n ckaquest
+   Change: app: frontned
+   To:     app: frontend
+
+2. Fix the readiness probe path:
+   kubectl edit deploy frontend -n ckaquest
+   Change: path: /healthz
+   To:     path: /
+
+   (nginx serves the default welcome page at /, not /healthz)
+
+Wait for the rolling update to complete:
+  kubectl rollout status deployment/frontend -n ckaquest
+
+Verify:
+  kubectl get endpoints frontend-svc -n ckaquest
+  curl -s localhost:30080

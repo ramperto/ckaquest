@@ -1,0 +1,15 @@
+name: "Pending Pod — Insufficient Resources"
+description: >
+  A pod has been Pending for 15 minutes. No nodes can satisfy its resource
+  requirements. The scheduler is unable to place it anywhere in the cluster.
+  Find out why and fix it.
+objective: "Get the 'compute' pod Running in the ckaquest namespace."
+xp: 150
+difficulty: beginner
+expected_time: "12m"
+concepts:
+  - Pod scheduling
+  - Resource requests
+  - Node capacity
+  - kubectl describe node
+  - Pending pods

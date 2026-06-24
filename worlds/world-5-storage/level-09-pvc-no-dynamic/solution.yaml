@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cache-data
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  # storageClassName omitted → uses default StorageClass (local-path on k3s)
+  # This enables dynamic provisioning — a PV is created automatically
+  resources:
+    requests:
+      storage: 1Gi

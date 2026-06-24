@@ -1,0 +1,30 @@
+title: "Node Affinity — Schedule in the Right Zone"
+world: 4
+level: 8
+xp: 200
+difficulty: intermediate
+domain: Workloads & Scheduling
+
+story: |
+  The `zone-aware-app` pod requires scheduling in `zone=us-east`
+  but the cluster node is labelled `zone=us-west`. The pod is
+  stuck Pending with `0/1 nodes matched node affinity`.
+
+  Fix the pod's nodeAffinity so it matches the actual node label,
+  or change the constraint from Required to Preferred.
+
+objective: |
+  1. Check what zone label the node actually has
+  2. Fix the pod's requiredDuringScheduling nodeAffinity
+     to match the real zone label
+  3. Confirm the pod reaches Running state
+
+success_criteria:
+  - Pod zone-aware-app is Running
+  - Pod has a nodeAffinity rule using the zone key
+
+hints_available: 3
+
+note: |
+  setup.sh labels the node with zone=us-west before the pod is deployed.
+  The broken pod requires zone=us-east — the mismatch causes Pending.

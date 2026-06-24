@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cache-data
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""   # BUG: empty string disables dynamic provisioning
+                         # Kubernetes will only bind to a manually created PV
+                         # that also has storageClassName: "" — none exists here
+  resources:
+    requests:
+      storage: 1Gi

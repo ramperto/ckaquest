@@ -1,0 +1,8 @@
+Patch the service selector to match the pod label "app: backend":
+
+  kubectl patch service backend-svc -n ckaquest \
+    --type='json' \
+    -p='[{"op":"replace","path":"/spec/selector/app","value":"backend"}]'
+
+Then verify endpoints appear:
+  kubectl get endpoints backend-svc -n ckaquest

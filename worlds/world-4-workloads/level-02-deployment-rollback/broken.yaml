@@ -1,0 +1,22 @@
+# This updates the api deployment to a broken image (revision 2)
+# setup.sh already created revision 1 (nginx:1.25)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: ckaquest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: nginx:BROKEN   # revision 2 — bad image, does not exist
+          ports:
+            - containerPort: 80

@@ -1,0 +1,10 @@
+The pod overrides KUBERNETES_SERVICE_HOST to 10.99.99.99 which is not
+the real API server. It also overrides KUBERNETES_SERVICE_PORT to 6443.
+
+Both env var overrides need to be removed. Kubernetes will auto-inject
+the correct values.
+
+Since pod specs are immutable, you must delete and recreate the pod.
+Export it first:
+
+  kubectl get pod debug-pod -n ckaquest -o yaml > /tmp/debug-pod.yaml

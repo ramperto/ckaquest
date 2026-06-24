@@ -1,0 +1,40 @@
+title: "Egress Deny All — Empty Egress Array Blocks Everything"
+world: 3
+level: 14
+xp: 250
+difficulty: advanced
+domain: Services & Networking
+
+story: |
+  The security team created a NetworkPolicy for the `web` pods to restrict
+  their outbound traffic — the intent was to only allow connections to
+  the `api` service on port 80.
+
+  But they set `egress: []` (an empty array), which is a **deny-all
+  egress rule**. This blocks ALL outbound traffic from the web pods —
+  including DNS lookups to CoreDNS.
+
+  Without DNS, the web pods can't even resolve `api-svc` to an IP,
+  let alone connect to it. Fix the NetworkPolicy to allow the intended
+  traffic plus DNS.
+
+objective: |
+  1. Identify why web pods cannot reach api-svc
+  2. Edit the NetworkPolicy `web-egress` to allow:
+     a. Egress to pods labeled `app: api` on port 80 (TCP)
+     b. DNS egress on port 53 (UDP and TCP) so names can be resolved
+  3. Verify: `kubectl exec <web-pod> -n ckaquest -- wget -qO- --timeout=5 api-svc`
+
+success_criteria:
+  - Deployments web and api both have ready replicas
+  - NetworkPolicy web-egress exists
+  - NetworkPolicy has at least one egress rule (not empty array)
+  - Web pod can reach api-svc on port 80
+
+hints_available: 3
+
+note: |
+  In NetworkPolicy, `egress: []` means "deny all egress" — NOT
+  "allow all egress". Omitting the egress field entirely (when Egress
+  is not in policyTypes) means no egress restriction. This subtle
+  difference causes many outages.

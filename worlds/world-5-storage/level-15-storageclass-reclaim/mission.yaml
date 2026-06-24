@@ -1,0 +1,36 @@
+title: "StorageClass Reclaim Policy — Protect Critical Data"
+world: 5
+level: 15
+xp: 300
+difficulty: advanced
+domain: Storage
+
+story: |
+  Deployment `db-app` stores critical data on PVC `important-data`,
+  which uses StorageClass `delete-sc`. The problem: that StorageClass
+  has `reclaimPolicy: Delete`, meaning if the PVC is ever deleted, the
+  underlying PV and all data are destroyed.
+
+  The team needs a safer setup. Create a new StorageClass with
+  `reclaimPolicy: Retain`, provision a new PVC, and migrate the
+  Deployment to use it. The old PVC can stay — but the app must
+  run on the new, safer storage.
+
+objective: |
+  1. Create StorageClass `retain-sc` with reclaimPolicy: Retain
+  2. Create PVC `safe-data` (1Gi, ReadWriteOnce) using retain-sc
+  3. Update Deployment `db-app` to use PVC `safe-data` instead of `important-data`
+  4. Verify the Deployment is healthy with 1 ready replica
+
+success_criteria:
+  - StorageClass retain-sc exists with reclaimPolicy Retain
+  - PVC safe-data exists and is Bound
+  - PVC safe-data uses storageClassName retain-sc
+  - Deployment db-app has 1 ready replica
+  - Deployment db-app references PVC safe-data (not important-data)
+
+hints_available: 3
+
+note: |
+  In production, you would also migrate data from the old PVC to the
+  new one. This level focuses on the StorageClass and PVC setup.

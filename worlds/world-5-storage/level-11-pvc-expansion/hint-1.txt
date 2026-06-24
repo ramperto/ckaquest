@@ -1,0 +1,14 @@
+Hint 1: Identify the Problem
+
+Try expanding the PVC directly:
+
+  kubectl edit pvc app-data -n ckaquest
+
+Change the storage from 500Mi to 2Gi and save. You will get an error
+because the StorageClass does not allow volume expansion.
+
+Check the StorageClass:
+
+  kubectl get storageclass no-expand-sc -o yaml
+
+Look at the `allowVolumeExpansion` field — it is set to `false`.

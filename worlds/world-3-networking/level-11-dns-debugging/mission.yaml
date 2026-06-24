@@ -1,0 +1,39 @@
+title: "DNS Debugging — Wrong Nameserver in dnsConfig"
+world: 3
+level: 11
+xp: 250
+difficulty: intermediate
+domain: Services & Networking
+
+story: |
+  The platform team deployed a `dns-client` pod to test connectivity to
+  a new `web-app` service. But every `nslookup` from the client times out.
+
+  Someone configured the pod with `dnsPolicy: None` and a custom
+  `dnsConfig` block — pointing to a nameserver that doesn't exist on this
+  cluster. Without a working nameserver the pod is DNS-blind: it can't
+  resolve any service name.
+
+  Fix the DNS configuration so the client pod can reach `web-svc` by name.
+
+objective: |
+  1. Identify why DNS resolution fails in the `dns-client` pod
+  2. Fix the pod's DNS configuration — either:
+     a. Correct the nameserver IP in `dnsConfig` to match the CoreDNS
+        ClusterIP (find it with `kubectl get svc -n kube-system kube-dns`)
+     b. OR change `dnsPolicy` to `ClusterFirst` and remove `dnsConfig`
+  3. Verify: `kubectl exec dns-client -n ckaquest -- nslookup web-svc.ckaquest.svc.cluster.local`
+
+success_criteria:
+  - Deployment web-app has 1 ready replica
+  - Service web-svc exists with port 80
+  - Pod dns-client is Running
+  - dns-client can resolve web-svc via DNS (nslookup succeeds)
+
+hints_available: 3
+
+note: |
+  When dnsPolicy is None, Kubernetes does NOT inject any DNS settings
+  automatically. You must supply everything via dnsConfig. If the
+  nameserver IP is wrong, ALL DNS lookups from that pod will fail.
+  The safest default for most workloads is dnsPolicy: ClusterFirst.

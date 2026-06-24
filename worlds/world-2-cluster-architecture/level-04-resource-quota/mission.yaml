@@ -1,0 +1,15 @@
+name: "ResourceQuota — Deployment Blocked"
+description: >
+  A deployment can't scale up. New pods stay Pending and the ReplicaSet
+  shows a warning. The namespace has a ResourceQuota that's been exceeded.
+  You need to either expand the quota or free up resources.
+objective: "Get all 3 replicas of the 'webapp' Deployment Running."
+xp: 150
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - ResourceQuota
+  - Namespace limits
+  - kubectl describe quota
+  - Quota enforcement
+  - Resource planning

@@ -1,0 +1,22 @@
+Edit the deployment to fix the topology spread constraint:
+
+  kubectl edit deploy spread-app -n ckaquest
+
+Change:
+  topologyKey: topology.kubernetes.io/rack
+  whenUnsatisfiable: DoNotSchedule
+
+To:
+  topologyKey: kubernetes.io/hostname
+  whenUnsatisfiable: ScheduleAnyway
+
+Or apply the fix directly:
+
+  kubectl patch deploy spread-app -n ckaquest --type='json' \
+    -p='[
+      {"op":"replace","path":"/spec/template/spec/topologySpreadConstraints/0/topologyKey","value":"kubernetes.io/hostname"},
+      {"op":"replace","path":"/spec/template/spec/topologySpreadConstraints/0/whenUnsatisfiable","value":"ScheduleAnyway"}
+    ]'
+
+Verify: kubectl get pods -n ckaquest -l app=spread-app
+All pods should be Running.

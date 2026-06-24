@@ -1,0 +1,29 @@
+Hint 2: Create the Retain StorageClass and PVC
+
+Create a new StorageClass with Retain policy:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: storage.k8s.io/v1
+  kind: StorageClass
+  metadata:
+    name: retain-sc
+  provisioner: rancher.io/local-path
+  reclaimPolicy: Retain
+  EOF
+
+Then create the new PVC:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: safe-data
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: retain-sc
+    resources:
+      requests:
+        storage: 1Gi
+  EOF

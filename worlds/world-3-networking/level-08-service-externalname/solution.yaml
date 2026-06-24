@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  namespace: ckaquest
+spec:
+  type: ExternalName
+  externalName: legacy-db.corp.internal
+  # No selector needed — ExternalName creates a CNAME record
+  # No ports needed (optional metadata only)

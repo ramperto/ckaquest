@@ -1,0 +1,27 @@
+Edit the NetworkPolicy to add proper egress rules:
+
+  kubectl edit networkpolicy web-egress -n ckaquest
+
+Replace the empty egress array with:
+
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: api
+      ports:
+        - port: 80
+          protocol: TCP
+    - to: []
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+
+The first rule allows HTTP to api pods. The second rule allows DNS
+to any destination (needed for CoreDNS resolution).
+
+Verify:
+  WEB_POD=$(kubectl get pods -n ckaquest -l app=web -o jsonpath='{.items[0].metadata.name}')
+  kubectl exec $WEB_POD -n ckaquest -- wget -qO- --timeout=5 api-svc

@@ -1,0 +1,26 @@
+# Step 1: Label the monitoring namespace so NetworkPolicy can select it
+# kubectl label namespace monitoring purpose=monitoring
+
+# Step 2: Apply a NetworkPolicy that allows ingress from monitoring namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-monitoring-scrape
+  namespace: ckaquest
+spec:
+  podSelector:
+    matchLabels:
+      app: metrics-app
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              purpose: monitoring
+          podSelector:
+            matchLabels:
+              app: prometheus
+      ports:
+        - protocol: TCP
+          port: 8080

@@ -1,0 +1,38 @@
+# Complete kubeadm upgrade script for 1.28.0 → 1.29.0
+# Save as /tmp/upgrade-plan.sh
+# ---
+
+#!/bin/bash
+# Node name
+NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+TARGET="1.29.0"
+TARGET_PKG="1.29.0-1.1"  # Ubuntu package version
+
+# 1-3: Upgrade kubeadm first
+apt-mark unhold kubeadm
+apt-get update -qq
+apt-get install -y kubeadm=${TARGET_PKG}
+apt-mark hold kubeadm
+kubeadm version
+
+# 4-5: Run upgrade plan and apply
+kubeadm upgrade plan
+kubeadm upgrade apply v${TARGET} -y
+
+# 6: Drain the node
+kubectl drain $NODE \
+  --ignore-daemonsets \
+  --delete-emptydir-data
+
+# 7-9: Upgrade kubelet and kubectl
+apt-mark unhold kubectl kubelet
+apt-get install -y kubectl=${TARGET_PKG} kubelet=${TARGET_PKG}
+apt-mark hold kubectl kubelet
+
+# 10: Reload and restart kubelet
+systemctl daemon-reload
+systemctl restart kubelet
+
+# 11: Uncordon
+kubectl uncordon $NODE
+kubectl get nodes

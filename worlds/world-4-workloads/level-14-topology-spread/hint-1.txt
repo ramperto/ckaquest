@@ -1,0 +1,10 @@
+Check the pod status — they're all Pending:
+
+  kubectl get pods -n ckaquest -l app=spread-app
+
+Describe one of the Pending pods to see the scheduling error:
+
+  kubectl describe pod -n ckaquest -l app=spread-app | grep -A5 Events
+
+You'll see something like: "no topology key found on any node matching
+topology.kubernetes.io/rack"

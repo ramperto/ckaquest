@@ -1,0 +1,18 @@
+Create the missing PriorityClass:
+
+  kubectl apply -f - <<EOF
+  apiVersion: scheduling.k8s.io/v1
+  kind: PriorityClass
+  metadata:
+    name: high-priority
+  value: 1000000
+  globalDefault: false
+  description: "High priority for critical workloads"
+  EOF
+
+PriorityClass is a CLUSTER-scoped resource — no namespace needed.
+
+After creating it, the existing pending pod may or may not auto-reschedule.
+To be safe, delete and recreate the pod:
+  kubectl delete pod critical-app -n ckaquest
+  kubectl apply -f <original-broken.yaml>

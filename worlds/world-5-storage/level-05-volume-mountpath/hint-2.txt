@@ -1,0 +1,12 @@
+Fix the mountPath using kubectl patch or kubectl edit:
+
+  kubectl patch deployment webapp -n ckaquest \
+    --type=json \
+    -p='[{"op":"replace","path":"/spec/template/spec/containers/0/volumeMounts/0/mountPath","value":"/app/data"}]'
+
+Or with kubectl edit:
+  kubectl edit deployment webapp -n ckaquest
+  # Find: mountPath: /app/storage
+  # Change to: mountPath: /app/data
+
+This triggers a rolling update — a new pod is created with the correct mount.

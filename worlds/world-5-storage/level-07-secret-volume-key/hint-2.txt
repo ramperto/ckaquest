@@ -1,0 +1,28 @@
+Pod spec is immutable for volumes — delete and recreate:
+
+  kubectl delete pod tls-proxy -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: tls-proxy
+    namespace: ckaquest
+    labels:
+      app: tls-proxy
+  spec:
+    volumes:
+      - name: tls-vol
+        secret:
+          secretName: tls-secret
+          items:
+            - key: tls.crt    # fixed key
+              path: tls.crt
+    containers:
+      - name: proxy
+        image: busybox:1.36
+        command: ["sh", "-c", "echo 'Cert:' $(cat /etc/ssl/tls.crt | head -1); sleep 3600"]
+        volumeMounts:
+          - name: tls-vol
+            mountPath: /etc/ssl
+  EOF

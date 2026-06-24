@@ -1,0 +1,33 @@
+title: "PVC — Disabled Dynamic Provisioning"
+world: 5
+level: 9
+xp: 250
+difficulty: intermediate
+domain: Storage
+
+story: |
+  Someone set `storageClassName: ""` on the `cache-data` PVC to be
+  "explicit". This accidentally disabled dynamic provisioning — the
+  empty string means "do not use any StorageClass, only bind to a
+  pre-provisioned PV with no StorageClass".
+
+  No such PV exists. The PVC stays Pending forever.
+
+  Fix it to use the cluster's default StorageClass for dynamic provisioning.
+
+objective: |
+  1. Check PVC `cache-data` — note the explicit empty storageClassName
+  2. Delete the PVC and recreate it WITHOUT the storageClassName field
+     (omitting the field uses the default StorageClass: local-path)
+  3. Confirm the PVC binds dynamically
+
+success_criteria:
+  - PVC cache-data is Bound
+  - A PV was dynamically provisioned (no manually-created PV named cache-pv)
+
+hints_available: 3
+
+note: |
+  Empty string storageClassName = "I want a manually provisioned PV with no StorageClass".
+  Omitting storageClassName = "Use the cluster default StorageClass for dynamic provisioning".
+  These are very different behaviors!

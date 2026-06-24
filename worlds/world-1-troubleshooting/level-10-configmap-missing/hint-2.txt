@@ -1,0 +1,10 @@
+The pod references configmap "app-config" via envFrom, but it doesn't exist.
+
+You need to CREATE the configmap. It just needs to exist with the right name.
+The content can be any key=value pairs appropriate for the app.
+
+Quick way:
+  kubectl create configmap app-config \
+    --from-literal=APP_ENV=production \
+    --from-literal=LOG_LEVEL=info \
+    -n ckaquest

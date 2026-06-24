@@ -1,0 +1,16 @@
+name: "LimitRange — Pod Rejected at Admission"
+description: >
+  A developer is trying to deploy a pod with a generous CPU request, but
+  it's being rejected immediately by the API server — before it even reaches
+  the scheduler. A LimitRange in the namespace is enforcing per-container
+  CPU ceilings.
+objective: "Get the 'highcpu' pod Running — either fix the pod spec or the LimitRange."
+xp: 200
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - LimitRange
+  - Admission control
+  - Default limits
+  - Per-container min/max
+  - kubectl describe limitrange

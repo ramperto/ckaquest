@@ -1,0 +1,29 @@
+title: "DaemonSet — Scheduling on Every Node"
+world: 4
+level: 4
+xp: 150
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  The platform team deployed a `node-monitor` DaemonSet to collect
+  metrics from every node. But no pods are running — the DaemonSet
+  has a nodeSelector that doesn't match any node.
+
+  Fix it so the DaemonSet schedules on the cluster's node(s).
+
+objective: |
+  1. Inspect DaemonSet `node-monitor` — find the broken nodeSelector
+  2. Fix it so the pod can schedule (remove the wrong nodeSelector
+     OR label the node to match)
+  3. Confirm at least 1 pod is Running
+
+success_criteria:
+  - DaemonSet node-monitor has at least 1 pod Running
+  - DaemonSet desiredNumberScheduled >= 1
+
+hints_available: 3
+
+note: |
+  A DaemonSet runs one pod per eligible node. If nodeSelector filters
+  out all nodes, desiredNumberScheduled = 0 and no pods are created.

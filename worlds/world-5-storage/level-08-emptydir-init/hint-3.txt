@@ -1,0 +1,36 @@
+Full fix:
+
+  kubectl delete pod worker -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: worker
+    namespace: ckaquest
+    labels:
+      app: worker
+  spec:
+    volumes:
+      - name: shared-vol
+        emptyDir: {}
+    initContainers:
+      - name: init-config
+        image: busybox:1.36
+        command: ["sh", "-c", "echo '{\"level\":\"INFO\"}' > /work/config.json"]
+        volumeMounts:
+          - name: shared-vol
+            mountPath: /work
+    containers:
+      - name: main
+        image: busybox:1.36
+        command: ["sh", "-c", "cat /work/config.json && sleep 3600"]
+        volumeMounts:
+          - name: shared-vol
+            mountPath: /work   # same path as init container
+  EOF
+
+  kubectl get pod worker -n ckaquest -w
+  # Init:0/1 → PodInitializing → Running
+
+Then: validate

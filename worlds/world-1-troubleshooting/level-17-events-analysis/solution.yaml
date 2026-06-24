@@ -1,0 +1,53 @@
+# Level 17 Solution: Events Analysis — Cascading Failures
+#
+# Fix 1: Create the missing ServiceAccount
+# kubectl create serviceaccount app-runner -n ckaquest
+#
+# Fix 2: Fix the Service targetPort from 8080 to 80
+# kubectl edit svc event-svc -n ckaquest
+# (change targetPort from 8080 to 80)
+#
+# Or apply these corrected manifests:
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-runner
+  namespace: ckaquest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-app
+  namespace: ckaquest
+  labels:
+    app: event-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-app
+  template:
+    metadata:
+      labels:
+        app: event-app
+    spec:
+      serviceAccountName: app-runner
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: event-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

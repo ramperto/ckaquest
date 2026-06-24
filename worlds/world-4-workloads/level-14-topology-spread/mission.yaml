@@ -1,0 +1,33 @@
+title: "Topology Trap — Pods Stuck Pending"
+world: 4
+level: 14
+xp: 250
+difficulty: advanced
+domain: Workloads & Scheduling
+
+story: |
+  The infrastructure team configured `spread-app` with topology spread
+  constraints to distribute pods evenly across racks. But the pods are
+  all stuck in Pending state.
+
+  The topology key `topology.kubernetes.io/rack` doesn't exist on any
+  node in this cluster — and with `whenUnsatisfiable: DoNotSchedule`,
+  the scheduler refuses to place pods at all.
+
+objective: |
+  1. Check why pods are Pending — look at events for scheduling errors
+  2. Inspect node labels to see what topology keys actually exist
+  3. Fix the topology spread constraint to use a valid key
+  4. Ensure all 3 replicas reach Running state
+
+success_criteria:
+  - Deployment spread-app has 3 ready replicas
+  - Topology spread constraint uses a valid topology key
+  - All pods are Running
+
+hints_available: 3
+
+note: |
+  On a single-node k3s cluster, topology spread with DoNotSchedule and
+  maxSkew: 1 can still cause issues. Using ScheduleAnyway is more
+  forgiving and often necessary for single-node testing.

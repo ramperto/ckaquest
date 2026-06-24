@@ -1,0 +1,8 @@
+Quickest fix — re-copy from k3s:
+
+  sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+  sudo chown $(id -u):$(id -g) ~/.kube/config
+  chmod 600 ~/.kube/config
+
+Then verify:
+  kubectl get nodes

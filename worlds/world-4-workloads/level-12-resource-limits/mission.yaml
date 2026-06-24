@@ -1,0 +1,30 @@
+title: "Resource Mismatch — Limits Below Requests"
+world: 4
+level: 12
+xp: 200
+difficulty: beginner
+domain: Workloads & Scheduling
+
+story: |
+  A developer pushed a new pod spec for `resource-pod` but it won't
+  create. The API server rejects it immediately with a validation error.
+
+  Looking at the spec, the resource limits are set LOWER than the
+  requests — memory limit is 64Mi but request is 512Mi, and CPU limit
+  is 100m but request is 250m. Kubernetes requires limits >= requests.
+
+objective: |
+  1. Examine the broken pod spec — identify the invalid resource configuration
+  2. Fix the resource spec so that limits >= requests for both memory and CPU
+  3. Apply the corrected spec and confirm the pod reaches Running state
+
+success_criteria:
+  - Pod resource-pod exists and is Running
+  - limits.memory >= requests.memory
+  - limits.cpu >= requests.cpu
+
+hints_available: 3
+
+note: |
+  Kubernetes enforces limits >= requests at admission time. If limits < requests,
+  the API server rejects the pod immediately — it never gets scheduled.

@@ -1,0 +1,6 @@
+Check the pod's environment variables:
+
+  kubectl get pod debug-pod -n ckaquest -o jsonpath='{.spec.containers[0].env}'
+
+Notice that KUBERNETES_SERVICE_HOST is set to 10.99.99.99 — that is
+not the real API server address.

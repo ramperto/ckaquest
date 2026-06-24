@@ -1,0 +1,24 @@
+Patch the ConfigMap directly (avoids editor):
+
+  # Get current Corefile
+  kubectl get configmap coredns -n kube-system \
+    -o jsonpath='{.data.Corefile}' > /tmp/corefile.txt
+
+  # Prepend the stub zone
+  cat > /tmp/new-corefile.txt << 'EOF'
+  internal.corp:53 {
+      errors
+      cache 30
+      forward . 10.0.0.53
+  }
+
+  EOF
+  cat /tmp/corefile.txt >> /tmp/new-corefile.txt
+
+  # Apply
+  kubectl create configmap coredns -n kube-system \
+    --from-file=Corefile=/tmp/new-corefile.txt \
+    --dry-run=client -o yaml | kubectl apply -f -
+
+  # Restart CoreDNS
+  kubectl rollout restart deployment coredns -n kube-system

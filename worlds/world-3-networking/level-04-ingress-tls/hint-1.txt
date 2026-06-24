@@ -1,0 +1,11 @@
+The Ingress references a TLS Secret named 'webapp-tls' but it doesn't exist.
+
+Verify:
+  kubectl get secret -n ckaquest | grep tls
+  kubectl describe ingress webapp-ingress -n ckaquest
+
+The Ingress needs a Secret of type kubernetes.io/tls containing:
+  - tls.crt (the certificate)
+  - tls.key (the private key)
+
+You'll need to generate a certificate first.

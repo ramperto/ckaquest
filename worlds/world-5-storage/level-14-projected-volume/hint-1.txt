@@ -1,0 +1,9 @@
+Hint 1: Identify the Problem
+
+Check the pod events for errors:
+
+  kubectl describe pod projected-app -n ckaquest
+
+Look at the Events section — you should see errors related to the
+volume specification. The pod cannot start because the projected
+volume definition has invalid fields.

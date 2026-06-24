@@ -1,0 +1,15 @@
+name: "ImagePullBackOff — Tag Not Found"
+description: >
+  A newly deployed pod is stuck in ImagePullBackOff. The developer claims
+  they pushed a new image but something is wrong with the tag. Find the issue
+  and fix the pod.
+objective: "Get the 'web' pod Running and Ready in the ckaquest namespace."
+xp: 100
+difficulty: beginner
+expected_time: "10m"
+concepts:
+  - ImagePullBackOff
+  - ErrImagePull
+  - Image tags
+  - Container registry
+  - kubectl describe

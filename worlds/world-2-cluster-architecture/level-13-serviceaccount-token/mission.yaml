@@ -1,0 +1,30 @@
+title: "ServiceAccount Token — automountServiceAccountToken Disabled"
+world: 2
+level: 13
+xp: 250
+difficulty: intermediate
+domain: Cluster Architecture
+
+story: |
+  The security team hardened a pod by disabling automatic token mounting.
+  Now the `api-test` pod cannot authenticate to the Kubernetes API at all --
+  there is no token file at the standard mount path. The application inside
+  needs to call the API to discover other services.
+
+  Fix the pod so the projected service account token is mounted again.
+
+objective: |
+  1. Identify that the pod `api-test` has `automountServiceAccountToken: false`
+  2. Fix the pod so the token is mounted (set to true or remove the field)
+  3. Verify the token file exists inside the pod at /var/run/secrets/kubernetes.io/serviceaccount/token
+
+success_criteria:
+  - Pod api-test is Running in ckaquest namespace
+  - Pod does NOT have automountServiceAccountToken set to false
+  - Token file is mounted inside the pod
+
+hints_available: 3
+
+note: |
+  In Kubernetes 1.24+, projected tokens replaced the legacy secret-based
+  tokens. Know the default mount path for the CKA exam.

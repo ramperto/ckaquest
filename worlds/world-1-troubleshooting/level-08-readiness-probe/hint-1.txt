@@ -1,0 +1,7 @@
+The pod is Running (phase=Running) but not Ready (0/1).
+The readiness probe is failing, so it's excluded from Service endpoints.
+
+Inspect the readiness probe:
+  kubectl describe pod web -n ckaquest
+
+Look for the "Readiness" section and recent "Events".

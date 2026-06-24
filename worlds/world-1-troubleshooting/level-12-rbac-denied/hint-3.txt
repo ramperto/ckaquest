@@ -1,0 +1,12 @@
+Create a RoleBinding that connects monitor-sa to the pod-reader Role:
+
+  kubectl create rolebinding monitor-sa-pod-reader \
+    --role=pod-reader \
+    --serviceaccount=ckaquest:monitor-sa \
+    -n ckaquest
+
+Verify it worked:
+  kubectl auth can-i list pods \
+    --as=system:serviceaccount:ckaquest:monitor-sa \
+    -n ckaquest
+  # Should output: yes

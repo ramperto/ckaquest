@@ -1,0 +1,24 @@
+Full fix and verify:
+
+  kubectl delete pvc pipeline-data -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: pipeline-data
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: manual
+    resources:
+      requests:
+        storage: 5Gi
+  EOF
+
+  kubectl get pvc pipeline-data -n ckaquest
+  kubectl get pv pipeline-pv
+  # Both should show Bound
+
+Then: validate

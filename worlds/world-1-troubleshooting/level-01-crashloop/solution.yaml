@@ -1,0 +1,16 @@
+# Fix: Remove the custom command entirely (nginx starts fine without it),
+# or correct the typo: /bin/shh → /bin/sh
+#
+# Option A — simplest: just remove the command override
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  namespace: ckaquest
+  labels:
+    app: web
+spec:
+  containers:
+    - name: web
+      image: nginx:1.25
+      # No custom command — nginx uses its default entrypoint

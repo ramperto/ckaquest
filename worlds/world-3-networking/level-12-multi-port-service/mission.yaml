@@ -1,0 +1,39 @@
+title: "Multi-Port Service — Missing Port Names"
+world: 3
+level: 12
+xp: 200
+difficulty: intermediate
+domain: Services & Networking
+
+story: |
+  The `multi-app` pod serves traffic on both HTTP (80) and HTTPS (443).
+  A Service `multi-svc` was created to expose both ports — but the
+  Service is failing validation and traffic to HTTPS is broken.
+
+  Kubernetes requires that **multi-port Services have named ports**.
+  Without names, the API server cannot distinguish between the ports
+  in selectors, Ingress rules, or NetworkPolicies.
+
+  On top of that, the HTTPS targetPort is pointing at the wrong
+  container port. Two bugs, one Service — fix them both.
+
+objective: |
+  1. Add port names to both ports in the `multi-svc` Service
+     (e.g. `http` for port 80, `https` for port 443)
+  2. Fix the HTTPS targetPort from 8443 to 443 (matching the container)
+  3. Verify both ports are reachable
+
+success_criteria:
+  - Service multi-svc exists with 2 ports
+  - Both ports have names (not empty)
+  - Port 80 targetPort is 80
+  - Port 443 targetPort is 443
+  - Endpoints exist for the service
+
+hints_available: 3
+
+note: |
+  When a Service defines more than one port, each port MUST have a
+  unique name. This is a Kubernetes API requirement. Port names also
+  make it easy to reference specific ports in Ingress, NetworkPolicy,
+  and other resources.

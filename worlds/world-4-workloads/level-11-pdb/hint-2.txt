@@ -1,0 +1,8 @@
+The PDB has `minAvailable: 3` and the deployment has 3 replicas.
+This means every single pod must remain available — zero disruptions allowed.
+
+The fix: change the PDB so at least 1 pod can be disrupted:
+  - Option A: change minAvailable from 3 to 2 (keep 2 available, allow 1 disruption)
+  - Option B: replace minAvailable with maxUnavailable: 1 (allow 1 pod down at a time)
+
+Both options achieve the same result with 3 replicas.

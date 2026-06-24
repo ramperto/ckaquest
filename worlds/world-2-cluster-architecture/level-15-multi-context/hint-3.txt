@@ -1,0 +1,9 @@
+Switch to the local-k3s context:
+
+  kubectl config use-context local-k3s
+
+Then verify:
+
+  kubectl get nodes
+
+You should see the k3s node listed and Ready.

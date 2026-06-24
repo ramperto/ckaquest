@@ -1,0 +1,30 @@
+title: "emptyDir — Init Container Volume Handoff"
+world: 5
+level: 8
+xp: 200
+difficulty: intermediate
+domain: Storage
+
+story: |
+  The `worker` pod uses an init container to pre-populate a shared
+  directory. The init container writes a config file to `/work/config.json`
+  but the main container reads from `/data/config.json` — different
+  mount paths for the same emptyDir volume.
+
+  The main container starts but immediately exits because the file
+  isn't where it's looking.
+
+  Fix the mount path so both containers share the same directory.
+
+objective: |
+  1. Inspect pod `worker` — find the mountPath mismatch
+  2. Fix the main container's volumeMount mountPath to /work
+     (so both containers share the same emptyDir path)
+  3. Confirm the pod runs to completion (or Running)
+
+success_criteria:
+  - Pod worker is Running or Succeeded
+  - Both containers mount the shared-vol emptyDir at /work
+  - Main container can read /work/config.json
+
+hints_available: 3

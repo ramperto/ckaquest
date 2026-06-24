@@ -1,0 +1,30 @@
+# The data-app Deployment needs more storage but PVC expansion is
+# blocked by the StorageClass (allowVolumeExpansion: false).
+# The team tried to edit the PVC to increase storage from 500Mi to 2Gi
+# but the request was denied.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-app
+  namespace: ckaquest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-app
+  template:
+    metadata:
+      labels:
+        app: data-app
+    spec:
+      containers:
+        - name: data-app
+          image: busybox:1.36
+          command: ["sh", "-c", "sleep 3600"]
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: app-data

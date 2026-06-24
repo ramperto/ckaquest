@@ -1,0 +1,6 @@
+The pod keeps restarting. Check why:
+
+  kubectl describe pod web -n ckaquest
+
+Look at the "Last State" section under Containers. What is the "Reason"?
+Also check the "Limits" section to see what memory was allocated.

@@ -1,0 +1,8 @@
+Check the current context and list all available contexts:
+
+  kubectl config current-context
+  kubectl config get-contexts
+
+You should see that "production" is the current context.
+Try running any command — it will time out because the production
+server is unreachable.

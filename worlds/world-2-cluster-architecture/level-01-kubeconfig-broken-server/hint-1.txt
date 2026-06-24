@@ -1,0 +1,9 @@
+kubectl says "connection refused" or "dial tcp". The cluster is running —
+something in your kubeconfig is wrong.
+
+Inspect the kubeconfig:
+  kubectl config view
+  cat ~/.kube/config
+
+Look at the "clusters" section — what server URL does it show?
+What port does k3s actually run on? (hint: 6443)

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: local-app
+  namespace: ckaquest
+  labels:
+    app: local-app
+spec:
+  containers:
+    - name: app
+      # BUG: This image doesn't exist locally on the node, and
+      # imagePullPolicy is set to Never, so Kubernetes won't even
+      # attempt to pull it. Result: ErrImageNeverPull.
+      image: mycompany/internal-app:v2.1
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 80

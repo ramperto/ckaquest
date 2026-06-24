@@ -1,0 +1,8 @@
+The current context "production" points to server 10.255.255.1:6443
+which does not exist. You need to switch to a context that points to
+the real cluster.
+
+Look at the available contexts — "local-k3s" points to the actual k3s
+cluster server.
+
+  kubectl config use-context local-k3s

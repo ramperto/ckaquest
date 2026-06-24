@@ -1,0 +1,16 @@
+name: "Node Drain — Prepare for Maintenance"
+description: >
+  You need to perform OS maintenance on the node. Before taking it offline,
+  you must safely evict all workloads. However, there's a DaemonSet pod and
+  a pod with no controller — the drain keeps failing. Handle it properly.
+objective: "Drain the node safely, then bring it back online (uncordon it)."
+xp: 150
+difficulty: beginner
+expected_time: "15m"
+concepts:
+  - kubectl drain
+  - kubectl cordon / uncordon
+  - PodDisruptionBudget
+  - DaemonSet pods during drain
+  - --ignore-daemonsets
+  - --delete-emptydir-data

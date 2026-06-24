@@ -1,0 +1,14 @@
+Check the PVC status:
+  kubectl get pvc db-data -n ckaquest
+  # STATUS: Pending
+
+Check why it's Pending:
+  kubectl describe pvc db-data -n ckaquest | tail -10
+  # "no persistent volumes available for this claim and no storage class is set"
+  # OR: "Insufficient capacity..."
+
+Check the available PV:
+  kubectl get pv db-pv
+  # CAPACITY: 5Gi
+
+The PVC requests 10Gi but the PV only has 5Gi — it will never bind.

@@ -1,0 +1,13 @@
+Check the storageClassName mismatch:
+
+  kubectl get pv app-pv -o jsonpath='{.spec.storageClassName}'
+  # standard
+
+  kubectl get pvc app-storage -n ckaquest -o jsonpath='{.spec.storageClassName}'
+  # fast-ssd
+
+Also verify no StorageClass named fast-ssd exists:
+  kubectl get storageclass
+  # fast-ssd is not listed
+
+The PVC will wait forever for a PV or dynamic provisioner with name fast-ssd.

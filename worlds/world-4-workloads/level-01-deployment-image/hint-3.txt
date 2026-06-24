@@ -1,0 +1,15 @@
+Full fix:
+
+  kubectl set image deployment/web web=nginx:1.25 -n ckaquest
+  kubectl rollout status deployment/web -n ckaquest
+
+Alternative using kubectl edit:
+  kubectl edit deployment web -n ckaquest
+  # Find: image: nginx:1.99.99-alpine
+  # Change to: image: nginx:1.25
+
+Verify:
+  kubectl get pods -n ckaquest -l app=web
+  kubectl get deployment web -n ckaquest
+
+All 3 pods should be Running 1/1 and READY column should show 3/3.

@@ -1,0 +1,35 @@
+# Deployment references PVC app-db which does not exist yet
+# Pod will be stuck in Pending: "persistentvolumeclaim app-db not found"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stateful-app
+  namespace: ckaquest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stateful-app
+  template:
+    metadata:
+      labels:
+        app: stateful-app
+    spec:
+      volumes:
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: app-db   # PVC does not exist — YOUR TASK: create it
+      containers:
+        - name: app
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Writing timestamp..." && \
+              date > /data/test.txt && \
+              echo "Wrote: $(cat /data/test.txt)" && \
+              sleep 3600
+          volumeMounts:
+            - name: app-storage
+              mountPath: /data

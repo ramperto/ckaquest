@@ -1,0 +1,13 @@
+Check what permissions app-deployer currently has:
+
+  kubectl auth can-i list pods \
+    --as=system:serviceaccount:ckaquest:app-deployer \
+    -n ckaquest
+
+It should say "no" — because no Role or RoleBinding exists yet.
+
+You can also check all permissions:
+
+  kubectl auth can-i --list \
+    --as=system:serviceaccount:ckaquest:app-deployer \
+    -n ckaquest

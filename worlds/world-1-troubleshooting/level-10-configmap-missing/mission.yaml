@@ -1,0 +1,15 @@
+name: "ConfigMap Missing — Pod Won't Start"
+description: >
+  A pod keeps restarting with CreateContainerConfigError. The app container
+  references a ConfigMap for its environment variables, but the ConfigMap
+  was never created. Fix it.
+objective: "Create the missing ConfigMap so the 'app' pod starts successfully."
+xp: 200
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - ConfigMaps
+  - envFrom
+  - CreateContainerConfigError
+  - kubectl create configmap
+  - Environment variables

@@ -1,0 +1,4 @@
+Check pod status: `kubectl describe pod local-app -n ckaquest`
+
+Look at the Events section at the bottom. You'll see `ErrImageNeverPull` —
+this means Kubernetes refuses to pull the image because the policy says Never.

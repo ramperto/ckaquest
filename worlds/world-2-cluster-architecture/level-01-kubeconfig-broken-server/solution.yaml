@@ -1,0 +1,12 @@
+# Option A — restore from backup created by setup.sh:
+#   cp ~/.kube/config.ckaquest-backup ~/.kube/config
+
+# Option B — find the right server from k3s and fix it:
+#   CORRECT=$(sudo cat /etc/rancher/k3s/k3s.yaml | grep server | awk '{print $2}')
+#   CLUSTER=$(kubectl config view -o jsonpath='{.clusters[0].name}')
+#   kubectl config set-cluster $CLUSTER --server=$CORRECT
+#   kubectl config set-cluster $CLUSTER --certificate-authority-data=$(...)
+
+# Option C — re-copy from k3s source of truth:
+#   sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+#   sudo chown $(id -u):$(id -g) ~/.kube/config

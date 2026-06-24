@@ -1,0 +1,15 @@
+name: "Service Unreachable — Label Selector Mismatch"
+description: >
+  The frontend team reports they can't reach the backend service. The pods
+  are Running and the Service exists, but curl to the service returns
+  "connection refused". Something is wrong with how the service finds its pods.
+objective: "Fix the Service so it correctly routes traffic to the backend pods."
+xp: 150
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - Service selectors
+  - Labels and annotations
+  - Endpoints
+  - kubectl get endpoints
+  - Service discovery

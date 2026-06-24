@@ -1,0 +1,33 @@
+title: "PDB Lockdown — Allow Pod Disruption"
+world: 4
+level: 11
+xp: 250
+difficulty: intermediate
+domain: Workloads & Scheduling
+
+story: |
+  The platform team set up a PodDisruptionBudget for the `pdb-app`
+  deployment to protect it during node drains and cluster upgrades.
+  But something went wrong — when they tried `kubectl drain`, EVERY
+  pod was blocked from eviction. The drain hung indefinitely.
+
+  The PDB has `minAvailable: 3` on a 3-replica deployment. That means
+  ALL pods must remain available at all times — zero disruptions allowed.
+
+objective: |
+  1. Inspect the PDB `pdb-app-pdb` — note that `disruptionsAllowed` is 0
+  2. Fix the PDB so at least 1 disruption is allowed
+  3. Options: change minAvailable to 2, or switch to maxUnavailable: 1
+  4. Verify the deployment still has 3 ready replicas
+
+success_criteria:
+  - Deployment pdb-app has 3 ready replicas
+  - PDB pdb-app-pdb exists
+  - PDB disruptionsAllowed >= 1
+
+hints_available: 3
+
+note: |
+  PDBs protect against voluntary disruptions (drains, upgrades, scaling).
+  They do NOT protect against involuntary disruptions (node crashes, OOM kills).
+  A PDB that allows zero disruptions will block `kubectl drain` indefinitely.

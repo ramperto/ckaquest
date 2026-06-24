@@ -1,0 +1,8 @@
+The app connects to 'database' as its DB host, but no Service called
+'database' exists in the namespace.
+
+You need a Kubernetes Service that, when resolved, returns the external
+hostname 'legacy-db.corp.internal'. This is what ExternalName services do.
+
+Check existing services:
+  kubectl get svc -n ckaquest

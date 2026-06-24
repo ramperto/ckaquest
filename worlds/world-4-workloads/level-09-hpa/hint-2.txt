@@ -1,0 +1,14 @@
+Add CPU requests using kubectl set resources:
+
+  kubectl set resources deployment web-api -n ckaquest \
+    --requests=cpu=100m \
+    --limits=cpu=200m
+
+This triggers a rolling update — new pods get resource requests.
+
+Wait for the rollout:
+  kubectl rollout status deployment/web-api -n ckaquest
+
+Then check HPA again (takes ~30s for metrics to appear):
+  kubectl get hpa web-api-hpa -n ckaquest
+  # TARGETS should change from <unknown>/50% to something like 0%/50%

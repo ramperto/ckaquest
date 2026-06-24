@@ -1,0 +1,13 @@
+Complete steps:
+
+  # Create snapshot
+  sudo k3s etcd-snapshot save --name cka-backup
+
+  # Find the snapshot file
+  sudo ls /var/lib/rancher/k3s/server/db/snapshots/
+
+  # Copy to required path
+  sudo cp /var/lib/rancher/k3s/server/db/snapshots/cka-backup* /opt/etcd-backup.db
+
+  # Verify it's valid
+  sudo ETCDCTL_API=3 etcdctl snapshot status /opt/etcd-backup.db --write-out=table

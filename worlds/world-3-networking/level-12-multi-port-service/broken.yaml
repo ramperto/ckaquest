@@ -1,0 +1,35 @@
+# Pod with two ports: HTTP (80) and HTTPS (443)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-app
+  namespace: ckaquest
+  labels:
+    app: multi-app
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25
+      ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+---
+# BUG 1: Multi-port Service without port names (REQUIRED when >1 port)
+# BUG 2: HTTPS targetPort is 8443 but the container listens on 443
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: multi-app
+  ports:
+    - port: 80
+      targetPort: 80
+      # missing: name: http
+    - port: 443
+      targetPort: 8443     # BUG: should be 443
+      # missing: name: https

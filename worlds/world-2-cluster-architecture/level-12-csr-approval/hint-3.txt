@@ -1,0 +1,15 @@
+Verify the CSR is approved and the certificate was issued:
+
+  kubectl get csr dev-user-csr
+
+Status should show "Approved,Issued".
+
+To check the certificate content:
+
+  kubectl get csr dev-user-csr -o jsonpath='{.status.conditions[0].type}'
+
+Should output "Approved".
+
+To extract the certificate:
+
+  kubectl get csr dev-user-csr -o jsonpath='{.status.certificate}' | base64 -d > /tmp/dev-user.crt

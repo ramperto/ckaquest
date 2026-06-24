@@ -1,0 +1,3 @@
+# No broken resources — this is a task-based level.
+# The cluster is healthy. Your job is to create an etcd backup.
+# Target path: /opt/etcd-backup.db

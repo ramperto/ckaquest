@@ -1,0 +1,16 @@
+name: "ExternalName Service — Abstract an External Database"
+description: >
+  An application currently connects to 'legacy-db.corp.internal' directly.
+  The team wants to abstract this behind a Kubernetes Service so that the
+  app can be re-pointed to a new database host without changing its config.
+  Create an ExternalName service that the app can use.
+objective: "Create an ExternalName Service 'database' that resolves to 'legacy-db.corp.internal'."
+xp: 150
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - ExternalName service type
+  - CNAME records
+  - Service abstraction
+  - kubectl describe svc
+  - Migrating services

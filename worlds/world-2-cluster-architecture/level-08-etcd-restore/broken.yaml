@@ -1,0 +1,6 @@
+# Setup is handled by setup.sh:
+# 1. Creates ConfigMap 'app-secrets-backup'
+# 2. Takes etcd snapshot to /opt/etcd-backup.db
+# 3. Deletes the ConfigMap (simulating accidental deletion)
+#
+# Your job: restore the cluster from the snapshot to recover the ConfigMap.

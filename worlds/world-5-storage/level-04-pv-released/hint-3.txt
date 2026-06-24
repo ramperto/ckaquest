@@ -1,0 +1,20 @@
+Full fix:
+
+  kubectl patch pv data-pv --type=json \
+    -p='[{"op":"remove","path":"/spec/claimRef"}]'
+
+  # Watch the transition
+  kubectl get pv data-pv -w
+  # Released → Available → Bound
+
+  kubectl get pvc new-data -n ckaquest
+  # STATUS: Bound, VOLUME: data-pv
+
+If binding is slow, the PVC new-data was created when PV was Released
+and should auto-bind once PV becomes Available.
+
+If PVC still Pending after 30s:
+  kubectl delete pvc new-data -n ckaquest
+  kubectl apply -f <original broken.yaml>
+
+Then: validate

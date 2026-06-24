@@ -1,0 +1,15 @@
+name: "etcd Backup — Create a Snapshot"
+description: >
+  Your cluster's etcd database holds all cluster state. Before a major
+  upgrade, the SRE team requires an etcd snapshot saved to /opt/etcd-backup.db
+  Perform the backup using the tools available on your k3s cluster.
+objective: "Create an etcd snapshot at /opt/etcd-backup.db"
+xp: 250
+difficulty: advanced
+expected_time: "20m"
+concepts:
+  - etcd architecture
+  - etcd snapshot
+  - k3s etcd-snapshot
+  - etcdctl snapshot save
+  - Disaster recovery

@@ -1,0 +1,21 @@
+PVC spec is immutable — delete and recreate with the correct size:
+
+  kubectl delete pvc db-data -n ckaquest
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: db-data
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: manual
+    resources:
+      requests:
+        storage: 5Gi   # must be <= PV capacity (5Gi)
+  EOF
+
+The PVC requests must be <= PV capacity AND the accessModes and
+storageClassName must also match.

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  namespace: ckaquest
+  labels:
+    app: web
+spec:
+  containers:
+    - name: web
+      image: nginx:1.25
+      command: ["/bin/shh", "-c", "nginx -g 'daemon off;'"]

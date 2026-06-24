@@ -1,0 +1,11 @@
+Hint 2: Two Typos to Fix
+
+There are two bugs in the projected volume sources:
+
+1. "configmap" should be "configMap" (capital M)
+   Kubernetes API uses camelCase. The correct key for a ConfigMap
+   source in a projected volume is "configMap", not "configmap".
+
+2. "metadata.label" should be "metadata.labels" (plural)
+   The Downward API field for pod labels is "metadata.labels" with
+   an 's' at the end.

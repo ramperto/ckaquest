@@ -1,0 +1,16 @@
+Check the PVC:
+
+  kubectl get pvc cache-data -n ckaquest
+  # STATUS: Pending
+
+  kubectl get pvc cache-data -n ckaquest \
+    -o jsonpath='{.spec.storageClassName}'
+  # (empty — but that means "" not omitted)
+
+The crucial difference:
+  storageClassName: ""    → I want a PV with NO StorageClass (static only)
+  (no storageClassName)   → Use the cluster's default StorageClass (dynamic)
+
+Check the default StorageClass:
+  kubectl get storageclass
+  # local-path (default)

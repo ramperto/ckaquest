@@ -1,0 +1,25 @@
+Write the complete script to /tmp/upgrade-plan.sh:
+
+  cat > /tmp/upgrade-plan.sh << 'SCRIPT'
+  #!/bin/bash
+  NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+
+  # Phase 1: Upgrade kubeadm + control plane
+  apt-mark unhold kubeadm
+  apt-get update -qq && apt-get install -y kubeadm=1.29.0-1.1
+  apt-mark hold kubeadm
+  kubeadm upgrade plan
+  kubeadm upgrade apply v1.29.0 -y
+
+  # Phase 2: Upgrade node
+  kubectl drain $NODE --ignore-daemonsets --delete-emptydir-data
+  apt-mark unhold kubectl kubelet
+  apt-get install -y kubectl=1.29.0-1.1 kubelet=1.29.0-1.1
+  apt-mark hold kubectl kubelet
+  systemctl daemon-reload
+  systemctl restart kubelet
+  kubectl uncordon $NODE
+  kubectl get nodes
+  SCRIPT
+
+  chmod +x /tmp/upgrade-plan.sh

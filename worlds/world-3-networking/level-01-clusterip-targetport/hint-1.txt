@@ -1,0 +1,9 @@
+Endpoints exist (selector is fine) but requests get refused.
+This means traffic reaches the pod IP but not the right port.
+
+Check the port mapping:
+  kubectl describe svc backend-svc -n ckaquest
+
+Look at the "Port" and "TargetPort" fields.
+Then check what port nginx actually listens on:
+  kubectl exec -n ckaquest deploy/backend -- ss -tlnp

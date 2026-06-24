@@ -1,0 +1,11 @@
+Delete the old secret and create a new one with the correct certificate:
+
+  kubectl delete secret app-tls -n ckaquest
+  kubectl create secret tls app-tls \
+    --cert=/tmp/tls.crt \
+    --key=/tmp/tls.key \
+    -n ckaquest
+
+Verify:
+  kubectl get secret app-tls -n ckaquest -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -subject
+  # Should show: subject=CN = app.example.com

@@ -1,0 +1,15 @@
+Full fix using patch:
+
+  kubectl patch deployment webapp -n ckaquest -p \
+    '{"spec":{"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":1,"maxSurge":1}}}}'
+
+Verify:
+  kubectl get deployment webapp -n ckaquest \
+    -o jsonpath='{.spec.strategy.type}{"\n"}'
+  # RollingUpdate
+
+  kubectl get deployment webapp -n ckaquest \
+    -o jsonpath='{.spec.strategy.rollingUpdate}{"\n"}'
+  # {"maxSurge":1,"maxUnavailable":1}
+
+Then: validate

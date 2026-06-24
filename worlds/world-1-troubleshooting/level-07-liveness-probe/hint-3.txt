@@ -1,0 +1,21 @@
+Delete and recreate the pod with the correct liveness probe path:
+
+  kubectl delete pod web -n ckaquest
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: web
+    namespace: ckaquest
+  spec:
+    containers:
+      - name: web
+        image: nginx:1.25
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+  EOF

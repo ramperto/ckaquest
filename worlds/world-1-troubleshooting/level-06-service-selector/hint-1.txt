@@ -1,0 +1,7 @@
+The pods are running but the service isn't routing to them.
+
+The key diagnostic tool here is checking endpoints:
+  kubectl get endpoints backend-svc -n ckaquest
+
+If the ENDPOINTS column shows "<none>", the service can't find any pods
+matching its selector. Compare the service selector with pod labels.

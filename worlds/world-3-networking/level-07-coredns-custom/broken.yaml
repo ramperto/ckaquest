@@ -1,0 +1,23 @@
+# Task-based level — the CoreDNS ConfigMap exists but has no stub zone.
+# You need to add a stub zone for internal.corp → 10.0.0.53
+#
+# Check the current CoreDNS config:
+#   kubectl get configmap coredns -n kube-system -o yaml
+#
+# It will look like:
+# .:53 {
+#     errors
+#     health { lameduck 5s }
+#     ready
+#     kubernetes cluster.local in-addr.arpa ip6.arpa {
+#       pods insecure
+#       fallthrough in-addr.arpa ip6.arpa
+#     }
+#     forward . /etc/resolv.conf
+#     cache 30
+#     loop
+#     reload
+#     loadbalance
+# }
+#
+# You need to add a stub zone block for internal.corp

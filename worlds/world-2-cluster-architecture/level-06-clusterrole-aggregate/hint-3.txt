@@ -1,0 +1,10 @@
+  kubectl label clusterrole logs-reader \
+    rbac.ckaquest.io/aggregate-to-platform-viewer=true
+
+Verify the aggregation worked — platform-viewer should now show pod rules:
+  kubectl describe clusterrole platform-viewer
+
+Test the SA:
+  kubectl auth can-i list pods \
+    --as=system:serviceaccount:ckaquest:platform-sa
+  # Expected: yes

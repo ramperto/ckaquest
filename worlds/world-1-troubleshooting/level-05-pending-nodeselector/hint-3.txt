@@ -1,0 +1,11 @@
+Choose one fix:
+
+Option A — Remove nodeSelector (delete + recreate pod without it):
+  kubectl delete pod cache -n ckaquest
+  kubectl run cache --image=redis:7 -n ckaquest \
+    --requests=cpu=100m,memory=64Mi
+
+Option B — Label the node to match:
+  NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+  kubectl label node $NODE disktype=ssd
+  (The existing pod will then get scheduled automatically)

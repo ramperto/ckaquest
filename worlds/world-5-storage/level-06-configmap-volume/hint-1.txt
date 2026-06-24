@@ -1,0 +1,10 @@
+Check why the pod is stuck:
+
+  kubectl describe pod config-app -n ckaquest | grep -A5 "Events:"
+  # Warning  FailedMount  ...
+  # "MountVolume.SetUp failed for volume \"config-vol\":
+  #  configmap \"app-config\" not found"
+
+The volume references a ConfigMap that doesn't exist.
+A missing ConfigMap in a volume mount blocks pod startup completely —
+the kubelet can't mount the volume so the container never starts.

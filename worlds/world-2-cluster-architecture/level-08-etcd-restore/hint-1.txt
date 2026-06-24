@@ -1,0 +1,9 @@
+The ConfigMap is gone. Verify it's missing:
+  kubectl get configmap -n ckaquest
+
+A snapshot was saved BEFORE the deletion at /opt/etcd-backup.db
+Verify it exists:
+  ls -lh /opt/etcd-backup.db
+
+etcd restore requires stopping k3s temporarily.
+The high-level steps are: stop → restore → start → verify.

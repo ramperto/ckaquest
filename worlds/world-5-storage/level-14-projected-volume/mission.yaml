@@ -1,0 +1,33 @@
+title: "Projected Volume — Combining Secret, ConfigMap, and Downward API"
+world: 5
+level: 14
+xp: 250
+difficulty: advanced
+domain: Storage
+
+story: |
+  Pod `projected-app` uses a projected volume to combine a Secret, a
+  ConfigMap, and Downward API metadata into a single mount at
+  `/etc/projected/`. But the pod won't start — there are typos in the
+  projected volume specification.
+
+  Two subtle YAML bugs are hiding in the volume definition. Find and
+  fix them so all three sources project correctly.
+
+objective: |
+  1. Identify the two bugs in the projected volume spec
+  2. Fix the configMap source key (camelCase matters)
+  3. Fix the downwardAPI fieldPath (plural metadata.labels)
+  4. Verify all three projected files exist in the running pod
+
+success_criteria:
+  - Pod projected-app is Running
+  - File /etc/projected/api-key exists (from Secret)
+  - File /etc/projected/config.yaml exists (from ConfigMap)
+  - File /etc/projected/labels exists (from Downward API)
+
+hints_available: 3
+
+note: |
+  Projected volumes are case-sensitive in YAML. The Kubernetes API uses
+  camelCase — configMap not configmap, metadata.labels not metadata.label.

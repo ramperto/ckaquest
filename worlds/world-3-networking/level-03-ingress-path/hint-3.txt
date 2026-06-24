@@ -1,0 +1,11 @@
+Patch the path directly:
+
+  kubectl patch ingress webapp-ingress -n ckaquest \
+    --type=json \
+    -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/path","value":"/app"}]'
+
+Or edit interactively:
+  kubectl edit ingress webapp-ingress -n ckaquest
+  # Change /application to /app
+
+Traefik (k3s ingress controller) auto-reloads within a few seconds.

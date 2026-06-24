@@ -1,0 +1,52 @@
+# Solution: Level 15 — StorageClass Reclaim Policy
+#
+# Step 1: Create StorageClass with Retain policy
+# Step 2: Create new PVC using retain-sc
+# Step 3: Update Deployment to use new PVC
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: retain-sc
+provisioner: rancher.io/local-path
+reclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: safe-data
+  namespace: ckaquest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: retain-sc
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-app
+  namespace: ckaquest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-app
+  template:
+    metadata:
+      labels:
+        app: db-app
+    spec:
+      containers:
+        - name: db-app
+          image: busybox:1.36
+          command: ["sh", "-c", "echo 'critical data' > /data/important.txt && sleep 3600"]
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: safe-data

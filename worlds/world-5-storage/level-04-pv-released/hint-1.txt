@@ -1,0 +1,11 @@
+Check the PV state:
+
+  kubectl get pv data-pv
+  # STATUS: Released  (not Available)
+
+  kubectl describe pv data-pv | grep -A3 "Claim:"
+  # Claim: ckaquest/temp-claim
+
+With Retain reclaim policy, when a PVC is deleted the PV goes to
+"Released" — its data is preserved but it's locked by the old claimRef.
+A Released PV cannot be claimed by any new PVC until the claimRef is removed.

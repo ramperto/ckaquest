@@ -1,0 +1,30 @@
+# Imperative fix (recommended — no YAML editing needed):
+#
+#   kubectl patch cronjob report-generator -n ckaquest \
+#     -p '{"spec":{"suspend":false}}'
+#
+# Then trigger a manual Job run:
+#   kubectl create job report-now --from=cronjob/report-generator -n ckaquest
+#
+# Watch it complete:
+#   kubectl get jobs -n ckaquest
+#   kubectl logs -n ckaquest -l job-name=report-now
+
+# Declarative equivalent:
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: report-generator
+  namespace: ckaquest
+spec:
+  schedule: "*/5 * * * *"
+  suspend: false             # fixed
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: reporter
+              image: busybox:1.36
+              command: ["sh", "-c", "echo 'Report generated at' $(date)"]

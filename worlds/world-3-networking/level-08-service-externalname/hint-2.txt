@@ -1,0 +1,9 @@
+An ExternalName service creates a CNAME DNS record. When a pod
+resolves 'database.ckaquest.svc.cluster.local', CoreDNS returns
+a CNAME pointing to the externalName value.
+
+The YAML is simple:
+  type: ExternalName
+  externalName: legacy-db.corp.internal
+
+No selector, no clusterIP, no targetPort needed.

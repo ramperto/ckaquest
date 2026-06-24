@@ -1,0 +1,15 @@
+name: "Init Container Stuck — Missing Dependency"
+description: >
+  A pod is stuck in 'Init:0/1' state. It has an init container that must
+  complete before the main app starts. The init container is waiting for
+  something that doesn't exist yet.
+objective: "Get the pod out of Init state and Running in the ckaquest namespace."
+xp: 200
+difficulty: intermediate
+expected_time: "20m"
+concepts:
+  - Init containers
+  - Pod initialization
+  - Container ordering
+  - Service dependencies
+  - kubectl logs -c

@@ -1,0 +1,9 @@
+A Role named 'pod-reader' exists with list/get/watch on pods.
+A ServiceAccount named 'monitor-sa' exists.
+
+But there is NO RoleBinding connecting them!
+
+In Kubernetes RBAC:
+  ServiceAccount + Role → needs a RoleBinding to activate
+
+Think of it as: Role = permission slip, RoleBinding = "give this slip to this account"

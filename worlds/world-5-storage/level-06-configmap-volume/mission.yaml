@@ -1,0 +1,27 @@
+title: "ConfigMap Volume — Missing Source"
+world: 5
+level: 6
+xp: 200
+difficulty: intermediate
+domain: Storage
+
+story: |
+  The `config-app` pod mounts a ConfigMap as a volume to read its
+  configuration files. But the ConfigMap `app-config` doesn't exist —
+  the pod is stuck in `ContainerCreating` with a volume mount error.
+
+  Create the missing ConfigMap so the pod can start.
+
+objective: |
+  1. Check pod `config-app` — find the volume mount error
+  2. Create ConfigMap `app-config` in namespace ckaquest with:
+       key: app.properties
+       value: "log_level=INFO\nmax_connections=100"
+  3. Confirm the pod starts Running and can read the config file
+
+success_criteria:
+  - ConfigMap app-config exists in namespace ckaquest
+  - ConfigMap has key app.properties
+  - Pod config-app is Running
+
+hints_available: 3

@@ -1,0 +1,6 @@
+The pod can't pull its container image. Check what's happening:
+
+  kubectl describe pod web -n ckaquest
+
+Look at the "Events" section at the bottom. You'll see the exact error
+from the container runtime when it tried to pull the image.

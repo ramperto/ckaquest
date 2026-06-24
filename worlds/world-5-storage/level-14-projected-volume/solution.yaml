@@ -1,0 +1,54 @@
+# Solution: Level 14 — Projected Volume
+#
+# Fixes:
+#   1. "configmap" -> "configMap" (capital M)
+#   2. "metadata.label" -> "metadata.labels" (plural)
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+  namespace: ckaquest
+type: Opaque
+stringData:
+  api-key: "s3cr3t-k3y-12345"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings
+  namespace: ckaquest
+data:
+  config.yaml: |
+    debug: true
+    retries: 3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: projected-app
+  namespace: ckaquest
+  labels:
+    app: projected-app
+    tier: backend
+spec:
+  containers:
+    - name: projected-app
+      image: busybox:1.36
+      command: ["sh", "-c", "ls -la /etc/projected/ && cat /etc/projected/api-key && sleep 3600"]
+      volumeMounts:
+        - name: all-in-one
+          mountPath: /etc/projected
+  volumes:
+    - name: all-in-one
+      projected:
+        sources:
+          - secret:
+              name: app-secret
+          - configMap:
+              name: app-settings
+          - downwardAPI:
+              items:
+                - path: "labels"
+                  fieldRef:
+                    fieldPath: metadata.labels

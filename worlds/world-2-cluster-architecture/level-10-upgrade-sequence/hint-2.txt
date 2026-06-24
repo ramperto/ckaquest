@@ -1,0 +1,18 @@
+The correct high-level order is:
+
+Phase 1 — Upgrade kubeadm + control plane:
+  1. apt-mark unhold kubeadm
+  2. apt-get install kubeadm=1.29.x
+  3. apt-mark hold kubeadm
+  4. kubeadm upgrade plan
+  5. kubeadm upgrade apply v1.29.0
+
+Phase 2 — Upgrade node components:
+  6. kubectl drain <node> --ignore-daemonsets --delete-emptydir-data
+  7. apt-mark unhold kubectl kubelet
+  8. apt-get install kubectl=1.29.x kubelet=1.29.x
+  9. apt-mark hold kubectl kubelet
+  10. systemctl daemon-reload && systemctl restart kubelet
+  11. kubectl uncordon <node>
+
+Write these to /tmp/upgrade-plan.sh

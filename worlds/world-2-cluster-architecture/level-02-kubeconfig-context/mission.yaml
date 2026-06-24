@@ -1,0 +1,15 @@
+name: "kubeconfig — Wrong Current Context"
+description: >
+  A kubeconfig with two contexts was set up. The current-context was changed
+  to 'broken-context' which uses a non-existent user. kubectl now fails.
+  You need to switch to the working context without deleting the kubeconfig.
+objective: "Switch to the correct context so kubectl works again."
+xp: 100
+difficulty: beginner
+expected_time: "10m"
+concepts:
+  - kubectl config use-context
+  - kubectl config get-contexts
+  - kubeconfig contexts
+  - current-context
+  - Multiple clusters/users

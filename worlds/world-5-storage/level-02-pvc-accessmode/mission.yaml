@@ -1,0 +1,29 @@
+title: "PVC — Access Mode Mismatch"
+world: 5
+level: 2
+xp: 150
+difficulty: beginner
+domain: Storage
+
+story: |
+  A data pipeline needs shared read-write access to storage from
+  multiple pods. The PVC was created with `ReadWriteMany` — but the
+  static PV only supports `ReadWriteOnce`. PVC is stuck Pending.
+
+  Fix the mismatch so the PVC binds.
+
+objective: |
+  1. Inspect PVC `pipeline-data` and PV `pipeline-pv`
+  2. Identify the access mode mismatch
+  3. Delete the PVC and recreate it with the correct access mode
+  4. Confirm the PVC binds (STATUS: Bound)
+
+success_criteria:
+  - PVC pipeline-data is Bound
+  - PV pipeline-pv is Bound
+
+hints_available: 3
+
+note: |
+  hostPath volumes only support ReadWriteOnce. ReadWriteMany
+  requires a network file system (NFS, CephFS, etc.).

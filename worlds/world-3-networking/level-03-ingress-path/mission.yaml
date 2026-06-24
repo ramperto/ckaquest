@@ -1,0 +1,15 @@
+name: "Ingress — Path Not Matching (404)"
+description: >
+  An Ingress rule was set up for the web app but every request returns 404.
+  The Service and pods are healthy. Something is wrong with the Ingress
+  path configuration — the rule doesn't match the incoming request path.
+objective: "Fix the Ingress so requests to http://<node-ip>/app return the nginx page."
+xp: 150
+difficulty: intermediate
+expected_time: "15m"
+concepts:
+  - Ingress rules
+  - pathType (Exact, Prefix, ImplementationSpecific)
+  - Ingress path matching
+  - IngressClass
+  - kubectl describe ingress

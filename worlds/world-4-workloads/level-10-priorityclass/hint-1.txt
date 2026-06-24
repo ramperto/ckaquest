@@ -1,0 +1,21 @@
+Try applying the pod spec below and observe what error you get:
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: critical-app
+    namespace: ckaquest
+  spec:
+    priorityClassName: high-priority
+    containers:
+      - name: app
+        image: nginx:1.25
+  EOF
+
+You'll see: "no PriorityClass with name high-priority was found"
+
+List existing PriorityClasses (they are cluster-scoped):
+  kubectl get priorityclass
+
+You'll see system ones but NOT 'high-priority'. You need to create it first.

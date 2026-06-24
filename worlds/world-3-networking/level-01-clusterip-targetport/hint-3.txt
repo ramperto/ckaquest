@@ -1,0 +1,8 @@
+Fix and verify:
+
+  kubectl patch svc backend-svc -n ckaquest \
+    --type='json' \
+    -p='[{"op":"replace","path":"/spec/ports/0/targetPort","value":80}]'
+
+  # Test from client pod
+  kubectl exec client -n ckaquest -- wget -qO- http://backend-svc

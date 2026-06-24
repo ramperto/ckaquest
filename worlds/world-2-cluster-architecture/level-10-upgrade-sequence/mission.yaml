@@ -1,0 +1,20 @@
+name: "Cluster Upgrade — kubeadm Upgrade Plan"
+description: >
+  Your cluster is running Kubernetes 1.28.0 and needs to be upgraded to 1.29.0.
+  The upgrade must follow the correct kubeadm sequence. You need to:
+  1. Plan the upgrade (dry-run)
+  2. Upgrade the control plane
+  3. Drain the node, upgrade kubelet/kubectl, uncordon
+
+  Write the complete ordered upgrade commands to /tmp/upgrade-plan.sh
+  and make it executable. The validation checks command correctness.
+objective: "Write the correct kubeadm upgrade sequence to /tmp/upgrade-plan.sh"
+xp: 250
+difficulty: advanced
+expected_time: "25m"
+concepts:
+  - kubeadm upgrade
+  - kubectl drain / uncordon
+  - Upgrade sequence (control plane → workers)
+  - Version skew policy
+  - apt-mark hold / unhold

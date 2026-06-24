@@ -1,0 +1,22 @@
+Create the PVC using dynamic provisioning (omit storageClassName to use default):
+
+  kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: app-db
+    namespace: ckaquest
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  EOF
+
+Watch the PVC bind:
+  kubectl get pvc app-db -n ckaquest -w
+  # Pending → Bound (within seconds)
+
+Then watch the pod start:
+  kubectl get pods -n ckaquest -l app=stateful-app -w

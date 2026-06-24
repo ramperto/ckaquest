@@ -1,0 +1,10 @@
+Generate a self-signed certificate for webapp.local:
+
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /tmp/webapp.key \
+    -out /tmp/webapp.crt \
+    -subj "/CN=webapp.local/O=CKAQuest"
+
+Then create the Kubernetes TLS secret from those files.
+The command 'kubectl create secret tls' automatically creates
+the right secret type with the right key names.

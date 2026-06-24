@@ -1,0 +1,8 @@
+The liveness probe is configured to check HTTP GET /healthz on port 80.
+nginx doesn't serve /healthz — it returns a 404, which Kubernetes treats
+as a failure. After 3 consecutive failures, it restarts the container.
+
+Check the probe config:
+  kubectl get pod web -n ckaquest -o jsonpath='{.spec.containers[0].livenessProbe}'
+
+nginx serves its default page at path "/"  — use that instead.

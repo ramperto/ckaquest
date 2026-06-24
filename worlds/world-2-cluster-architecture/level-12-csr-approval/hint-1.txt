@@ -1,0 +1,9 @@
+List all CertificateSigningRequests in the cluster:
+
+  kubectl get csr
+
+You should see `dev-user-csr` with status Pending.
+
+Inspect it for details:
+
+  kubectl describe csr dev-user-csr

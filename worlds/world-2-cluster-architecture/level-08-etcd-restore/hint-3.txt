@@ -1,0 +1,24 @@
+Full restore sequence:
+
+  # 1. Stop k3s
+  sudo systemctl stop k3s
+
+  # 2. Restore (run in background, wait for completion message)
+  sudo k3s server \
+    --cluster-reset \
+    --cluster-reset-restore-path=/opt/etcd-backup.db 2>&1 | \
+    tee /tmp/restore.log &
+  RESTORE_PID=$!
+
+  # Wait for the "reset" message
+  sleep 30
+  kill $RESTORE_PID 2>/dev/null
+
+  # 3. Start k3s
+  sudo systemctl start k3s
+
+  # 4. Wait for cluster
+  until kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+
+  # 5. Verify
+  kubectl get configmap app-secrets-backup -n ckaquest

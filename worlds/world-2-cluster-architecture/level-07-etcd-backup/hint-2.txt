@@ -1,0 +1,12 @@
+k3s saves snapshots to /var/lib/rancher/k3s/server/db/snapshots/
+You need to copy it to /opt/etcd-backup.db
+
+  sudo k3s etcd-snapshot save --name cka-backup
+  sudo cp /var/lib/rancher/k3s/server/db/snapshots/cka-backup* /opt/etcd-backup.db
+
+On the CKA exam (kubeadm clusters), you'd use etcdctl instead:
+  ETCDCTL_API=3 etcdctl snapshot save /opt/etcd-backup.db \
+    --endpoints=https://127.0.0.1:2379 \
+    --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+    --cert=/etc/kubernetes/pki/etcd/server.crt \
+    --key=/etc/kubernetes/pki/etcd/server.key

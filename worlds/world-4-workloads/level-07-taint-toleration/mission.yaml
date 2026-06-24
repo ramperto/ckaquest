@@ -1,0 +1,30 @@
+title: "Taint & Toleration — Schedule on a Tainted Node"
+world: 4
+level: 7
+xp: 200
+difficulty: intermediate
+domain: Workloads & Scheduling
+
+story: |
+  The infrastructure team has marked the cluster node as a
+  dedicated GPU node by adding a taint: `gpu=present:NoSchedule`.
+
+  Your ML pipeline pod `gpu-worker` is stuck in Pending because
+  it has no toleration for the taint. Add the required toleration
+  so it can schedule and run.
+
+objective: |
+  1. Confirm the node has taint `gpu=present:NoSchedule`
+  2. Confirm pod `gpu-worker` is stuck Pending (no toleration)
+  3. Fix: delete the pod and recreate it WITH the correct toleration
+  4. Confirm the pod reaches Running state
+
+success_criteria:
+  - Pod gpu-worker is Running
+  - Pod spec has toleration for key=gpu, value=present, effect=NoSchedule
+
+hints_available: 3
+
+note: |
+  The validate script will automatically remove the node taint
+  after checking the solution — no manual cleanup needed.

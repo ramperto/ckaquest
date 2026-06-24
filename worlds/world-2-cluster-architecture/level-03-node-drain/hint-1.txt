@@ -1,0 +1,7 @@
+Try a basic drain first and see what errors you get:
+
+  NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+  kubectl drain $NODE
+
+You'll likely see errors about DaemonSet pods and pods without controllers.
+Read the error messages carefully — they tell you exactly what flags to add.

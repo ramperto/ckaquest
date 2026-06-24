@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v1
+  namespace: ckaquest
+  labels:
+    app: myapp
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: myapp
+        version: v1
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_VERSION
+              value: "v1"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v2
+  namespace: ckaquest
+  labels:
+    app: myapp
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      version: v2
+  template:
+    metadata:
+      labels:
+        # BUG: missing "app: myapp" label — Service selector won't match!
+        version: v2
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_VERSION
+              value: "v2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: myapp          # selects pods with app=myapp — v2 is missing this label!
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP

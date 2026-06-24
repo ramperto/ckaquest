@@ -1,0 +1,6 @@
+The image tag "nginx:1.99.99" does not exist on Docker Hub.
+
+Check what image the pod is using:
+  kubectl get pod web -n ckaquest -o jsonpath='{.spec.containers[0].image}'
+
+A valid nginx tag is needed. Common ones: nginx:latest, nginx:1.25, nginx:alpine

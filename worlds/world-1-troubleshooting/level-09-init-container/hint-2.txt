@@ -1,0 +1,9 @@
+The init container is running: nc -z db-service 5432
+
+It waits until TCP port 5432 on "db-service" is reachable.
+But no Service named "db-service" exists in the namespace.
+
+Check services:
+  kubectl get svc -n ckaquest
+
+You need to create the db-service Service (and optionally a pod to back it).

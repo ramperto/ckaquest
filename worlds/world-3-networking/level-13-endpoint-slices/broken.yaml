@@ -1,0 +1,36 @@
+# Backend Deployment — labels are correct: app: backend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: ckaquest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: api
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+---
+# BUG: selector has typo "backendd" (double d) instead of "backend"
+# This means NO pods match, so endpoints are empty.
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+  namespace: ckaquest
+spec:
+  selector:
+    app: backendd          # TYPO: should be "backend"
+  ports:
+    - port: 80
+      targetPort: 80

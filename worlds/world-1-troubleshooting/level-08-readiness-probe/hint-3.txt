@@ -1,0 +1,23 @@
+Delete and recreate with the correct readiness probe port:
+
+  kubectl delete pod web -n ckaquest
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: web
+    namespace: ckaquest
+    labels:
+      app: web
+  spec:
+    containers:
+      - name: web
+        image: nginx:1.25
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 5
+  EOF

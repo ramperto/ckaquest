@@ -1,0 +1,14 @@
+The stub zone block to add looks like this:
+
+  internal.corp:53 {
+      errors
+      cache 30
+      forward . 10.0.0.53
+  }
+
+Edit the ConfigMap:
+  kubectl edit configmap coredns -n kube-system
+
+Add the block BEFORE the .:53 { ... } block.
+CoreDNS uses more specific zones first, so internal.corp queries
+will hit your stub zone before the catch-all .:53.

@@ -1,0 +1,5 @@
+Approve the CSR:
+
+  kubectl certificate approve dev-user-csr
+
+This tells the cluster CA to sign the certificate request.
